@@ -15,7 +15,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">1. Artisanal Nature</h2>
             <p>
-              Each piece at Mutya is handcrafted by local artisans in the Philippines. Due to the natural materials and handmade process, slight variations in color, shape, and size are to be expected and celebrated as part of the item&apos;s unique heritage.
+              Each piece at Joulery is handcrafted by local artisans in the Philippines. Due to the natural materials and handmade process, slight variations in color, shape, and size are to be expected and celebrated as part of the item&apos;s unique character.
             </p>
           </section>
 
@@ -29,7 +29,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">3. Care & Responsibility</h2>
             <p>
-              Our jewelry uses delicate natural materials like Capiz shells and hand-woven gold wire. Mutya is not responsible for damage caused by improper handling or lack of care as outlined in our care instructions.
+              Our jewelry uses delicate natural materials like Capiz shells and hand-woven gold wire. Joulery is not responsible for damage caused by improper handling or lack of care as outlined in our care instructions.
             </p>
           </section>
           

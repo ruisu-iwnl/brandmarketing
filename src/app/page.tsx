@@ -103,7 +103,7 @@ export default function Home() {
               <div className="relative w-[120%] h-[120%] md:w-full md:h-full max-w-[1400px]">
                 <Image
                   src="/images/hero.png"
-                  alt="Mutya Heritage Jewelry"
+                  alt="Joulery Creative Handcrafted Items"
                   fill
                   priority
                   className="object-contain object-center"
@@ -117,7 +117,7 @@ export default function Home() {
         <div className="absolute top-0 left-0 w-full h-screen z-0 md:hidden overflow-hidden pointer-events-none">
           <Image
             src="/images/hero.png"
-            alt="Mutya Heritage Jewelry"
+            alt="Joulery Creative Handcrafted Items"
             fill
             className="object-contain scale-90"
           />
@@ -156,7 +156,7 @@ export default function Home() {
                 </h2>
                 <p className="text-2xl md:text-3xl font-light leading-relaxed text-foreground">
                   <span className="bg-white/40 px-2 rounded box-decoration-clone">
-                    Every piece is personally handcrafted by a single artisan in the city of Cabanatuan, Nueva Ecija, Philippines. A singular vision of heritage translated into delicate, wearable art.
+                    Every piece is personally handcrafted by a single artisan in the city of Cabanatuan, Nueva Ecija, Philippines. A singular vision of creativity translated into delicate, wearable art.
                   </span>
                 </p>
               </FadeIn>

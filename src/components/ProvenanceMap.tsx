@@ -18,14 +18,14 @@ const regions = [
     name: "Cebu",
     coordinates: { top: "66%", left: "68%" },
     material: "Hand-Woven Beads",
-    description: "Carefully selected heritage beads sourced from the Visayas, reflecting the vibrant colors of our island culture.",
+    description: "Carefully selected handpicked beads sourced from the Visayas, reflecting the vibrant colors of our island culture.",
   },
   {
     id: "cabanatuan",
     name: "Cabanatuan City",
     coordinates: { top: "33%", left: "45%" },
     material: "The Artisan's Workshop",
-    description: "The heart of Mutya. Every single piece is meticulously handcrafted here by our lone artisan, weaving Philippine heritage into wearable art.",
+    description: "The heart of Joulery. Every single piece is meticulously handcrafted here by our lone artisan, weaving Philippine creativity into wearable art.",
   },
 ];
 
