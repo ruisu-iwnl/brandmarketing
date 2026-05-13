@@ -9,23 +9,23 @@ const regions = [
   {
     id: "palawan",
     name: "Palawan",
-    coordinates: { top: "68%", left: "28%" },
+    coordinates: { top: "62%", left: "30%" },
     material: "South Sea Pearls",
     description: "Sourced from the pristine waters of the Sulu Sea, these pearls are known for their golden luster and timeless elegance.",
   },
   {
     id: "cebu",
     name: "Cebu",
-    coordinates: { top: "63%", left: "71%" },
-    material: "Hand-Woven Gold",
-    description: "Cebuano artisans utilize ancestral 'binatikan' weaving techniques to create intricate wire jewelry that mimics the ocean's ripple.",
+    coordinates: { top: "66%", left: "68%" },
+    material: "Hand-Woven Beads",
+    description: "Carefully selected heritage beads sourced from the Visayas, reflecting the vibrant colors of our island culture.",
   },
   {
-    id: "batanes",
-    name: "Batanes",
-    coordinates: { top: "2%", left: "53%" },
-    material: "Coastal Stone & Shell",
-    description: "In the far north, our craftsmen harvest weathered sea-stones and capiz shells, symbolizing the rugged strength of the islands.",
+    id: "cabanatuan",
+    name: "Cabanatuan City",
+    coordinates: { top: "33%", left: "45%" },
+    material: "The Artisan's Workshop",
+    description: "The heart of Mutya. Every single piece is meticulously handcrafted here by our lone artisan, weaving Philippine heritage into wearable art.",
   },
 ];
 
@@ -33,17 +33,18 @@ export default function ProvenanceMap() {
   const [hoveredRegion, setHoveredRegion] = useState<typeof regions[0] | null>(null);
 
   return (
-    <section className="py-32 px-8 bg-pink-calm overflow-hidden">
+    <section className="py-0 px-8 bg-pink-calm overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
         {/* Left Side: Map Representation */}
-        <div className="relative w-full md:w-1/2 aspect-[3/4] flex justify-center items-center">
-          <div className="relative w-full h-full max-w-md">
+        <div className="relative w-full md:w-1/2 flex justify-center items-center py-12">
+          <div className="relative w-full max-w-[300px]">
             {/* Real Philippines Map */}
-            <Image 
-              src="/map.svg" 
-              alt="Map of the Philippines" 
-              fill
-              className="object-contain drop-shadow-md"
+            <Image
+              src="/map.svg"
+              alt="Map of the Philippines"
+              width={400}
+              height={500}
+              className="w-full h-auto drop-shadow-md"
             />
 
             {/* Interactive Pins */}
@@ -61,7 +62,7 @@ export default function ProvenanceMap() {
                 >
                   <MapPin size={16} />
                 </motion.div>
-                
+
                 {/* Tooltip (Desktop) */}
                 <div className="absolute top-0 left-full ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity bg-white-calm px-3 py-1 text-xs uppercase tracking-widest shadow-sm pointer-events-none z-10">
                   {region.name}
@@ -75,7 +76,7 @@ export default function ProvenanceMap() {
         <div className="w-full md:w-1/2 flex flex-col justify-center min-h-[400px]">
           <h2 className="text-xs uppercase tracking-[0.2em] mb-6 text-pink-accent">Provenance</h2>
           <h3 className="text-4xl font-light mb-8 text-foreground">Sourced with Purpose</h3>
-          
+
           <AnimatePresence mode="wait">
             {hoveredRegion ? (
               <motion.div
