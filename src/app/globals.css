@@ -1,0 +1,43 @@
+@import "tailwindcss";
+
+:root {
+  /* Pink, Calm Pink, and Calm White Theme */
+  --background: #fdf5f6; /* Calm pink base */
+  --foreground: #5a474b; /* Soft dark text to match the calm vibe */
+  --white-calm: #faf8f8; /* Calm white */
+  --pink-calm: #f6e6e9; /* Noticeable calm pink for sections */
+  --pink-accent: #f0cdd3; /* Stronger pink for buttons and accents */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-white-calm: var(--white-calm);
+  --color-pink-calm: var(--pink-calm);
+  --color-pink-accent: var(--pink-accent);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+/* Enforce the light, soft theme */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #fdf5f6;
+    --foreground: #5a474b;
+    --white-calm: #faf8f8;
+    --pink-calm: #f6e6e9;
+    --pink-accent: #f0cdd3;
+  }
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Smooth scrolling for anchor links */
+html {
+  scroll-behavior: smooth;
+}
