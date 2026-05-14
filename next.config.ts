@@ -14,7 +14,7 @@ const nextConfig: NextConfig = {
   // If you are deploying to a GitHub user/org page (username.github.io) 
   // you don't need a basePath. If you are deploying to username.github.io/repo-name,
   // uncomment the line below and replace 'repo-name' with your actual repo name.
-  // basePath: isGithubActions ? '/brandmarketing' : '',
+  basePath: isGithubActions ? '/brandmarketing' : '',
 };
 
 export default nextConfig;
