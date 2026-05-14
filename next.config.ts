@@ -3,8 +3,8 @@ import type { NextConfig } from "next";
 const isGithubActions = process.env.GITHUB_ACTIONS === 'true';
 
 const nextConfig: NextConfig = {
-  // Only enable static export when building in GitHub Actions
-  output: isGithubActions ? 'export' : undefined,
+  // Force static export for the demo branch
+  output: 'export',
   
   // GitHub Pages doesn't support Next.js Image Optimization at runtime
   images: {
