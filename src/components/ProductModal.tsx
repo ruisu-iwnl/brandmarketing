@@ -192,7 +192,12 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
               </div>
 
               <h2 className="text-3xl md:text-4xl font-light text-foreground mb-1">{activeProduct.name}</h2>
-              <p className="text-xl md:text-2xl font-medium text-foreground/80 mb-5">₱{activeProduct.price}</p>
+              <div className="flex items-center gap-4 mb-6">
+                <span className="text-2xl font-light text-foreground">₱{product?.price}</span>
+                <div className={`px-2 py-1 rounded text-[10px] uppercase tracking-widest font-bold ${product && product.stock < 5 ? 'bg-red-50 text-red-400' : 'bg-pink-calm/30 text-foreground/40'}`}>
+                  {product?.stock} Units Available
+                </div>
+              </div>
 
               <div className="flex items-center gap-1 mb-6">
                 {[...Array(5)].map((_, i) => (

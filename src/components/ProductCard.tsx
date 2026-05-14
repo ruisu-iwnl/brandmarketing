@@ -16,6 +16,7 @@ export interface Product {
   description: string;
   imageStill: string;
   imageWorn: string;
+  stock: number;
   reviews?: Review[];
 }
 
@@ -67,7 +68,12 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
           </div>
           <div className="flex justify-between items-start text-foreground">
             <div className="flex-1 mr-4">
-              <span className="font-light text-sm text-pink-accent block mb-1">₱{product.price}</span>
+              <div className="flex items-center gap-3 mb-1">
+                <span className="font-light text-sm text-pink-accent">₱{product.price}</span>
+                <span className={`text-[10px] uppercase tracking-widest font-medium ${product.stock < 5 ? 'text-red-400' : 'text-foreground/30'}`}>
+                  {product.stock} in stock
+                </span>
+              </div>
               <h3 className="font-medium uppercase tracking-wider text-sm truncate">{product.name}</h3>
               <p className="text-xs text-foreground/70 mt-1 font-light uppercase tracking-widest line-clamp-1">{product.description}</p>
             </div>
