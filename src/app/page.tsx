@@ -14,6 +14,43 @@ const FacebookIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeW
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
 );
 
+import ProductCard, { Product } from "@/components/ProductCard";
+
+const productsData: Product[] = [
+  {
+    id: "aquamarine-silk",
+    name: "Aquamarine Silk",
+    price: 120,
+    description: "Handwoven Blue Aquamarine",
+    imageStill: "/images/products/stills/aquamarine-nobg.png",
+    imageWorn: "/images/products/worn/aquamarine.png",
+  },
+  {
+    id: "obsidian-heart",
+    name: "Obsidian Heart",
+    price: 150,
+    description: "Handcrafted Volcanic Glass",
+    imageStill: "/images/products/stills/obsidian.png",
+    imageWorn: "/images/products/worn/obsidian.png",
+  },
+  {
+    id: "crystal-white",
+    name: "Crystal White",
+    price: 180,
+    description: "Handwoven Clear Quartz",
+    imageStill: "/images/products/stills/crystalwhite.png",
+    imageWorn: "/images/products/worn/crystalwhite.png",
+  },
+  {
+    id: "amethyst-aura",
+    name: "Amethyst Aura",
+    price: 140,
+    description: "Handwoven Royal Purple Amethyst",
+    imageStill: "/images/products/stills/amethyst.png",
+    imageWorn: "/images/products/worn/amethyst.png",
+  },
+];
+
 export default function Home() {
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
@@ -120,7 +157,7 @@ export default function Home() {
               </h1>
               <p className="text-lg md:text-xl font-light max-w-xl mb-10 text-foreground leading-relaxed">
                 <span className="bg-white/40 px-2 rounded box-decoration-clone">
-                  A collection of handwoven necklaces and bracelets. Crafted purely for the love of the game.
+                  Handcrafted jewelry for those who appreciate the finer details. Simple, elegant, and designed to stay with you.
                 </span>
               </p>
               <button
@@ -165,141 +202,13 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
-            <FadeIn delay={0.1} className="group cursor-pointer">
-              <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  <Image 
-                    src="/images/products/worn/aquamarine.png" 
-                    alt="" 
-                    fill 
-                    className="object-cover blur-md opacity-30 scale-110"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-                    <Image 
-                      src="/images/products/stills/aquamarine-nobg.png" 
-                      alt="Aquamarine Necklace" 
-                      fill 
-                      className="object-contain scale-75 drop-shadow-xl"
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
-                  <Image
-                    src="/images/products/worn/aquamarine.png"
-                    alt="Aquamarine Necklace Worn"
-                    fill
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between items-center text-foreground">
-                <h3 className="font-medium uppercase tracking-wider text-sm">Aquamarine Silk</h3>
-                <span className="font-light">$120</span>
-              </div>
-              <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handwoven Blue Aquamarine</p>
-            </FadeIn>
-
-            <FadeIn delay={0.2} className="group cursor-pointer">
-              <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  <Image 
-                    src="/images/products/worn/obsidian.png" 
-                    alt="" 
-                    fill 
-                    className="object-cover blur-md opacity-30 scale-110"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-                    <Image 
-                      src="/images/products/stills/obsidian.png" 
-                      alt="Obsidian Necklace" 
-                      fill 
-                      className="object-contain scale-75 drop-shadow-xl"
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
-                  <Image 
-                    src="/images/products/worn/obsidian.png" 
-                    alt="Obsidian Necklace Worn" 
-                    fill 
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between items-center text-foreground">
-                <h3 className="font-medium uppercase tracking-wider text-sm">Obsidian Heart</h3>
-                <span className="font-light">$150</span>
-              </div>
-              <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handcrafted Volcanic Glass</p>
-            </FadeIn>
-
-            <FadeIn delay={0.3} className="group cursor-pointer">
-              <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  <Image 
-                    src="/images/products/worn/crystalwhite.png" 
-                    alt="" 
-                    fill 
-                    className="object-cover blur-md opacity-30 scale-110"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-                    <Image 
-                      src="/images/products/stills/crystalwhite.png" 
-                      alt="Crystal White Necklace" 
-                      fill 
-                      className="object-contain scale-75 drop-shadow-xl"
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
-                  <Image 
-                    src="/images/products/worn/crystalwhite.png" 
-                    alt="Crystal White Necklace Worn" 
-                    fill 
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between items-center text-foreground">
-                <h3 className="font-medium uppercase tracking-wider text-sm">Crystal White</h3>
-                <span className="font-light">$180</span>
-              </div>
-              <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handwoven Clear Quartz</p>
-            </FadeIn>
-
-            <FadeIn delay={0.4} className="group cursor-pointer">
-              <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  <Image 
-                    src="/images/products/worn/amethyst.png" 
-                    alt="" 
-                    fill 
-                    className="object-cover blur-md opacity-30 scale-110"
-                  />
-                  <div className="absolute inset-0 flex items-center justify-center backdrop-blur-[2px]">
-                    <Image 
-                      src="/images/products/stills/amethyst.png" 
-                      alt="Amethyst Necklace" 
-                      fill 
-                      className="object-contain scale-75 drop-shadow-xl"
-                    />
-                  </div>
-                </div>
-                <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
-                  <Image 
-                    src="/images/products/worn/amethyst.png" 
-                    alt="Amethyst Necklace Worn" 
-                    fill 
-                    className="object-cover"
-                  />
-                </div>
-              </div>
-              <div className="flex justify-between items-center text-foreground">
-                <h3 className="font-medium uppercase tracking-wider text-sm">Amethyst Aura</h3>
-                <span className="font-light">$140</span>
-              </div>
-              <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handwoven Royal Purple Amethyst</p>
-            </FadeIn>
+            {productsData.map((product, index) => (
+              <ProductCard 
+                key={product.id} 
+                product={product} 
+                delay={0.1 * (index + 1)} 
+              />
+            ))}
           </div>
         </FadeIn>
       </section>
