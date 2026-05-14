@@ -25,8 +25,8 @@ const productsData: Product[] = [
     name: "Aquamarine Silk",
     price: 120,
     description: "Handwoven Blue Aquamarine",
-    imageStill: "/images/products/stills/aquamarine-nobg.png",
-    imageWorn: "/images/products/worn/aquamarine.png",
+    imageStill: `${SITE_CONFIG.basePath}/images/products/stills/aquamarine-nobg.png`,
+    imageWorn: `${SITE_CONFIG.basePath}/images/products/worn/aquamarine.png`,
     stock: 8,
     reviews: Array.from({ length: 50 }).map((_, i) => ({
       id: `r-aqua-${i}`,
@@ -47,8 +47,8 @@ const productsData: Product[] = [
     name: "Obsidian Heart",
     price: 150,
     description: "Handcrafted Volcanic Glass",
-    imageStill: "/images/products/stills/obsidian.png",
-    imageWorn: "/images/products/worn/obsidian.png",
+    imageStill: `${SITE_CONFIG.basePath}/images/products/stills/obsidian.png`,
+    imageWorn: `${SITE_CONFIG.basePath}/images/products/worn/obsidian.png`,
     stock: 5,
     reviews: [
       { id: "r3", author: "Elena R.", rating: 4, date: "3 days ago", content: "Beautiful weight and finish. A true statement piece." }
@@ -59,8 +59,8 @@ const productsData: Product[] = [
     name: "Crystal White",
     price: 180,
     description: "Handwoven Clear Quartz",
-    imageStill: "/images/products/stills/crystalwhite.png",
-    imageWorn: "/images/products/worn/crystalwhite.png",
+    imageStill: `${SITE_CONFIG.basePath}/images/products/stills/crystalwhite.png`,
+    imageWorn: `${SITE_CONFIG.basePath}/images/products/worn/crystalwhite.png`,
     stock: 12,
     reviews: [
       { id: "r4", author: "Isabella G.", rating: 5, date: "5 days ago", content: "Pure elegance. Goes with everything." }
@@ -71,8 +71,8 @@ const productsData: Product[] = [
     name: "Amethyst Aura",
     price: 140,
     description: "Handwoven Royal Purple Amethyst",
-    imageStill: "/images/products/stills/amethyst.png",
-    imageWorn: "/images/products/worn/amethyst.png",
+    imageStill: `${SITE_CONFIG.basePath}/images/products/stills/amethyst.png`,
+    imageWorn: `${SITE_CONFIG.basePath}/images/products/worn/amethyst.png`,
     stock: 3,
     reviews: [
       { id: "r5", author: "Clara S.", rating: 5, date: "1 day ago", content: "The purple is so deep and royal. Love it!" }
