@@ -15,7 +15,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">Our Commitment</h2>
             <p>
-              Your privacy is fundamental to the trust we build at Mutya. We collect only the information necessary to process your orders and provide a seamless artisanal shopping experience.
+              Your privacy is fundamental to the trust we build at Joulery. We collect only the information necessary to process your orders and provide a seamless artisanal shopping experience.
             </p>
           </section>
 
@@ -29,7 +29,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">Your Circle Membership</h2>
             <p>
-              By subscribing to our newsletter, you agree to receive stories from our artisans and release updates. You can leave the circle at any time using the link in the footer of our emails.
+              By subscribing to our newsletter, you agree to receive stories from the artisan and release updates. You can leave the circle at any time using the link in the footer of our emails.
             </p>
           </section>
           

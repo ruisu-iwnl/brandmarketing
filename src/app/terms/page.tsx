@@ -15,7 +15,7 @@ export default function TermsPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">1. Artisanal Nature</h2>
             <p>
-              Each piece at Joulery is handcrafted by local artisans in the Philippines. Due to the natural materials and handmade process, slight variations in color, shape, and size are to be expected and celebrated as part of the item&apos;s unique character.
+              Each piece at Joulery is handcrafted by a single artisan in the Philippines. Due to the natural materials and handmade process, slight variations in color, shape, and size are to be expected and celebrated as part of the item&apos;s unique character.
             </p>
           </section>
 

@@ -35,10 +35,8 @@ export default function ProvenanceMap() {
   return (
     <section className="py-0 px-8 bg-pink-calm overflow-hidden">
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16">
-        {/* Left Side: Map Representation */}
         <div className="relative w-full md:w-1/2 flex justify-center items-center py-12">
           <div className="relative w-full max-w-[300px]">
-            {/* Real Philippines Map */}
             <Image
               src="/map.svg"
               alt="Map of the Philippines"
@@ -47,7 +45,6 @@ export default function ProvenanceMap() {
               className="w-full h-auto drop-shadow-md"
             />
 
-            {/* Interactive Pins */}
             {regions.map((region) => (
               <div
                 key={region.id}
@@ -63,7 +60,6 @@ export default function ProvenanceMap() {
                   <MapPin size={16} />
                 </motion.div>
 
-                {/* Tooltip (Desktop) */}
                 <div className="absolute top-0 left-full ml-4 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity bg-white-calm px-3 py-1 text-xs uppercase tracking-widest shadow-sm pointer-events-none z-10">
                   {region.name}
                 </div>
@@ -72,7 +68,6 @@ export default function ProvenanceMap() {
           </div>
         </div>
 
-        {/* Right Side: Details */}
         <div className="w-full md:w-1/2 flex flex-col justify-center min-h-[400px]">
           <h2 className="text-xs uppercase tracking-[0.2em] mb-6 text-pink-accent">Provenance</h2>
           <h3 className="text-4xl font-light mb-8 text-foreground">Sourced with Purpose</h3>

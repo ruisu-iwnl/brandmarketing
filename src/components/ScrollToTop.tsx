@@ -7,7 +7,6 @@ import { ArrowUp } from "lucide-react";
 export default function ScrollToTop() {
   const [isVisible, setIsVisible] = useState(false);
 
-  // Check scroll position
   useEffect(() => {
     const toggleVisibility = () => {
       if (window.scrollY > 300) {

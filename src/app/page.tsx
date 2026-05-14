@@ -28,17 +28,12 @@ export default function Home() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({ target: wrapperRef, offset: ["start start", "end end"] });
 
-  // Add realistic spring delay to the scroll progress so the image lags smoothly
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, mass: 0.5 });
 
-  // Transforms mapped to the sticky phase
   const imgScale = useTransform(smoothProgress, [0, 1], [0.75, 0.30]);
   const imgX = useTransform(smoothProgress, [0, 0.4, 0.8, 1], ["0%", "-5%", "3%", "0%"]);
-  // Curve it by dropping faster near the end
   const imgY = useTransform(smoothProgress, [0, 0.4, 0.8, 1], ["0%", "2vh", "15vh", "30vh"]);
   const imgRotate = useTransform(smoothProgress, [0, 1], ["0deg", "-12deg"]);
-
-  // Dynamic background color transition removed for solid transparency
 
   useEffect(() => {
     const handleMouseMove = (e: MouseEvent) => {
@@ -55,10 +50,8 @@ export default function Home() {
   }, [mouseX, mouseY]);
 
   useEffect(() => {
-    // Handle cross-page scrolling without hashes
     const targetId = sessionStorage.getItem("scrollTarget");
     if (targetId) {
-      // Small delay to ensure the DOM is ready and animations have started
       setTimeout(() => {
         const element = document.getElementById(targetId);
         if (element) {
@@ -68,7 +61,6 @@ export default function Home() {
       }, 100);
     }
 
-    // Also clear any legacy hashes
     if (window.location.hash) {
       window.history.replaceState(null, "", window.location.pathname);
     }
@@ -78,10 +70,8 @@ export default function Home() {
     <div className="min-h-screen flex flex-col selection:bg-pink-accent selection:text-foreground">
       <Navbar />
 
-      {/* Multi-Section Wrapper for Sticky Parallax */}
       <motion.div ref={wrapperRef} className="relative w-full z-20">
 
-        {/* Sticky Background Image Container */}
         <div className="sticky top-0 h-screen w-full pointer-events-none z-10 hidden md:block overflow-hidden">
           <motion.div
             style={{
@@ -92,7 +82,6 @@ export default function Home() {
             }}
             className="absolute inset-0 flex justify-center items-center"
           >
-            {/* Inner Layer for Mouse Reactivity and Breathing */}
             <motion.div
               style={{ x: moveX, y: moveY }}
               initial={{ opacity: 0 }}
@@ -113,7 +102,6 @@ export default function Home() {
           </motion.div>
         </div>
 
-        {/* Mobile-only static hero background */}
         <div className="absolute top-0 left-0 w-full h-screen z-0 md:hidden overflow-hidden pointer-events-none">
           <Image
             src="/images/hero.png"
@@ -123,10 +111,8 @@ export default function Home() {
           />
         </div>
 
-        {/* Scrollable Content Overlay */}
         <div className="relative md:-mt-[100vh]">
 
-          {/* Hero Section */}
           <section className="h-screen flex flex-col justify-center items-center text-center px-4 pt-20 relative z-20">
             <FadeIn delay={0.2} className="flex flex-col items-center">
               <h1 className="text-6xl md:text-8xl font-light tracking-tight mb-6 text-foreground">
@@ -146,7 +132,6 @@ export default function Home() {
             </FadeIn>
           </section>
 
-          {/* Brand Story */}
           <section id="story" className="scroll-mt-[72px] py-0 px-4 flex items-center justify-center pointer-events-auto relative">
             <div className="absolute inset-0 bg-white-calm z-0 pointer-events-none"></div>
             <div className="max-w-7xl w-full flex flex-col items-center justify-center relative z-20">
@@ -166,12 +151,10 @@ export default function Home() {
         </div>
       </motion.div>
 
-      {/* PROVENANCE MAP SECTION */}
       <FadeIn delay={0.1}>
         <ProvenanceMap />
       </FadeIn>
 
-      {/* Product Gallery (Placeholder) */}
       <section id="shop" className="scroll-mt-[72px] py-24 px-8 bg-background">
         <FadeIn className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
@@ -182,12 +165,9 @@ export default function Home() {
           </div>
 
           <div className="grid grid-cols-1 md:grid-cols-3 gap-x-8 gap-y-16">
-            {/* Product 1 */}
             <FadeIn delay={0.1} className="group cursor-pointer">
               <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                {/* Primary Image with Blurred Lifestyle Background */}
                 <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  {/* Blurred Background Layer */}
                   <Image 
                     src="/images/products/worn/aquamarine.png" 
                     alt="" 
@@ -203,7 +183,6 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                {/* Secondary Hover Reveal */}
                 <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
                   <Image
                     src="/images/products/worn/aquamarine.png"
@@ -220,12 +199,9 @@ export default function Home() {
               <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handwoven Blue Aquamarine</p>
             </FadeIn>
 
-            {/* Product 2 */}
             <FadeIn delay={0.2} className="group cursor-pointer">
               <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                {/* Primary Image with Blurred Lifestyle Background */}
                 <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  {/* Blurred Background Layer */}
                   <Image 
                     src="/images/products/worn/obsidian.png" 
                     alt="" 
@@ -241,7 +217,6 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                {/* Secondary Hover Reveal */}
                 <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
                   <Image 
                     src="/images/products/worn/obsidian.png" 
@@ -258,12 +233,9 @@ export default function Home() {
               <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handcrafted Volcanic Glass</p>
             </FadeIn>
 
-            {/* Product 3 */}
             <FadeIn delay={0.3} className="group cursor-pointer">
               <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                {/* Primary Image with Blurred Lifestyle Background */}
                 <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  {/* Blurred Background Layer */}
                   <Image 
                     src="/images/products/worn/crystalwhite.png" 
                     alt="" 
@@ -279,7 +251,6 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                {/* Secondary Hover Reveal */}
                 <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
                   <Image 
                     src="/images/products/worn/crystalwhite.png" 
@@ -296,12 +267,9 @@ export default function Home() {
               <p className="text-xs text-foreground/70 mt-2 font-light uppercase tracking-widest">Handwoven Clear Quartz</p>
             </FadeIn>
 
-            {/* Product 4 */}
             <FadeIn delay={0.4} className="group cursor-pointer">
               <div className="aspect-[4/5] mb-6 overflow-hidden relative">
-                {/* Primary Image with Blurred Lifestyle Background */}
                 <div className="absolute inset-0 z-10 transition-opacity duration-700 group-hover:opacity-0 bg-white-calm/30 overflow-hidden">
-                  {/* Blurred Background Layer */}
                   <Image 
                     src="/images/products/worn/amethyst.png" 
                     alt="" 
@@ -317,7 +285,6 @@ export default function Home() {
                     />
                   </div>
                 </div>
-                {/* Secondary Hover Reveal */}
                 <div className="absolute inset-0 scale-105 group-hover:scale-100 transition-transform duration-700 bg-pink-calm">
                   <Image 
                     src="/images/products/worn/amethyst.png" 
@@ -337,7 +304,6 @@ export default function Home() {
         </FadeIn>
       </section>
 
-      {/* Contact Section */}
       <section id="contact" className="scroll-mt-[72px] py-32 px-4 bg-white-calm border-t border-pink-accent/30">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-16">
           <FadeIn className="flex-1">
@@ -381,7 +347,7 @@ export default function Home() {
               <a href="#" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="WhatsApp">
                 <MessageCircle size={22} strokeWidth={1.5} />
               </a>
-              <a href="mailto:hello@mutya.com" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Email">
+              <a href="mailto:hello@joulery.com" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Email">
                 <Mail size={22} strokeWidth={1.5} />
               </a>
             </div>
@@ -405,7 +371,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
       <ScrollToTop />
     </div>

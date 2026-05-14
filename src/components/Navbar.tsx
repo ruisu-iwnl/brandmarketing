@@ -42,17 +42,14 @@ export default function Navbar() {
           JOULERY
         </Link>
         
-        {/* Desktop Menu */}
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-wide">
           <Link href="/" onClick={(e) => handleScroll(e, "shop")} className="hover:text-pink-accent transition-colors">Shop</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "story")} className="hover:text-pink-accent transition-colors">Story</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="hover:text-pink-accent transition-colors">Contact</Link>
         </div>
         
-        {/* Desktop Placeholder for balance */}
         <div className="hidden md:block w-12"></div>
 
-        {/* Mobile Hamburger Button */}
         <div className="md:hidden flex items-center">
           <button 
             onClick={toggleMenu} 
@@ -64,7 +61,6 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Mobile Menu Overlay */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
