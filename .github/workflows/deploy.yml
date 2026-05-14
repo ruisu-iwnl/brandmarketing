@@ -46,11 +46,14 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: ${{ steps.detect-package-manager.outputs.runner }} next build
+        run: npx next build
         env:
           GITHUB_ACTIONS: true
-      - name: Debug Output
-        run: ls -R
+      - name: Check Build Output
+        run: |
+          ls -la
+          [ -d out ] && echo "Found out directory" || echo "out directory MISSING"
+          [ -d .next ] && echo "Found .next directory" || echo ".next directory MISSING"
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
