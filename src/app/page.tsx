@@ -151,9 +151,18 @@ export default function Home() {
 
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 80, damping: 25, mass: 0.5 });
 
-  const imgScale = useTransform(smoothProgress, [0, 1], [0.75, 0.30]);
+  const [isMobile, setIsMobile] = useState(false);
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const imgScale = useTransform(smoothProgress, [0, 1], isMobile ? [0.9, 0.5] : [0.75, 0.30]);
   const imgX = useTransform(smoothProgress, [0, 0.4, 0.8, 1], ["0%", "-5%", "3%", "0%"]);
-  const imgY = useTransform(smoothProgress, [0, 0.4, 0.8, 1], ["0%", "2vh", "15vh", "30vh"]);
+  const imgY = useTransform(smoothProgress, [0, 0.4, 0.8, 1], isMobile ? ["0%", "5vh", "12vh", "20vh"] : ["0%", "2vh", "15vh", "30vh"]);
   const imgRotate = useTransform(smoothProgress, [0, 1], ["0deg", "-12deg"]);
 
   useEffect(() => {
@@ -198,7 +207,7 @@ export default function Home() {
 
       <motion.div ref={wrapperRef} className="relative w-full z-20">
 
-        <div className="sticky top-0 h-screen w-full pointer-events-none z-10 hidden md:block overflow-hidden">
+        <div className="sticky top-0 h-screen w-full pointer-events-none z-10 overflow-hidden">
           <motion.div
             style={{
               y: imgY,
@@ -215,7 +224,7 @@ export default function Home() {
               transition={{ scale: { duration: 20, repeat: Infinity, ease: "easeInOut" }, opacity: { duration: 1.5 } }}
               className="w-full h-full flex justify-center items-center"
             >
-              <div className="relative w-[120%] h-[120%] md:w-full md:h-full max-w-[1400px]">
+              <div className="relative w-[110%] h-[110%] md:w-full md:h-full max-w-[1400px]">
                 <Image
                   src="/images/hero.png"
                   alt="Joulery Creative Handcrafted Items"
@@ -228,23 +237,14 @@ export default function Home() {
           </motion.div>
         </div>
 
-        <div className="absolute top-0 left-0 w-full h-screen z-0 md:hidden overflow-hidden pointer-events-none">
-          <Image
-            src="/images/hero.png"
-            alt="Joulery Creative Handcrafted Items"
-            fill
-            className="object-contain scale-90"
-          />
-        </div>
-
-        <div className="relative md:-mt-[100vh]">
+        <div className="relative -mt-[100vh]">
 
           <section className="h-screen flex flex-col justify-center items-center text-center px-4 pt-20 relative z-20">
             <FadeIn delay={0.2} className="flex flex-col items-center">
-              <h1 className="text-6xl md:text-8xl font-light tracking-tight mb-6 text-foreground">
+              <h1 className="text-5xl md:text-8xl font-light tracking-tight mb-6 text-foreground">
                 <span className="bg-white/40 px-2 rounded box-decoration-clone">Joulery.</span>
               </h1>
-              <p className="text-lg md:text-xl font-light max-w-xl mb-10 text-foreground leading-relaxed">
+              <p className="text-base md:text-xl font-light max-w-xl mb-10 text-foreground leading-relaxed">
                 <span className="bg-white/40 px-2 rounded box-decoration-clone">
                   Handcrafted jewelry for those who appreciate the finer details. Simple, elegant, and designed to stay with you.
                 </span>

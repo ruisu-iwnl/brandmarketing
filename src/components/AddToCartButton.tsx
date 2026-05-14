@@ -19,15 +19,16 @@ export default function AddToCartButton({ onClick, className = "" }: AddToCartBu
     setTimeout(() => setIsAdded(false), 2000);
   };
 
+  const baseStyles = "relative h-10 px-4 rounded-full overflow-hidden transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-default";
+  const stateStyles = isAdded 
+    ? "bg-pink-accent text-foreground w-28" 
+    : "bg-foreground text-white-calm hover:bg-foreground/90 w-10 md:w-auto";
+
   return (
     <button
       onClick={handleClick}
       disabled={isAdded}
-      className={`relative h-10 px-4 rounded-full overflow-hidden transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-default ${
-        isAdded 
-        ? "bg-pink-accent text-foreground w-28" 
-        : "bg-foreground text-white-calm hover:bg-foreground/90 w-10 md:w-auto"
-      } ${className}`}
+      className={`${baseStyles} ${stateStyles} ${className}`.trim()}
     >
       <AnimatePresence mode="wait">
         {isAdded ? (
