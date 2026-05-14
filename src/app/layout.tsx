@@ -42,8 +42,8 @@ export const metadata: Metadata = {
     images: [SITE_CONFIG.ogImage],
   },
   icons: {
-    icon: "/images/aquamarine-nobg.ico",
-    apple: "/images/aquamarine-nobg.ico",
+    icon: `${SITE_CONFIG.basePath}/images/aquamarine-nobg.ico`,
+    apple: `${SITE_CONFIG.basePath}/images/aquamarine-nobg.ico`,
   },
 };
 

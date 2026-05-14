@@ -226,7 +226,7 @@ export default function Home() {
             >
               <div className="relative w-[110%] h-[110%] md:w-full md:h-full max-w-[1400px]">
                 <Image
-                  src="/images/hero.png"
+                  src={`${SITE_CONFIG.basePath}/images/hero.png`}
                   alt="Joulery Creative Handcrafted Items"
                   fill
                   priority

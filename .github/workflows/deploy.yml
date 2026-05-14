@@ -51,6 +51,7 @@ jobs:
           npx next build
         env:
           GITHUB_ACTIONS: true
+          NEXT_PUBLIC_BASE_PATH: /brandmarketing
       - name: Check Build Output
         run: |
           ls -la

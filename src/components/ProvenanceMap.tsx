@@ -4,6 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import { motion, AnimatePresence } from "framer-motion";
 import { MapPin } from "lucide-react";
+import { SITE_CONFIG } from "@/lib/constants";
 
 const regions = [
   {
@@ -38,7 +39,7 @@ export default function ProvenanceMap() {
         <div className="relative w-full md:w-1/2 flex justify-center items-center py-12">
           <div className="relative w-full max-w-[300px]">
             <Image
-              src="/map.svg"
+              src={`${SITE_CONFIG.basePath}/map.svg`}
               alt="Map of the Philippines"
               width={400}
               height={500}
