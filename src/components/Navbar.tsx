@@ -49,7 +49,12 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
 
   return (
     <>
-      <nav className="w-full py-6 px-8 flex justify-between items-center fixed top-0 bg-white-calm/80 backdrop-blur-md z-[60]">
+      <motion.nav 
+        initial={{ y: -50, opacity: 0 }}
+        animate={{ y: 0, opacity: 1 }}
+        transition={{ duration: 0.6, ease: "easeOut", delay: 0.5 }}
+        className="w-full py-6 px-8 flex justify-between items-center fixed top-0 bg-transparent backdrop-blur-[2px] z-[60]"
+      >
         <Link href="/" onClick={handleTitleClick} className="text-xl font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity cursor-pointer">
           JOULERY
         </Link>
@@ -170,7 +175,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
             </button>
           </div>
         </div>
-      </nav>
+      </motion.nav>
 
       <AnimatePresence>
         {isOpen && (
