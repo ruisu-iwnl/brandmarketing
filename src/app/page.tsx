@@ -100,16 +100,18 @@ export default function Home() {
 
   const handleUpdateQuantity = (index: number, delta: number) => {
     setCartItems((prev) => {
-      const newItems = [...prev];
-      const newQuantity = newItems[index].quantity + delta;
+      if (!prev[index]) return prev;
+      
+      const newQuantity = prev[index].quantity + delta;
       
       if (newQuantity <= 0) {
         return prev.filter((_, i) => i !== index);
       }
       
-      if (newQuantity > 10) return prev; // Cap at 10 per row
+      if (newQuantity > 10) return prev;
 
-      newItems[index].quantity = newQuantity;
+      const newItems = [...prev];
+      newItems[index] = { ...newItems[index], quantity: newQuantity };
       return newItems;
     });
   };
