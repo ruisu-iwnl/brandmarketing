@@ -12,22 +12,24 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+import { SITE_CONFIG } from "@/lib/constants";
+
 export const metadata: Metadata = {
-  title: "JOULERY | Creative Handcrafted Items",
-  description: "Exclusive collection of handwoven necklaces and bracelets. Crafted in the Philippines for the love of the game.",
-  keywords: ["handcrafted jewelry", "philippines jewelry", "handwoven necklace", "artisan bracelets", "joulery", "creative handcrafted items"],
-  authors: [{ name: "Joulery" }],
+  title: SITE_CONFIG.title,
+  description: SITE_CONFIG.description,
+  keywords: SITE_CONFIG.keywords,
+  authors: [{ name: SITE_CONFIG.name }],
   openGraph: {
-    title: "JOULERY | Creative Handcrafted Items",
-    description: "Exclusive collection of handwoven necklaces and bracelets from the Philippines.",
-    url: "https://joulery.com",
-    siteName: "JOULERY",
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
+    url: SITE_CONFIG.url,
+    siteName: SITE_CONFIG.name,
     images: [
       {
-        url: "/images/aquamarine.png",
+        url: SITE_CONFIG.ogImage,
         width: 1200,
         height: 630,
-        alt: "JOULERY Creative Handcrafted Items",
+        alt: `${SITE_CONFIG.name} Creative Handcrafted Items`,
       },
     ],
     locale: "en_PH",
@@ -35,9 +37,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "JOULERY | Creative Handcrafted Items",
-    description: "Exclusive collection of handwoven necklaces and bracelets from the Philippines.",
-    images: ["/images/aquamarine.png"],
+    title: SITE_CONFIG.title,
+    description: SITE_CONFIG.description,
+    images: [SITE_CONFIG.ogImage],
   },
   icons: {
     icon: "/images/aquamarine-nobg.ico",

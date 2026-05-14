@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
-import { motion, useMotionValue, useSpring, useTransform, useScroll } from "framer-motion";
+import { motion, useMotionValue, useSpring, useTransform, useScroll, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import ProvenanceMap from "@/components/ProvenanceMap";
 import Navbar from "@/components/Navbar";
@@ -14,6 +14,7 @@ const FacebookIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeW
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
 );
 
+import { SITE_CONFIG } from "@/lib/constants";
 import ProductCard, { Product, CartItem } from "@/components/ProductCard";
 import ProductModal from "@/components/ProductModal";
 import CartDrawer from "@/components/CartDrawer";
@@ -79,10 +80,21 @@ const productsData: Product[] = [
   },
 ];
 
+const InstagramIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeWidth?: number }) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"><rect width="20" height="20" x="2" y="2" rx="5" ry="5" /><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" /><line x1="17.5" x2="17.51" y1="6.5" y2="6.5" /></svg>
+);
+
 export default function Home() {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyEmail = () => {
+    navigator.clipboard.writeText(SITE_CONFIG.links.email);
+    setIsCopied(true);
+    setTimeout(() => setIsCopied(false), 2000);
+  };
 
   const handleAddToCart = (product: Product) => {
     setCartItems((prev) => {
@@ -329,15 +341,36 @@ export default function Home() {
           <FadeIn delay={0.2} className="w-full md:w-72 flex flex-col justify-center items-center md:items-start text-center md:text-left border-t md:border-t-0 md:border-l border-pink-accent/20 pt-12 md:pt-0 md:pl-12">
             <h3 className="text-xs uppercase tracking-[0.2em] mb-6 text-pink-accent font-medium">Connect With Us</h3>
             <div className="flex gap-8 mb-8">
-              <a href="#" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Facebook">
+              <a href={SITE_CONFIG.links.facebook} className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Facebook">
                 <FacebookIcon size={22} strokeWidth={1.5} />
               </a>
-              <a href="#" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="WhatsApp">
+              <a href={SITE_CONFIG.links.instagram} className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Instagram">
+                <InstagramIcon size={22} strokeWidth={1.5} />
+              </a>
+              <a href={SITE_CONFIG.links.whatsapp} target="_blank" rel="noopener noreferrer" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="WhatsApp">
                 <MessageCircle size={22} strokeWidth={1.5} />
               </a>
-              <a href="mailto:hello@joulery.com" className="text-foreground/60 hover:text-pink-accent transition-colors" aria-label="Email">
-                <Mail size={22} strokeWidth={1.5} />
-              </a>
+              <div className="relative">
+                <button 
+                  onClick={copyEmail}
+                  className="text-foreground/60 hover:text-pink-accent transition-colors cursor-pointer" 
+                  aria-label="Copy Email"
+                >
+                  <Mail size={22} strokeWidth={1.5} />
+                </button>
+                <AnimatePresence>
+                  {isCopied && (
+                    <motion.span
+                      initial={{ opacity: 0, y: 10, x: "-50%" }}
+                      animate={{ opacity: 1, y: 0, x: "-50%" }}
+                      exit={{ opacity: 0, y: 10, x: "-50%" }}
+                      className="absolute -top-10 left-1/2 bg-foreground text-white-calm text-[10px] px-3 py-1.5 rounded uppercase tracking-widest font-bold whitespace-nowrap shadow-xl z-50"
+                    >
+                      Copied!
+                    </motion.span>
+                  )}
+                </AnimatePresence>
+              </div>
             </div>
             <p className="text-sm text-foreground/50 font-light leading-relaxed">
               For custom commissions, artisan collaborations, or private collection previews.
