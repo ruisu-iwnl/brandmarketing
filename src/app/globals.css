@@ -38,3 +38,25 @@ body {
 html {
   scroll-behavior: smooth;
 }
+
+.modal-scroll::-webkit-scrollbar {
+  width: 4px;
+}
+
+.modal-scroll::-webkit-scrollbar-track {
+  background: var(--pink-calm);
+}
+
+.modal-scroll::-webkit-scrollbar-thumb {
+  background: var(--pink-accent);
+  border-radius: 999px;
+}
+
+.modal-scroll::-webkit-scrollbar-thumb:hover {
+  background: var(--foreground);
+}
+
+.modal-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pink-accent) var(--pink-calm);
+}

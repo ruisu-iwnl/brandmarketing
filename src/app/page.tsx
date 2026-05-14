@@ -14,7 +14,9 @@ const FacebookIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeW
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
 );
 
-import ProductCard, { Product } from "@/components/ProductCard";
+import ProductCard, { Product, CartItem } from "@/components/ProductCard";
+import ProductModal from "@/components/ProductModal";
+import CartDrawer from "@/components/CartDrawer";
 
 const productsData: Product[] = [
   {
@@ -24,6 +26,19 @@ const productsData: Product[] = [
     description: "Handwoven Blue Aquamarine",
     imageStill: "/images/products/stills/aquamarine-nobg.png",
     imageWorn: "/images/products/worn/aquamarine.png",
+    reviews: Array.from({ length: 50 }).map((_, i) => ({
+      id: `r-aqua-${i}`,
+      author: ["Maria C.", "Sophia L.", "Emma R.", "Olivia W.", "Isabella K."][i % 5],
+      rating: 5,
+      date: `${i + 1} days ago`,
+      content: [
+        "Absolutely stunning craftsmanship. I wear it everywhere.",
+        "The detail is incredible. You can really feel the artisan's touch.",
+        "A true masterpiece of Philippine artistry.",
+        "Elegant, simple, and exactly what I was looking for.",
+        "The quality of the stones is top-notch. Highly recommend!"
+      ][i % 5]
+    }))
   },
   {
     id: "obsidian-heart",
@@ -32,6 +47,9 @@ const productsData: Product[] = [
     description: "Handcrafted Volcanic Glass",
     imageStill: "/images/products/stills/obsidian.png",
     imageWorn: "/images/products/worn/obsidian.png",
+    reviews: [
+      { id: "r3", author: "Elena R.", rating: 4, date: "3 days ago", content: "Beautiful weight and finish. A true statement piece." }
+    ]
   },
   {
     id: "crystal-white",
@@ -40,6 +58,9 @@ const productsData: Product[] = [
     description: "Handwoven Clear Quartz",
     imageStill: "/images/products/stills/crystalwhite.png",
     imageWorn: "/images/products/worn/crystalwhite.png",
+    reviews: [
+      { id: "r4", author: "Isabella G.", rating: 5, date: "5 days ago", content: "Pure elegance. Goes with everything." }
+    ]
   },
   {
     id: "amethyst-aura",
@@ -48,10 +69,55 @@ const productsData: Product[] = [
     description: "Handwoven Royal Purple Amethyst",
     imageStill: "/images/products/stills/amethyst.png",
     imageWorn: "/images/products/worn/amethyst.png",
+    reviews: [
+      { id: "r5", author: "Clara S.", rating: 5, date: "1 day ago", content: "The purple is so deep and royal. Love it!" }
+    ]
   },
 ];
 
 export default function Home() {
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
+  const [cartItems, setCartItems] = useState<CartItem[]>([]);
+  const [isCartOpen, setIsCartOpen] = useState(false);
+
+  const handleAddToCart = (product: Product) => {
+    setCartItems((prev) => {
+      // Find a row for this product that has < 10 items
+      const existingItemIndex = prev.findIndex(
+        (item) => item.product.id === product.id && item.quantity < 10
+      );
+
+      if (existingItemIndex > -1) {
+        const newItems = [...prev];
+        const item = newItems[existingItemIndex];
+        newItems[existingItemIndex] = { ...item, quantity: item.quantity + 1 };
+        return newItems;
+      }
+
+      return [...prev, { rowId: Math.random().toString(36).substr(2, 9), product, quantity: 1 }];
+    });
+  };
+
+  const handleUpdateQuantity = (index: number, delta: number) => {
+    setCartItems((prev) => {
+      const newItems = [...prev];
+      const newQuantity = newItems[index].quantity + delta;
+      
+      if (newQuantity <= 0) {
+        return prev.filter((_, i) => i !== index);
+      }
+      
+      if (newQuantity > 10) return prev; // Cap at 10 per row
+
+      newItems[index].quantity = newQuantity;
+      return newItems;
+    });
+  };
+
+  const handleRemoveFromCart = (index: number) => {
+    setCartItems((prev) => prev.filter((_, i) => i !== index));
+  };
+
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
@@ -105,7 +171,12 @@ export default function Home() {
 
   return (
     <div className="min-h-screen flex flex-col selection:bg-pink-accent selection:text-foreground">
-      <Navbar />
+      <Navbar 
+        cartItems={cartItems} 
+        onOpenCart={() => setIsCartOpen(true)} 
+        onRemoveFromCart={handleRemoveFromCart}
+        onUpdateQuantity={handleUpdateQuantity}
+      />
 
       <motion.div ref={wrapperRef} className="relative w-full z-20">
 
@@ -207,6 +278,8 @@ export default function Home() {
                 key={product.id} 
                 product={product} 
                 delay={0.1 * (index + 1)} 
+                onClick={() => setSelectedProduct(product)}
+                onAddToCart={handleAddToCart}
               />
             ))}
           </div>
@@ -282,6 +355,21 @@ export default function Home() {
 
       <Footer />
       <ScrollToTop />
+      
+      <ProductModal 
+        isOpen={!!selectedProduct} 
+        onClose={() => setSelectedProduct(null)} 
+        product={selectedProduct} 
+        onAddToCart={handleAddToCart}
+      />
+
+      <CartDrawer 
+        isOpen={isCartOpen} 
+        onClose={() => setIsCartOpen(false)} 
+        items={cartItems} 
+        onRemove={handleRemoveFromCart}
+        onUpdateQuantity={handleUpdateQuantity}
+      />
     </div>
   );
 }

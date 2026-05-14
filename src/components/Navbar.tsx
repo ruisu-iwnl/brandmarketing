@@ -2,13 +2,25 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { Menu, X, ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Product, CartItem } from "./ProductCard";
+import Image from "next/image";
 
-export default function Navbar() {
+interface NavbarProps {
+  cartItems?: CartItem[];
+  onOpenCart?: () => void;
+  onRemoveFromCart?: (index: number) => void;
+  onUpdateQuantity?: (index: number, delta: number) => void;
+}
+
+export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, onUpdateQuantity }: NavbarProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const [isCartHovered, setIsCartHovered] = useState(false);
+  
+  const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
   const toggleMenu = () => setIsOpen(!isOpen);
   
@@ -48,16 +60,115 @@ export default function Navbar() {
           <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="hover:text-pink-accent transition-colors">Contact</Link>
         </div>
         
-        <div className="hidden md:block w-12"></div>
-
-        <div className="md:hidden flex items-center">
-          <button 
-            onClick={toggleMenu} 
-            className="text-foreground hover:text-pink-accent transition-colors"
-            aria-label="Toggle Menu"
+        <div className="flex items-center gap-6">
+          <div 
+            className="relative"
+            onMouseEnter={() => setIsCartHovered(true)}
+            onMouseLeave={() => setIsCartHovered(false)}
           >
-            {isOpen ? <X size={24} className="stroke-[1.5]" /> : <Menu size={24} className="stroke-[1.5]" />}
-          </button>
+            <button 
+              onClick={onOpenCart}
+              className="relative text-foreground hover:text-pink-accent transition-colors p-2 cursor-pointer" 
+              aria-label="Cart"
+            >
+              <ShoppingCart size={22} className="stroke-[1.5]" />
+              <AnimatePresence mode="popLayout">
+                {cartCount > 0 && (
+                  <motion.span 
+                    key={cartCount}
+                    initial={{ scale: 0.5, opacity: 0 }}
+                    animate={{ scale: 1, opacity: 1 }}
+                    exit={{ scale: 0.5, opacity: 0 }}
+                    className="absolute top-0 right-0 bg-pink-accent text-foreground text-[10px] font-bold w-4 h-4 flex items-center justify-center rounded-full"
+                  >
+                    {cartCount}
+                  </motion.span>
+                )}
+              </AnimatePresence>
+            </button>
+
+            {/* Hover Preview — Desktop Only */}
+            <AnimatePresence>
+              {isCartHovered && cartCount > 0 && (
+                <motion.div
+                  initial={{ opacity: 0, y: 10, scale: 0.95 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: 10, scale: 0.95 }}
+                  className="hidden md:block absolute right-0 top-full mt-2 w-80 bg-white-calm shadow-xl border border-pink-calm p-6 z-[70] rounded-xl"
+                >
+                  <div className="space-y-4 max-h-[300px] overflow-y-auto modal-scroll pr-2">
+                    <AnimatePresence initial={false}>
+                      {cartItems.map((item, index) => (
+                        <motion.div 
+                          key={item.rowId}
+                          layout
+                          initial={{ opacity: 0, x: 20 }}
+                          animate={{ opacity: 1, x: 0 }}
+                          exit={{ opacity: 0, x: -20 }}
+                          transition={{ duration: 0.2 }}
+                          className="flex gap-4 items-center group"
+                        >
+                          <div className="relative w-12 h-12 bg-pink-calm/20 rounded overflow-hidden shrink-0">
+                            <Image src={item.product.imageStill} alt={item.product.name} fill className="object-contain p-1" />
+                          </div>
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs font-medium text-foreground uppercase tracking-wider truncate">{item.product.name}</p>
+                            <div className="flex items-center gap-3 mt-1">
+                              <div className="flex items-center border border-pink-calm rounded-md overflow-hidden bg-white-calm">
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); onUpdateQuantity?.(index, -1); }}
+                                  className="p-1 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer"
+                                >
+                                  <Minus size={10} />
+                                </button>
+                                <span className="w-6 text-center text-[10px] font-medium text-foreground">{item.quantity}</span>
+                                <button 
+                                  onClick={(e) => { e.stopPropagation(); onUpdateQuantity?.(index, 1); }}
+                                  disabled={item.quantity >= 10}
+                                  className="p-1 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
+                                >
+                                  <Plus size={10} />
+                                </button>
+                              </div>
+                              <p className="text-[10px] text-foreground/50">₱{Number(item.product.price) * item.quantity}</p>
+                            </div>
+                          </div>
+                          <button 
+                            onClick={() => onRemoveFromCart?.(index)}
+                            className="opacity-0 group-hover:opacity-100 p-1 text-foreground/30 hover:text-red-400 transition-all cursor-pointer"
+                          >
+                            <Trash2 size={12} />
+                          </button>
+                        </motion.div>
+                      ))}
+                    </AnimatePresence>
+                  </div>
+                  <div className="mt-6 pt-4 border-t border-pink-calm flex flex-col gap-3">
+                    <div className="flex justify-between text-xs uppercase tracking-widest text-foreground/60">
+                      <span>Total</span>
+                      <span>₱{cartItems.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0)}</span>
+                    </div>
+                    <button 
+                      onClick={onOpenCart}
+                      className="w-full bg-foreground text-white-calm py-3 text-[10px] uppercase tracking-widest hover:bg-foreground/90 transition-colors cursor-pointer"
+                    >
+                      View Cart
+                    </button>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
+
+          <div className="md:hidden flex items-center">
+            <button 
+              onClick={toggleMenu} 
+              className="text-foreground hover:text-pink-accent transition-colors"
+              aria-label="Toggle Menu"
+            >
+              {isOpen ? <X size={24} className="stroke-[1.5]" /> : <Menu size={24} className="stroke-[1.5]" />}
+            </button>
+          </div>
         </div>
       </nav>
 
