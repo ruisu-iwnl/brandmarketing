@@ -297,7 +297,7 @@ export default function Home() {
               style={{ backgroundColor: heroProducts[currentHero].color }}
             >
               {/* Falling Decorative Elements Layer - Inside sliding div but before text */}
-              <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden">
+              <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden hidden md:block">
                 <AnimatePresence>
                   {heroProducts[currentHero].decor.map((item, idx) => (
                     <motion.div
@@ -319,13 +319,13 @@ export default function Home() {
                       }}
                     >
                       {item.type === "droplet" && (
-                        <div className="w-full h-full rounded-full bg-white/40 md:bg-white/60 md:backdrop-blur-md border border-white/40 shadow-lg" />
+                        <div className="w-full h-full rounded-full bg-white/40 md:bg-white/60 border border-white/40 shadow-lg" />
                       )}
                       {item.type === "shard" && (
-                        <div className="w-full h-full rotate-45 bg-white/30 md:bg-white/50 md:backdrop-blur-sm border border-white/50 shadow-2xl" />
+                        <div className="w-full h-full rotate-45 bg-white/30 md:bg-white/50 border border-white/50 shadow-2xl" />
                       )}
                       {item.type === "fragment" && (
-                        <div className="w-full h-full bg-black/40 md:bg-black/60 md:backdrop-blur-[4px] border border-white/20 shadow-xl" style={{ clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" }} />
+                        <div className="w-full h-full bg-black/40 md:bg-black/60 border border-white/20 shadow-xl" style={{ clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" }} />
                       )}
                       {item.type === "sparkle" && (
                         <div className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] flex items-center justify-center" style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }} />
@@ -338,16 +338,73 @@ export default function Home() {
               {/* Background Text - Slides with background */}
               <div className="absolute inset-0 z-10 flex items-center justify-center pointer-events-none select-none -translate-y-[8vh]">
                 <motion.h1
-                  initial={{ opacity: 0, scale: 0.8, letterSpacing: "0.2em" }}
-                  animate={{ opacity: 1, scale: 1, letterSpacing: "-0.05em" }}
-                  transition={{ delay: 0.2, duration: 0.8, ease: "easeOut" }}
-                  className="text-[12vw] font-black text-white leading-none tracking-tighter uppercase whitespace-nowrap will-change-transform"
+                  initial={{ opacity: 0, y: 30 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.1, duration: 0.6, ease: "easeOut" }}
+                  className="text-[12vw] font-black text-white leading-none tracking-tighter uppercase whitespace-nowrap will-change-transform transform-gpu"
+                  style={{ transform: "translateZ(0)" }}
                 >
                   {heroProducts[currentHero].name}
                 </motion.h1>
               </div>
-              {/* Product Info Overlay - Slides with background */}
-              <div className="absolute inset-0 z-30 pointer-events-none">
+            </motion.div>
+          </AnimatePresence>
+
+          {/* Fixed Product Image Container - Vertical 'Pop' transition */}
+          <div className="absolute inset-0 flex justify-center items-center z-20 pointer-events-none -translate-y-[8vh]">
+            <AnimatePresence>
+              <motion.div
+                key={currentHero}
+                initial={{ opacity: 0, scale: 0.2, y: 500, rotate: -5 }}
+                animate={{ opacity: 1, scale: heroProducts[currentHero].scale || 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.2, y: 200 }}
+                transition={{
+                  duration: 0.8,
+                  delay: 0.1,
+                  ease: [0.16, 1, 0.3, 1]
+                }}
+                className="absolute w-[90vw] h-[50vh] md:w-[70vw] md:h-[70vh] max-w-[1000px] max-h-[700px] flex justify-center items-center will-change-transform transform-gpu"
+                style={{ transform: "translateZ(0)" }}
+              >
+                <div className="relative w-full h-full flex items-center justify-center">
+                  {/* Soft Radial Glow - Lightweight replacement for drop-shadow */}
+                  <div 
+                    className="absolute inset-0 opacity-40 blur-3xl rounded-full"
+                    style={{ 
+                      background: `radial-gradient(circle, ${heroProducts[currentHero].shadowColor || "rgba(0,0,0,0.3)"} 0%, transparent 70%)`,
+                      transform: "scale(0.8) translateZ(0)"
+                    }}
+                  />
+                  <Image
+                    src={heroProducts[currentHero].image}
+                    alt={heroProducts[currentHero].name}
+                    fill
+                    priority
+                    className="object-contain object-center"
+                    style={{ transform: "translateZ(0)" }}
+                  />
+                </div>
+              </motion.div>
+            </AnimatePresence>
+          </div>
+
+          {/* Product Info Overlay - Decoupled and elevated to z-50 */}
+          <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden">
+            <AnimatePresence initial={false} custom={direction}>
+              <motion.div
+                key={currentHero}
+                custom={direction}
+                variants={{
+                  enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+                  center: { x: 0, opacity: 1 },
+                  exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 })
+                }}
+                initial="enter"
+                animate="center"
+                exit="exit"
+                transition={{ duration: 0.8, ease: [0.4, 0, 0.2, 1] }}
+                className="absolute inset-0"
+              >
                 <div className="max-w-7xl mx-auto h-full w-full px-8 md:px-16 flex items-end justify-start pb-24 md:pb-32">
                   <div className="max-w-md pointer-events-auto flex flex-col gap-4">
                     <div className="flex gap-1">
@@ -357,16 +414,26 @@ export default function Home() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <h2 className="text-4xl md:text-5xl font-black text-white leading-tight tracking-tighter uppercase drop-shadow-md">
+                      <motion.h2 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.3 }}
+                        className="text-4xl md:text-5xl font-black text-white leading-tight tracking-tighter uppercase drop-shadow-md"
+                      >
                         {heroProducts[currentHero].fullName}
-                      </h2>
-                      <p className="text-white/80 text-sm md:text-base font-medium max-w-sm leading-relaxed drop-shadow-sm">
+                      </motion.h2>
+                      <motion.p 
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.4 }}
+                        className="text-white/80 text-sm md:text-base font-medium max-w-sm leading-relaxed drop-shadow-sm"
+                      >
                         {heroProducts[currentHero].description}
-                      </p>
+                      </motion.p>
                     </div>
 
                     <div className="flex items-center gap-6 pt-2">
-                      <button
+                      <button 
                         onClick={() => {
                           const product = productsData.find(p => p.id === heroProducts[currentHero].productId);
                           if (product) {
@@ -378,7 +445,7 @@ export default function Home() {
                       >
                         Add to Cart
                       </button>
-                      <button
+                      <button 
                         onClick={() => {
                           const shopSection = document.getElementById("shop");
                           if (shopSection) shopSection.scrollIntoView({ behavior: "smooth" });
@@ -390,35 +457,6 @@ export default function Home() {
                       </button>
                     </div>
                   </div>
-                </div>
-              </div>
-            </motion.div>
-          </AnimatePresence>
-
-          {/* Fixed Product Image Container - Vertical 'Pop' transition */}
-          <div className="absolute inset-0 flex justify-center items-center z-20 pointer-events-none -translate-y-[8vh]">
-            <AnimatePresence>
-              <motion.div
-                key={currentHero}
-                initial={{ opacity: 0, scale: 0.2, y: 500, rotate: -5 }}
-                animate={{ opacity: 1, scale: heroProducts[currentHero].scale || 1, y: 0, rotate: 0 }}
-                exit={{ opacity: 0, scale: 0.2, y: 500, rotate: 5 }}
-                transition={{
-                  duration: 1.2,
-                  delay: 0.2,
-                  ease: [0.16, 1, 0.3, 1]
-                }}
-                className="absolute w-[90vw] h-[50vh] md:w-[70vw] md:h-[70vh] max-w-[1000px] max-h-[700px] flex justify-center items-center will-change-transform"
-              >
-                <div className="relative w-full h-full">
-                  <Image
-                    src={heroProducts[currentHero].image}
-                    alt={heroProducts[currentHero].name}
-                    fill
-                    priority
-                    className="object-contain object-center"
-                    style={{ filter: `drop-shadow(0 40px 50px ${heroProducts[currentHero].shadowColor || "rgba(0,0,0,0.25)"})` }}
-                  />
                 </div>
               </motion.div>
             </AnimatePresence>
