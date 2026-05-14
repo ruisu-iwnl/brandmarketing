@@ -98,7 +98,7 @@ export default function Home() {
       productId: "aquamarine-silk",
       name: "Aquamarine",
       fullName: "Aquamarine Silk",
-      image: "/images/hero.png",
+      image: "/images/hero3.png",
       color: "#a5d8d9",
       description: "Handcrafted with premium blue aquamarine stones, reflecting the serene crystal waters of Cabanatuan.",
       scale: 0.5,
