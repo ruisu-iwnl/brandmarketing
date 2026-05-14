@@ -46,7 +46,9 @@ jobs:
       - name: Install dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
       - name: Build with Next.js
-        run: npx next build
+        run: |
+          rm -f next.config.js
+          npx next build
         env:
           GITHUB_ACTIONS: true
       - name: Check Build Output
