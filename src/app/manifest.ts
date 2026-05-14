@@ -14,7 +14,7 @@ export default function manifest(): MetadataRoute.Manifest {
     theme_color: '#ff8a8a',      // Matches our pink accent
     icons: [
       {
-        src: `${SITE_CONFIG.basePath}/favicon.ico`,
+        src: '/favicon.ico',
         sizes: 'any',
         type: 'image/x-icon',
       },

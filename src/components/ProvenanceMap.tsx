@@ -39,7 +39,7 @@ export default function ProvenanceMap() {
         <div className="relative w-full md:w-1/2 flex justify-center items-center py-12">
           <div className="relative w-full max-w-[300px]">
             <Image
-              src={`${SITE_CONFIG.basePath}/map.svg`}
+              src="/map.svg"
               alt="Map of the Philippines"
               width={400}
               height={500}

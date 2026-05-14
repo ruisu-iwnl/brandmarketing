@@ -3,7 +3,6 @@ export const SITE_CONFIG = {
   title: 'JOULERY | Creative Handcrafted Items',
   description: 'Exclusive collection of handwoven necklaces and bracelets from the Philippines. Crafted in the Philippines for the love of the game.',
   url: 'https://joulery.com',
-  basePath: process.env.NEXT_PUBLIC_BASE_PATH || '',
   ogImage: '/images/aquamarine.png',
   links: {
     facebook: '#',
