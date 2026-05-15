@@ -88,7 +88,7 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
               inset-x-0 bottom-0 rounded-t-3xl max-h-[92vh] flex flex-col
               md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
               md:rounded-none md:w-[min(1100px,95vw)] md:h-[min(700px,90vh)]
-              md:flex-row md:overflow-hidden overscroll-none
+              md:flex-row overflow-x-hidden overscroll-none touch-pan-y
             "
           >
             {/* Close button */}
