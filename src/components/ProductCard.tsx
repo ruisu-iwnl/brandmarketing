@@ -14,6 +14,8 @@ export interface Product {
   name: string;
   price: number | string;
   description: string;
+  category: 'necklace' | 'bracelet';
+  ordersCount: number;
   imageStill: string;
   imageWorn: string;
   stock: number;
