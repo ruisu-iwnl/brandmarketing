@@ -4,8 +4,8 @@ import configPromise from '@/payload.config';
 export async function getProducts() {
   try {
     const payload = await getPayload({ config: configPromise });
-    const data = await payload.find({
-      collection: 'products' as any,
+    const data = await (payload as any).find({
+      collection: 'products',
       limit: 100,
       depth: 2,
     });
@@ -34,8 +34,8 @@ export async function getProducts() {
 export async function getHeroSlides() {
   try {
     const payload = await getPayload({ config: configPromise });
-    const data = await payload.findGlobal({
-      slug: 'homepage' as any,
+    const data = await (payload as any).findGlobal({
+      slug: 'homepage',
       depth: 2,
     });
     
