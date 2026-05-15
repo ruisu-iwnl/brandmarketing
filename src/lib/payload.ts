@@ -5,7 +5,7 @@ export async function getProducts() {
   try {
     const payload = await getPayload({ config: configPromise });
     const data = await payload.find({
-      collection: 'products',
+      collection: 'products' as any,
       limit: 100,
       depth: 2,
     });
@@ -35,7 +35,7 @@ export async function getHeroSlides() {
   try {
     const payload = await getPayload({ config: configPromise });
     const data = await payload.findGlobal({
-      slug: 'homepage',
+      slug: 'homepage' as any,
       depth: 2,
     });
     
