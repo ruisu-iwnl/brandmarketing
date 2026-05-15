@@ -3,12 +3,12 @@
 import { useEffect, useState, useRef } from "react";
 import { motion, useSpring, AnimatePresence } from "framer-motion";
 import Image from "next/image";
-import ProvenanceMap from "@/components/ProvenanceMap";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import FadeIn from "@/components/FadeIn";
 import { MessageCircle, Mail, ChevronLeft, ChevronRight, Star } from "lucide-react";
+import Link from "next/link";
 
 const FacebookIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeWidth?: number }) => (
   <svg xmlns="http://www.w3.org/2000/svg" width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" /></svg>
@@ -34,11 +34,11 @@ const productsData: Product[] = [
       rating: 5,
       date: `${i + 1} days ago`,
       content: [
-        "Absolutely stunning craftsmanship. I wear it everywhere.",
-        "The detail is incredible. You can really feel the artisan's touch.",
-        "A true masterpiece of Philippine artistry.",
-        "Elegant, simple, and exactly what I was looking for.",
-        "The quality of the stones is top-notch. Highly recommend!"
+        "Great work. I wear it everywhere.",
+        "The detail is great. You can feel the worker's touch.",
+        "A beautiful piece of art.",
+        "Nice, simple, and exactly what I wanted.",
+        "The stones are the best. I like it a lot!"
       ][i % 5]
     }))
   },
@@ -100,7 +100,7 @@ export default function Home() {
       fullName: "Aquamarine Silk",
       image: "/images/hero3.png",
       color: "#a5d8d9",
-      description: "Handcrafted with premium blue aquamarine stones, reflecting the serene crystal waters of Cabanatuan.",
+      description: "Handmade with real blue stones. Looks like the clear blue water at home.",
       scale: 0.5,
       shadowColor: "rgba(15, 118, 110, 0.4)",
       decor: [
@@ -121,7 +121,7 @@ export default function Home() {
       fullName: "Amethyst Aura",
       image: "/images/ame.png",
       color: "#c4b5fd",
-      description: "Deep royal purple amethyst stones, meticulously woven to capture a sense of timeless Philippine royalty.",
+      description: "Deep purple stones. Carefully made to feel like old royalty.",
       scale: 0.5,
       shadowColor: "rgba(91, 33, 182, 0.4)",
       decor: [
@@ -142,7 +142,7 @@ export default function Home() {
       fullName: "Obsidian Heart",
       image: "/images/hero2.png",
       color: "#94a3b8",
-      description: "Carved from natural volcanic glass, this piece embodies the raw, powerful beauty of our island's terrain.",
+      description: "Made from natural black glass. Shows the strong beauty of our land.",
       scale: 0.5,
       shadowColor: "rgba(15, 23, 42, 0.5)",
       decor: [
@@ -163,7 +163,7 @@ export default function Home() {
       fullName: "Crystal White",
       image: "/images/hero4.png",
       color: "#cbd5e1",
-      description: "Pure clear quartz crystal, hand-selected for its clarity and woven into a masterpiece of light and form.",
+      description: "Pure clear crystal. Hand picked to look beautiful with light.",
       scale: 0.5,
       shadowColor: "rgba(71, 85, 105, 0.35)",
       decor: [
@@ -368,9 +368,9 @@ export default function Home() {
               >
                 <div className="relative w-full h-full flex items-center justify-center">
                   {/* Soft Radial Glow - Lightweight replacement for drop-shadow */}
-                  <div 
+                  <div
                     className="absolute inset-0 opacity-40 blur-3xl rounded-full"
-                    style={{ 
+                    style={{
                       background: `radial-gradient(circle, ${heroProducts[currentHero].shadowColor || "rgba(0,0,0,0.3)"} 0%, transparent 70%)`,
                       transform: "scale(0.8) translateZ(0)"
                     }}
@@ -414,7 +414,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex flex-col gap-2">
-                      <motion.h2 
+                      <motion.h2
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.3 }}
@@ -422,7 +422,7 @@ export default function Home() {
                       >
                         {heroProducts[currentHero].fullName}
                       </motion.h2>
-                      <motion.p 
+                      <motion.p
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.4 }}
@@ -433,7 +433,7 @@ export default function Home() {
                     </div>
 
                     <div className="flex items-center gap-6 pt-2">
-                      <button 
+                      <button
                         onClick={() => {
                           const product = productsData.find(p => p.id === heroProducts[currentHero].productId);
                           if (product) {
@@ -445,7 +445,7 @@ export default function Home() {
                       >
                         Add to Cart
                       </button>
-                      <button 
+                      <button
                         onClick={() => {
                           const shopSection = document.getElementById("shop");
                           if (shopSection) shopSection.scrollIntoView({ behavior: "smooth" });
@@ -502,86 +502,7 @@ export default function Home() {
           </motion.div>
         </section>
 
-        <div className="relative">
-
-          <section id="story" className="scroll-mt-[72px] min-h-screen flex items-center pointer-events-auto relative overflow-hidden">
-            {/* Gradient wash — blends the hero into the narrative */}
-            <div className="absolute inset-0 bg-gradient-to-b from-transparent via-white-calm/95 to-white-calm z-0 pointer-events-none" />
-
-            <div className="relative z-20 max-w-7xl mx-auto w-full px-8 py-32 grid grid-cols-1 md:grid-cols-2 gap-16 md:gap-32 items-center">
-
-              {/* Left — Brand manifesto */}
-              <div className="flex flex-col gap-10">
-                <FadeIn delay={0.1}>
-                  <span className="text-[10px] uppercase tracking-[0.3em] text-pink-accent">Cabanatuan, Nueva Ecija — Philippines</span>
-                </FadeIn>
-
-                <FadeIn delay={0.2}>
-                  <h2 className="text-4xl md:text-6xl font-light leading-[1.15] text-foreground">
-                    One pair<br />
-                    of hands.<br />
-                    <em className="italic text-pink-accent not-italic" style={{ fontStyle: 'italic' }}>Every piece.</em>
-                  </h2>
-                </FadeIn>
-
-                <FadeIn delay={0.35}>
-                  <p className="text-base font-light leading-relaxed text-foreground/60 max-w-sm">
-                    Every Joulery piece begins as an idea and ends as something you can hold. No factories. No assembly lines. Just one artisan, one vision, and an unwavering commitment to the craft.
-                  </p>
-                </FadeIn>
-
-                <FadeIn delay={0.45}>
-                  <button
-                    onClick={() => document.getElementById("shop")?.scrollIntoView({ behavior: "smooth" })}
-                    className="self-start text-xs uppercase tracking-[0.2em] border-b border-foreground pb-1 hover:text-pink-accent hover:border-pink-accent transition-all"
-                  >
-                    Explore the Collection →
-                  </button>
-                </FadeIn>
-              </div>
-
-              {/* Right — Three brand pillars as an editorial list */}
-              <div className="flex flex-col divide-y divide-pink-accent/20">
-                {[
-                  {
-                    num: "01",
-                    title: "Handcrafted",
-                    body: "Each bracelet and necklace is woven by a single pair of hands. No two pieces are ever perfectly identical — that's the point."
-                  },
-                  {
-                    num: "02",
-                    title: "Purposeful",
-                    body: "Only materials that earn their place are used. Sourced from across the Philippine archipelago for their beauty and story."
-                  },
-                  {
-                    num: "03",
-                    title: "Timeless",
-                    body: "Designed to be worn for years, not seasons. Joulery resists trends in favour of pieces that grow more personal with time."
-                  }
-                ].map((pillar, i) => (
-                  <FadeIn key={pillar.num} delay={0.2 + i * 0.15}>
-                    <div className="py-8 flex gap-6 items-start group cursor-default">
-                      <span className="text-[10px] text-pink-accent/60 font-light tracking-widest mt-1 shrink-0">{pillar.num}</span>
-                      <div>
-                        <h3 className="text-sm uppercase tracking-[0.2em] font-medium text-foreground mb-2 group-hover:text-pink-accent transition-colors">{pillar.title}</h3>
-                        <p className="text-sm font-light leading-relaxed text-foreground/50">{pillar.body}</p>
-                      </div>
-                    </div>
-                  </FadeIn>
-                ))}
-              </div>
-
-            </div>
-          </section>
-
-        </div>
-      </div>
-
-      <FadeIn delay={0.1}>
-        <ProvenanceMap />
-      </FadeIn>
-
-      <section id="shop" className="scroll-mt-[72px] py-24 px-8 bg-background">
+      <section id="shop" className="scroll-mt-[72px] py-24 px-8 bg-background relative z-10">
         <FadeIn className="max-w-7xl mx-auto">
           <div className="flex justify-between items-end mb-16">
             <h2 className="text-3xl font-light text-foreground">The Collection</h2>
@@ -604,10 +525,45 @@ export default function Home() {
         </FadeIn>
       </section>
 
+      <div className="relative">
+        {/* Simplified Get to Know Us Teaser */}
+        <section id="gettoknowus" className="scroll-mt-[72px] py-32 px-8 bg-white-calm">
+          <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center gap-16 md:gap-32">
+            <div className="flex-1">
+              <FadeIn>
+                <span className="text-[10px] uppercase tracking-[0.3em] text-pink-accent mb-6 block">Our Story</span>
+                <h2 className="text-4xl md:text-5xl font-light leading-tight text-foreground mb-8">
+                  Made by one person.<br />
+                  For one person.
+                </h2>
+                <p className="text-base font-light leading-relaxed text-foreground/60 max-w-sm mb-10">
+                  Learn about our handmade jewelry, where we find our stones, and the hands that make every piece.
+                </p>
+                <Link 
+                  href="/gettoknowus"
+                  className="inline-block bg-foreground text-white px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg"
+                >
+                  Get to Know Us
+                </Link>
+              </FadeIn>
+            </div>
+            <div className="flex-1 relative aspect-square w-full max-w-[500px] rounded-3xl overflow-hidden shadow-2xl">
+              <Image 
+                src="/images/products/worn/aquamarine.png" 
+                alt="Artisan at work" 
+                fill 
+                className="object-cover"
+              />
+            </div>
+          </div>
+        </section>
+      </div>
+    </div>
+
       <section id="contact" className="scroll-mt-[72px] py-32 px-4 bg-white-calm border-t border-pink-accent/30">
         <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-16">
           <FadeIn className="flex-1">
-            <h2 className="text-3xl font-light mb-8 text-foreground">Inquiries</h2>
+            <h2 className="text-3xl font-light mb-8 text-foreground">Ask Us</h2>
             <form className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <input
@@ -673,13 +629,13 @@ export default function Home() {
               </div>
             </div>
             <p className="text-sm text-foreground/50 font-light leading-relaxed">
-              For custom commissions, artisan collaborations, or private collection previews.
+              For special orders or to see new things early.
             </p>
 
             <div className="mt-12 pt-12 border-t border-pink-accent/20 w-full">
-              <h3 className="text-xs uppercase tracking-[0.2em] mb-4 text-pink-accent font-medium">Support My Craft</h3>
+              <h3 className="text-xs uppercase tracking-[0.2em] mb-4 text-pink-accent font-medium">Help Us</h3>
               <p className="text-sm text-foreground/60 font-light leading-relaxed mb-6">
-                If you appreciate the solo artistry and want to support this journey, consider making a small donation. Your support keeps the game alive.
+                If you like my art and want to help, please send a small gift. Your help keeps me going.
               </p>
               <a
                 href="#"

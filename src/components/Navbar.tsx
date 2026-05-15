@@ -61,7 +61,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
         
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-wide">
           <Link href="/" onClick={(e) => handleScroll(e, "shop")} className="hover:text-pink-accent transition-colors">Shop</Link>
-          <Link href="/" onClick={(e) => handleScroll(e, "story")} className="hover:text-pink-accent transition-colors">Story</Link>
+          <Link href="/" onClick={(e) => handleScroll(e, "gettoknowus")} className="hover:text-pink-accent transition-colors">Story</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="hover:text-pink-accent transition-colors">Contact</Link>
         </div>
         
@@ -187,7 +187,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
             className="fixed inset-0 top-[72px] z-50 bg-white-calm flex flex-col items-center justify-center gap-12 md:hidden"
           >
             <Link href="/" onClick={(e) => handleScroll(e, "shop")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Shop</Link>
-            <Link href="/" onClick={(e) => handleScroll(e, "story")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Story</Link>
+            <Link href="/" onClick={(e) => handleScroll(e, "gettoknowus")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Story</Link>
             <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Contact</Link>
           </motion.div>
         )}
