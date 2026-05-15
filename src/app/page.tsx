@@ -468,10 +468,10 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
             onClick={prevHero}
-            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full text-white/40 hover:text-white transition-all hover:scale-110 active:scale-95 cursor-pointer group"
+            className="absolute left-4 md:left-8 top-1/2 -translate-y-1/2 z-40 p-4 rounded-full text-white/80 hover:text-white transition-all hover:scale-110 active:scale-95 cursor-pointer group"
             aria-label="Previous Hero"
           >
-            <ChevronLeft size={48} strokeWidth={1} className="transition-transform group-hover:-translate-x-1" />
+            <ChevronLeft size={48} strokeWidth={1.5} className="transition-transform group-hover:-translate-x-1" />
           </motion.button>
 
           <motion.button
@@ -479,10 +479,10 @@ export default function Home() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ delay: 1.5, duration: 0.8 }}
             onClick={nextHero}
-            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 p-3 rounded-full text-white/40 hover:text-white transition-all hover:scale-110 active:scale-95 cursor-pointer group"
+            className="absolute right-4 md:right-8 top-1/2 -translate-y-1/2 z-40 p-4 rounded-full text-white/80 hover:text-white transition-all hover:scale-110 active:scale-95 cursor-pointer group"
             aria-label="Next Hero"
           >
-            <ChevronRight size={48} strokeWidth={1} className="transition-transform group-hover:translate-x-1" />
+            <ChevronRight size={48} strokeWidth={1.5} className="transition-transform group-hover:translate-x-1" />
           </motion.button>
 
           {/* Progress Indicators - Bottom */}
