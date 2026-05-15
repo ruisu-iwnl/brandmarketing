@@ -1,14 +1,14 @@
-import { SITE_CONFIG } from './constants';
+import { getPayload } from 'payload';
+import configPromise from '@/payload.config';
 
 export async function getProducts() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_URL}/api/products?limit=100&depth=2`, {
-      next: { revalidate: 60 },
+    const payload = await getPayload({ config: configPromise });
+    const data = await payload.find({
+      collection: 'products',
+      limit: 100,
+      depth: 2,
     });
-    
-    if (!res.ok) throw new Error('Failed to fetch products');
-    
-    const data = await res.json();
     
     return data.docs.map((doc: any) => ({
       id: doc.id,
@@ -33,14 +33,13 @@ export async function getProducts() {
 
 export async function getHeroSlides() {
   try {
-    const res = await fetch(`${process.env.NEXT_PUBLIC_PAYLOAD_URL}/api/globals/homepage?depth=2`, {
-      next: { revalidate: 60 },
+    const payload = await getPayload({ config: configPromise });
+    const data = await payload.findGlobal({
+      slug: 'homepage',
+      depth: 2,
     });
     
-    if (!res.ok) throw new Error('Failed to fetch homepage data');
-    
-    const data = await res.json();
-    const slides = data.heroSlides || [];
+    const slides = (data as any).heroSlides || [];
     
     const defaultDecor = [
       { x: "15%", y: "20%", size: 40, delay: 0.1 },
