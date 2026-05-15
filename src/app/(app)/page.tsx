@@ -2,6 +2,8 @@ import HomeContent from "@/components/HomeContent";
 import { getProducts, getHeroSlides } from "@/lib/payload";
 import { heroProductsData } from "@/components/sections/Hero";
 
+export const dynamic = 'force-dynamic';
+
 export default async function Home() {
   // Fetch data on the server - This is instant and has ZERO flicker
   const [products, slides] = await Promise.all([
