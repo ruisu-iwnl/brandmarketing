@@ -12,12 +12,15 @@ export interface Review {
 export interface Product {
   id: string;
   name: string;
+  slug: string;
   price: number | string;
   description: string;
   category: 'necklace' | 'bracelet';
   ordersCount: number;
   imageStill: string;
   imageWorn: string;
+  gallery?: string[];
+  video?: string;
   stock: number;
   reviews?: Review[];
 }

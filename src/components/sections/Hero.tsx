@@ -7,6 +7,7 @@ import { Product } from "@/components/ProductCard";
 
 interface HeroProps {
   products: Product[];
+  slides: any[];
   currentHero: number;
   direction: number;
   onNext: () => void;
@@ -102,8 +103,12 @@ export const heroProductsData = [
   },
 ];
 
-export default function Hero({ products, currentHero, direction, onNext, onPrev, onSetHero, onAddToCart }: HeroProps) {
-  const current = heroProductsData[currentHero];
+export default function Hero({ products, slides, currentHero, direction, onNext, onPrev, onSetHero, onAddToCart }: HeroProps) {
+  if (!slides || slides.length === 0) return <section className="h-screen w-full bg-background" />;
+  
+  const current = slides[currentHero];
+
+  if (!current) return null;
 
   return (
     <section className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-background">
@@ -131,7 +136,7 @@ export default function Hero({ products, currentHero, direction, onNext, onPrev,
           {/* Falling Decorative Elements Layer */}
           <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden hidden md:block">
             <AnimatePresence>
-              {current.decor.map((item, idx) => (
+              {current.decor.map((item: any, idx: number) => (
                 <motion.div
                   key={`${currentHero}-${idx}`}
                   initial={{ y: -300, opacity: 0, rotate: -45 }}
@@ -238,11 +243,22 @@ export default function Hero({ products, currentHero, direction, onNext, onPrev,
           >
             <div className="max-w-7xl mx-auto h-full w-full px-8 md:px-16 flex items-end justify-start pb-24 md:pb-32">
               <div className="max-w-md pointer-events-auto flex flex-col gap-4">
-                <div className="flex gap-1">
-                  {[1, 2, 3, 4, 5].map((s) => (
-                    <Star key={s} size={14} fill="#FFD700" color="#FFD700" />
-                  ))}
-                </div>
+                {current.averageRating > 0 ? (
+                  <div className="flex gap-1">
+                    {[...Array(5)].map((_, i) => (
+                      <Star 
+                        key={i} 
+                        size={14} 
+                        fill={i < current.averageRating ? "#FFD700" : "transparent"} 
+                        stroke={i < current.averageRating ? "#FFD700" : "rgba(255,255,255,0.2)"} 
+                      />
+                    ))}
+                  </div>
+                ) : (
+                  <div className="text-[10px] uppercase tracking-widest font-bold text-white/60 bg-white/10 px-2 py-1 rounded w-fit">
+                    New Piece
+                  </div>
+                )}
 
                 <div className="flex flex-col gap-2">
                   <motion.h2
@@ -318,7 +334,7 @@ export default function Hero({ products, currentHero, direction, onNext, onPrev,
         transition={{ delay: 1.8, duration: 0.8 }}
         className="absolute bottom-12 left-1/2 -translate-x-1/2 z-30 flex gap-3"
       >
-        {heroProductsData.map((_, i) => (
+        {slides.map((_: any, i: number) => (
           <button
             key={i}
             onClick={() => onSetHero(i)}

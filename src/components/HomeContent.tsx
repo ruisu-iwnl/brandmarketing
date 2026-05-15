@@ -6,31 +6,42 @@ import Footer from "@/components/Footer";
 import ScrollToTop from "@/components/ScrollToTop";
 import ProductModal from "@/components/ProductModal";
 import CartDrawer from "@/components/CartDrawer";
-
-// Sections
-import Hero, { heroProductsData } from "@/components/sections/Hero";
+import Hero from "@/components/sections/Hero";
 import Shop from "@/components/sections/Shop";
 import GetToKnowUsTeaser from "@/components/sections/GetToKnowUsTeaser";
 import Contact from "@/components/sections/Contact";
-
-// Data
-import { productsData } from "@/data/products";
 import { Product, CartItem } from "@/components/ProductCard";
 
-export default function Home() {
+interface HomeContentProps {
+  products: Product[];
+  slides: any[];
+}
+
+export default function HomeContent({ products, slides }: HomeContentProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [cartItems, setCartItems] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
   const [direction, setDirection] = useState(0);
 
+  useEffect(() => {
+    // Force scroll to top on refresh
+    if ('scrollRestoration' in history) {
+      history.scrollRestoration = 'manual';
+    }
+    window.scrollTo(0, 0);
+  }, []);
+
   const nextHero = () => {
+    if (slides.length === 0) return;
     setDirection(1);
-    setCurrentHero((prev) => (prev + 1) % heroProductsData.length);
+    setCurrentHero((prev) => (prev + 1) % slides.length);
   };
+  
   const prevHero = () => {
+    if (slides.length === 0) return;
     setDirection(-1);
-    setCurrentHero((prev) => (prev - 1 + heroProductsData.length) % heroProductsData.length);
+    setCurrentHero((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
   const handleAddToCart = (product: Product) => {
@@ -74,7 +85,6 @@ export default function Home() {
         sessionStorage.removeItem("scrollTarget");
       }, 100);
     }
-    if (window.location.hash) window.history.replaceState(null, "", window.location.pathname);
   }, []);
 
   return (
@@ -87,7 +97,8 @@ export default function Home() {
       />
 
       <Hero 
-        products={productsData}
+        products={products}
+        slides={slides}
         currentHero={currentHero}
         direction={direction}
         onNext={nextHero}
@@ -97,15 +108,13 @@ export default function Home() {
       />
 
       <Shop 
-        products={productsData}
+        products={products}
         onSelectProduct={setSelectedProduct}
         onAddToCart={handleAddToCart}
       />
 
       <GetToKnowUsTeaser />
-
       <Contact />
-
       <Footer />
       <ScrollToTop />
 
