@@ -25,11 +25,14 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
   useEffect(() => {
     if (isOpen) {
       document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     }
     return () => {
       document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
     };
   }, [isOpen]);
 
@@ -69,7 +72,7 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={onClose}
-            className="fixed inset-0 bg-background/80 backdrop-blur-sm z-[100]"
+            className="fixed inset-0 bg-background/90 z-[100]"
           />
 
           {/* Modal — mobile: bottom sheet, desktop: centered fixed box */}
@@ -83,7 +86,7 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
               inset-x-0 bottom-0 rounded-t-3xl max-h-[92vh] flex flex-col
               md:inset-auto md:top-1/2 md:left-1/2 md:-translate-x-1/2 md:-translate-y-1/2
               md:rounded-none md:w-[min(1100px,95vw)] md:h-[min(700px,90vh)]
-              md:flex-row md:overflow-hidden
+              md:flex-row md:overflow-hidden overscroll-none
             "
           >
             {/* Close button */}
