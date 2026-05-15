@@ -156,7 +156,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
                     </div>
                     <button 
                       onClick={onOpenCart}
-                      className="w-full bg-foreground text-white-calm py-3 text-[10px] uppercase tracking-widest hover:bg-foreground/90 transition-colors cursor-pointer"
+                      className="w-full bg-pink-accent text-foreground py-3 text-[10px] uppercase tracking-widest hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold"
                     >
                       View Cart
                     </button>

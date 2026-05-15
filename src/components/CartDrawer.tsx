@@ -144,11 +144,11 @@ export default function CartDrawer({ isOpen, onClose, items, onRemove, onUpdateQ
                   <span className="text-sm uppercase tracking-widest text-foreground/60">Subtotal</span>
                   <span className="text-xl font-medium text-foreground">₱{subtotal}</span>
                 </div>
-                 <button className="w-full bg-foreground text-white-calm py-5 uppercase tracking-widest text-sm hover:bg-foreground/90 transition-colors cursor-pointer">
+                 <button className="w-full bg-pink-accent text-foreground py-5 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold">
                   Checkout
                 </button>
                 <p className="text-[10px] text-center text-foreground/40 mt-4 uppercase tracking-[0.2em]">
-                  Free shipping on all Philippine orders
+                  Free shipping on all orders
                 </p>
               </div>
             )}

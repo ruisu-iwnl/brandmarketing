@@ -21,7 +21,7 @@ export default function GetToKnowUsTeaser() {
               </p>
               <Link 
                 href="/gettoknowus"
-                className="inline-block bg-foreground text-white px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg"
+                className="inline-block bg-pink-accent text-foreground px-10 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-lg hover:shadow-pink-accent/20"
               >
                 Get to Know Us
               </Link>

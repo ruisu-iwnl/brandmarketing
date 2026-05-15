@@ -51,7 +51,7 @@ export default function Contact() {
             />
             <button
               type="submit"
-              className="bg-foreground text-white-calm px-10 py-4 uppercase tracking-widest text-sm hover:bg-foreground/90 transition-all w-full md:w-auto"
+              className="bg-pink-accent text-foreground px-10 py-4 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all w-full md:w-auto"
             >
               Send Message
             </button>
@@ -103,7 +103,7 @@ export default function Contact() {
             </p>
             <a
               href="#"
-              className="inline-block bg-foreground text-white-calm px-8 py-3 uppercase tracking-widest text-[10px] hover:bg-foreground/90 transition-all shadow-sm"
+              className="inline-block bg-pink-accent text-foreground px-8 py-3 uppercase tracking-widest text-[10px] hover:shadow-lg hover:shadow-pink-accent/20 transition-all shadow-sm"
             >
               Support via Stripe
             </a>

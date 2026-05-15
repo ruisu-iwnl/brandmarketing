@@ -26,7 +26,7 @@ export default function Shop({ products, onSelectProduct, onAddToCart }: ShopPro
     });
 
   return (
-    <section id="shop" className="scroll-mt-[72px] py-24 px-8 bg-background relative z-10">
+    <section id="shop" className="scroll-mt-[72px] py-24 px-8 bg-pink-calm/10 relative z-10">
       <FadeIn className="max-w-7xl mx-auto">
         <div className="flex justify-between items-end mb-8">
           <h2 className="text-3xl font-light text-foreground">The Collection</h2>

@@ -221,7 +221,7 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
               </div>
 
               <p className="text-sm text-foreground/70 leading-relaxed mb-8 font-light">
-                {activeProduct.description}. Meticulously handcrafted by a single artisan in the Philippines. This piece embodies timeless elegance and delicate artistry, perfect for your everyday journey.
+                {activeProduct.description}. Meticulously handcrafted by a single artisan. This piece embodies timeless elegance and delicate artistry, perfect for your everyday journey.
               </p>
 
               <button 
@@ -229,8 +229,8 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
                 disabled={isAdded}
                 className={`w-full py-4 uppercase tracking-widest text-sm transition-all duration-300 flex items-center justify-center gap-2 mb-8 shrink-0 cursor-pointer disabled:cursor-default ${
                   isAdded 
-                  ? "bg-pink-accent text-foreground" 
-                  : "bg-foreground text-white-calm hover:bg-foreground/90"
+                  ? "bg-white border border-pink-accent text-pink-accent shadow-lg shadow-pink-accent/10" 
+                  : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20"
                 }`}
               >
                 {isAdded ? (

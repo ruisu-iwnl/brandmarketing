@@ -21,8 +21,8 @@ export default function AddToCartButton({ onClick, className = "" }: AddToCartBu
 
   const baseStyles = "relative h-10 px-4 rounded-full overflow-hidden transition-all duration-300 flex items-center justify-center gap-2 cursor-pointer disabled:cursor-default";
   const stateStyles = isAdded 
-    ? "bg-pink-accent text-foreground w-28" 
-    : "bg-foreground text-white-calm hover:bg-foreground/90 w-10 md:w-auto";
+    ? "bg-white border border-pink-accent text-pink-accent w-28" 
+    : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20 w-10 md:w-auto";
 
   return (
     <button
