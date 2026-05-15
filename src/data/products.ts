@@ -4,6 +4,7 @@ export const productsData: Product[] = [
   {
     id: "aquamarine-silk",
     name: "Aquamarine Silk",
+    slug: "aquamarine-silk",
     price: 120,
     description: "Handwoven Blue stones.",
     category: "bracelet",
@@ -28,6 +29,7 @@ export const productsData: Product[] = [
   {
     id: "obsidian-heart",
     name: "Obsidian Heart",
+    slug: "obsidian-heart",
     price: 150,
     description: "Natural black glass.",
     category: "bracelet",
@@ -42,6 +44,7 @@ export const productsData: Product[] = [
   {
     id: "crystal-white",
     name: "Crystal White",
+    slug: "crystal-white",
     price: 180,
     description: "Pure clear crystal.",
     category: "bracelet",
@@ -56,6 +59,7 @@ export const productsData: Product[] = [
   {
     id: "amethyst-aura",
     name: "Amethyst Aura",
+    slug: "amethyst-aura",
     price: 140,
     description: "Handwoven Royal Purple Amethyst",
     category: "bracelet",
@@ -70,6 +74,7 @@ export const productsData: Product[] = [
   {
     id: "pearl-harmony",
     name: "Pearl Harmony",
+    slug: "pearl-harmony",
     price: 90,
     description: "Simple white pearls.",
     category: "bracelet",
@@ -82,6 +87,7 @@ export const productsData: Product[] = [
   {
     id: "silver-shore",
     name: "Silver Shore",
+    slug: "silver-shore",
     price: 110,
     description: "Strong silver chain.",
     category: "bracelet",
@@ -94,6 +100,7 @@ export const productsData: Product[] = [
   {
     id: "sunset-citrine",
     name: "Sunset Citrine",
+    slug: "sunset-citrine",
     price: 130,
     description: "Warm yellow stones.",
     category: "necklace",
@@ -106,6 +113,7 @@ export const productsData: Product[] = [
   {
     id: "moonstone-dew",
     name: "Moonstone Dew",
+    slug: "moonstone-dew",
     price: 145,
     description: "Soft white stones.",
     category: "necklace",
@@ -118,6 +126,7 @@ export const productsData: Product[] = [
   {
     id: "coral-reef",
     name: "Coral Reef",
+    slug: "coral-reef",
     price: 125,
     description: "Deep red pieces.",
     category: "necklace",
@@ -130,6 +139,7 @@ export const productsData: Product[] = [
   {
     id: "golden-sands",
     name: "Golden Sands",
+    slug: "golden-sands",
     price: 160,
     description: "Gold chain necklace.",
     category: "necklace",
@@ -142,6 +152,7 @@ export const productsData: Product[] = [
   {
     id: "emerald-tide",
     name: "Emerald Tide",
+    slug: "emerald-tide",
     price: 175,
     description: "Deep green stones.",
     category: "necklace",
@@ -154,6 +165,7 @@ export const productsData: Product[] = [
   {
     id: "rose-quartz",
     name: "Rose Quartz",
+    slug: "rose-quartz",
     price: 115,
     description: "Soft pink stones.",
     category: "necklace",
