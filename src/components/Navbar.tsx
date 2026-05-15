@@ -60,6 +60,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
         </Link>
         
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-wide">
+          <Link href="/" onClick={handleTitleClick} className="hover:text-pink-accent transition-colors">Featured</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "shop")} className="hover:text-pink-accent transition-colors">Shop</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "gettoknowus")} className="hover:text-pink-accent transition-colors">Story</Link>
           <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="hover:text-pink-accent transition-colors">Contact</Link>
@@ -184,8 +185,9 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.3 }}
-            className="fixed inset-0 top-[72px] z-50 bg-white-calm flex flex-col items-center justify-center gap-12 md:hidden"
+            className="fixed inset-0 top-[72px] z-[150] bg-white-calm/90 backdrop-blur-md flex flex-col items-center justify-center gap-12 md:hidden"
           >
+            <Link href="/" onClick={handleTitleClick} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Featured</Link>
             <Link href="/" onClick={(e) => handleScroll(e, "shop")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Shop</Link>
             <Link href="/" onClick={(e) => handleScroll(e, "gettoknowus")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Story</Link>
             <Link href="/" onClick={(e) => handleScroll(e, "contact")} className="text-2xl font-light uppercase tracking-widest text-foreground hover:text-pink-accent transition-colors">Contact</Link>
