@@ -190,10 +190,12 @@ export default function Contact() {
               If you like my art and want to help, please send a small gift. Your help keeps me going.
             </p>
             <a
-              href="#"
-              className="inline-block bg-pink-accent text-foreground px-8 py-3 uppercase tracking-widest text-[10px] hover:shadow-lg hover:shadow-pink-accent/20 transition-all shadow-sm"
+              href={process.env.NEXT_PUBLIC_PAYMONGO_SUPPORT_LINK || "#"}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-block bg-pink-accent text-foreground px-8 py-3 uppercase tracking-widest text-[10px] hover:shadow-lg hover:shadow-pink-accent/20 transition-all shadow-sm cursor-pointer"
             >
-              Support via Stripe
+              Support via PayMongo
             </a>
           </div>
         </FadeIn>

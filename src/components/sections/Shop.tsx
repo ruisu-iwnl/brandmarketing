@@ -95,7 +95,7 @@ export default function Shop({ products, onSelectProduct, onAddToCart }: ShopPro
             <ProductCard
               key={product.id}
               product={product}
-              delay={0.1 * (index + 1)}
+              delay={0.05 * (index + 1)}
               onClick={() => onSelectProduct(product)}
               onAddToCart={onAddToCart}
             />
