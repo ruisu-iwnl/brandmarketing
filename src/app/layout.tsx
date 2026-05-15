@@ -32,7 +32,7 @@ export const metadata: Metadata = {
         alt: `${SITE_CONFIG.name} Creative Handcrafted Items`,
       },
     ],
-    locale: "en_PH",
+    locale: "en_US",
     type: "website",
   },
   twitter: {
@@ -47,6 +47,9 @@ export const metadata: Metadata = {
   },
 };
 
+import GoogleAnalytics from "@/components/GoogleAnalytics";
+import CookieConsent from "@/components/CookieConsent";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -55,9 +58,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      className={`${geistSans.variable} ${geistMono.variable} h-full antialiased scroll-smooth`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col relative overflow-x-hidden">
+        <GoogleAnalytics />
+        {children}
+        <CookieConsent />
+      </body>
     </html>
   );
 }

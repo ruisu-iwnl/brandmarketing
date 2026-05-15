@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { ShoppingCart, Check } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import { trackEvent } from "@/lib/analytics";
 
 interface AddToCartButtonProps {
   onClick: (e: React.MouseEvent) => void;
@@ -16,6 +17,7 @@ export default function AddToCartButton({ onClick, className = "" }: AddToCartBu
     e.stopPropagation(); // Prevent opening modal
     onClick(e);
     setIsAdded(true);
+    trackEvent("add_to_cart", "engagement", "Product added from list");
     setTimeout(() => setIsAdded(false), 2000);
   };
 

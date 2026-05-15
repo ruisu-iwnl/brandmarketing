@@ -6,6 +6,7 @@ import { X, Star, ShoppingCart, ChevronLeft, ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Product } from "./ProductCard";
 import ProductReview from "./ProductReview";
+import { trackEvent } from "@/lib/analytics";
 
 interface ProductModalProps {
   isOpen: boolean;
@@ -42,6 +43,7 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
       setReviewPage(0);
       setCurrentImageIndex(0);
       setIsAdded(false);
+      trackEvent("view_item", "engagement", product.name);
     }
   }, [product]);
 
