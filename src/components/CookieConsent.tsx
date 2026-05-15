@@ -34,43 +34,31 @@ export default function CookieConsent() {
           initial={{ y: 100, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 100, opacity: 0 }}
-          transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-          className="fixed bottom-6 left-6 right-6 md:left-auto md:right-8 md:w-[400px] bg-white shadow-[0_20px_50px_rgba(0,0,0,0.15)] rounded-2xl z-[200] border border-pink-calm/30 overflow-hidden"
+          className="fixed bottom-6 right-6 md:right-8 bg-white/90 backdrop-blur-md shadow-lg rounded-xl z-[200] border border-pink-accent/10 overflow-hidden"
         >
-          <div className="p-6 md:p-8">
-            <div className="flex items-center gap-3 mb-4">
-              <div className="w-8 h-8 rounded-full bg-pink-accent/20 flex items-center justify-center text-pink-accent">
-                <ShieldCheck size={18} />
-              </div>
-              <h3 className="text-sm font-bold uppercase tracking-widest text-foreground">Cookie Policy</h3>
+          <div className="px-5 py-4 flex items-center gap-6">
+            <div className="flex flex-col">
+              <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-foreground mb-1">Cookies</span>
+              <p className="text-[10px] text-foreground/50 font-light whitespace-nowrap">
+                We use cookies for a better experience.
+              </p>
             </div>
-            
-            <p className="text-xs text-foreground/60 leading-relaxed mb-8 font-light">
-              We use small data files to understand how you interact with our collection and to provide a more personalized artisanal experience. By continuing, you agree to our use of these.
-            </p>
 
-            <div className="flex items-center gap-4">
+            <div className="flex items-center gap-3">
               <button
                 onClick={handleAccept}
-                className="flex-1 bg-pink-accent text-foreground py-3 text-[10px] font-bold uppercase tracking-widest rounded-lg hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer"
+                className="bg-pink-accent text-foreground px-4 py-2 text-[9px] font-bold uppercase tracking-widest rounded-lg hover:shadow-md transition-all cursor-pointer"
               >
-                Accept All
+                Okay
               </button>
               <button
                 onClick={handleDecline}
-                className="text-[10px] text-foreground/40 uppercase tracking-widest font-bold hover:text-foreground transition-colors px-4 py-3"
+                className="text-[9px] text-foreground/30 uppercase tracking-widest font-bold hover:text-foreground transition-colors p-2"
               >
-                Decline
+                <X size={14} />
               </button>
             </div>
           </div>
-          
-          <button 
-            onClick={() => setIsVisible(false)}
-            className="absolute top-4 right-4 text-foreground/20 hover:text-foreground transition-colors"
-          >
-            <X size={16} />
-          </button>
         </motion.div>
       )}
     </AnimatePresence>
