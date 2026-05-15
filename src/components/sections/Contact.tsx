@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Mail } from "lucide-react";
 import FadeIn from "@/components/FadeIn";
@@ -17,6 +17,22 @@ const InstagramIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; stroke
 export default function Contact() {
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [isCopied, setIsCopied] = useState(false);
+  const [cooldown, setCooldown] = useState(0);
+
+  useEffect(() => {
+    const lastSent = localStorage.getItem('last_contact_sent');
+    if (lastSent) {
+      const remaining = Math.ceil((120000 - (Date.now() - parseInt(lastSent))) / 1000);
+      if (remaining > 0) setCooldown(remaining);
+    }
+  }, []);
+
+  useEffect(() => {
+    if (cooldown > 0) {
+      const timer = setTimeout(() => setCooldown(cooldown - 1), 1000);
+      return () => clearTimeout(timer);
+    }
+  }, [cooldown]);
 
   const copyEmail = () => {
     navigator.clipboard.writeText(SITE_CONFIG.links.email as string);
@@ -26,6 +42,9 @@ export default function Contact() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (cooldown > 0) return;
+
     setStatus('submitting');
 
     const formData = new FormData(e.currentTarget);
@@ -44,6 +63,10 @@ export default function Contact() {
       if (response.ok) {
         setStatus('success');
         (e.target as HTMLFormElement).reset();
+
+        // Set 2-minute cooldown
+        localStorage.setItem('last_contact_sent', Date.now().toString());
+        setCooldown(120);
       } else {
         setStatus('error');
       }
@@ -110,10 +133,10 @@ export default function Contact() {
                 </div>
                 <button
                   type="submit"
-                  disabled={status === 'submitting'}
-                  className="bg-pink-accent text-foreground px-10 py-4 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all w-full md:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                  disabled={status === 'submitting' || cooldown > 0}
+                  className="w-full bg-pink-accent text-foreground py-4 text-xs font-bold uppercase tracking-widest hover:shadow-lg hover:shadow-pink-accent/20 transition-all disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
                 >
-                  {status === 'submitting' ? 'Sending...' : 'Send Message'}
+                  {status === 'submitting' ? 'Sending...' : (cooldown > 0 ? `Wait ${cooldown}s` : 'Send Message')}
                 </button>
                 {status === 'error' && (
                   <p className="text-xs text-red-400 mt-2">Something went wrong. Please try again.</p>
