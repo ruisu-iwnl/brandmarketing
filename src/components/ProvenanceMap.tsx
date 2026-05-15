@@ -26,7 +26,7 @@ const regions = [
     name: "Cabanatuan City",
     coordinates: { top: "33%", left: "45%" },
     material: "The Artisan's Workshop",
-    description: "The heart of Joulery. Every single piece is meticulously handcrafted here by our lone artisan, weaving Philippine creativity into wearable art.",
+    description: `The heart of ${SITE_CONFIG.name}. Every single piece is meticulously handcrafted here by our lone artisan, weaving Philippine creativity into wearable art.`,
   },
 ];
 

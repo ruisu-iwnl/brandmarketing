@@ -1,6 +1,7 @@
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import FadeIn from "@/components/FadeIn";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export default function PrivacyPage() {
   return (
@@ -15,7 +16,7 @@ export default function PrivacyPage() {
           <section>
             <h2 className="text-xl font-medium mb-4 text-foreground">Our Commitment</h2>
             <p>
-              Your privacy is fundamental to the trust we build at Joulery. We collect only the information necessary to process your orders and provide a seamless artisanal shopping experience.
+              Your privacy is fundamental to the trust we build at {SITE_CONFIG.name}{" "}. We collect only the information necessary to process your orders and provide a seamless artisanal shopping experience.
             </p>
           </section>
 

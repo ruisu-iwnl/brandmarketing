@@ -15,12 +15,41 @@ const InstagramIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; stroke
 );
 
 export default function Contact() {
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [isCopied, setIsCopied] = useState(false);
 
   const copyEmail = () => {
-    navigator.clipboard.writeText(SITE_CONFIG.links.email);
+    navigator.clipboard.writeText(SITE_CONFIG.links.email as string);
     setIsCopied(true);
     setTimeout(() => setIsCopied(false), 2000);
+  };
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setStatus('submitting');
+
+    const formData = new FormData(e.currentTarget);
+    const data = Object.fromEntries(formData.entries());
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        body: JSON.stringify(data),
+        headers: {
+          'Accept': 'application/json',
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.ok) {
+        setStatus('success');
+        (e.target as HTMLFormElement).reset();
+      } else {
+        setStatus('error');
+      }
+    } catch (error) {
+      setStatus('error');
+    }
   };
 
   return (
@@ -28,34 +57,70 @@ export default function Contact() {
       <div className="max-w-4xl mx-auto flex flex-col md:flex-row gap-16">
         <FadeIn className="flex-1">
           <h2 className="text-3xl font-light mb-8 text-foreground">Ask Us</h2>
-          <form className="space-y-6">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-              <input
-                type="text"
-                placeholder="Your Name"
-                className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
-                required
-              />
-              <input
-                type="email"
-                placeholder="Email Address"
-                className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
-                required
-              />
-            </div>
-            <textarea
-              placeholder="How can we help you?"
-              rows={5}
-              className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground resize-none"
-              required
-            />
-            <button
-              type="submit"
-              className="bg-pink-accent text-foreground px-10 py-4 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all w-full md:w-auto"
-            >
-              Send Message
-            </button>
-          </form>
+
+          <AnimatePresence mode="wait">
+            {status === 'success' ? (
+              <motion.div
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="bg-pink-calm/30 p-8 rounded-2xl border border-pink-accent/20 text-center"
+              >
+                <h3 className="text-lg font-light text-foreground mb-2">Message Sent</h3>
+                <p className="text-sm text-foreground/60 font-light">Thank you for reaching out. We'll get back to you soon.</p>
+                <button
+                  onClick={() => setStatus('idle')}
+                  className="mt-6 text-xs uppercase tracking-widest text-pink-accent font-bold"
+                >
+                  Send another message
+                </button>
+              </motion.div>
+            ) : (
+              <motion.form
+                onSubmit={handleSubmit}
+                initial={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                className="space-y-6"
+              >
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <input
+                    name="name"
+                    type="text"
+                    placeholder="Your Name"
+                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
+                    required
+                  />
+                  <input
+                    name="email"
+                    type="email"
+                    placeholder="Email Address"
+                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
+                    required
+                  />
+                </div>
+                <textarea
+                  name="message"
+                  placeholder="How can we help you?"
+                  rows={5}
+                  className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground resize-none"
+                  required
+                />
+                {/* Honeypot field for spam protection - invisible to users */}
+                <div className="hidden" aria-hidden="true">
+                  <input type="text" name="_honey" tabIndex={-1} autoComplete="off" />
+                </div>
+                <button
+                  type="submit"
+                  disabled={status === 'submitting'}
+                  className="bg-pink-accent text-foreground px-10 py-4 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all w-full md:w-auto disabled:opacity-50 disabled:cursor-not-allowed"
+                >
+                  {status === 'submitting' ? 'Sending...' : 'Send Message'}
+                </button>
+                {status === 'error' && (
+                  <p className="text-xs text-red-400 mt-2">Something went wrong. Please try again.</p>
+                )}
+              </motion.form>
+            )}
+          </AnimatePresence>
         </FadeIn>
 
         <FadeIn delay={0.2} className="w-full md:w-72 flex flex-col justify-center items-center md:items-start text-center md:text-left border-t md:border-t-0 md:border-l border-pink-accent/20 pt-12 md:pt-0 md:pl-12">

@@ -9,6 +9,7 @@ import { ChevronLeft, Sparkles, Heart, Box, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import ProvenanceMap from "@/components/ProvenanceMap";
+import { SITE_CONFIG } from "@/lib/constants";
 
 export default function GetToKnowUs() {
   return (
@@ -41,7 +42,7 @@ export default function GetToKnowUs() {
             <FadeIn delay={0.4}>
               <div className="w-12 h-[1px] bg-pink-accent mx-auto mb-8" />
               <p className="text-sm md:text-base text-foreground/40 font-light tracking-widest uppercase">
-                The story of Joulery
+                The story of {SITE_CONFIG.name}
               </p>
             </FadeIn>
           </div>

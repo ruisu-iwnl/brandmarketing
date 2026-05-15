@@ -7,6 +7,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Product, CartItem } from "./ProductCard";
 import Image from "next/image";
+import { SITE_CONFIG } from "@/lib/constants";
 
 interface NavbarProps {
   cartItems?: CartItem[];
@@ -56,7 +57,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
         className="w-full py-6 px-8 flex justify-between items-center fixed top-0 bg-transparent backdrop-blur-[2px] z-[60]"
       >
         <Link href="/" onClick={handleTitleClick} className="text-xl font-medium tracking-widest uppercase text-foreground hover:opacity-70 transition-opacity cursor-pointer">
-          JOULERY
+          {SITE_CONFIG.name}
         </Link>
         
         <div className="hidden md:flex gap-8 text-sm uppercase tracking-wide">

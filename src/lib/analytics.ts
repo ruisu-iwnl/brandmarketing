@@ -1,7 +1,6 @@
 "use client";
 
-// Replace with your actual Google Analytics Measurement ID
-export const GA_MEASUREMENT_ID = "G-5ZCW5N7XWK"; 
+export const GA_MEASUREMENT_ID = process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID || "";
 
 /**
  * Log a page view
