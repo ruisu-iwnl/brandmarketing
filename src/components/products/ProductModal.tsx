@@ -318,17 +318,24 @@ export default function ProductModal({ isOpen, onClose, product, settings }: Pro
 
               <button 
                 onClick={handleAddClick}
-                disabled={isAdded}
+                disabled={isAdded || activeProduct?.isSoldOut || (activeProduct?.stock || 0) <= 0}
                 className={`w-full py-4 uppercase tracking-widest text-sm transition-all duration-300 flex items-center justify-center gap-2 mb-8 shrink-0 cursor-pointer disabled:cursor-default ${
                   isAdded 
                   ? "bg-white border border-pink-accent text-pink-accent shadow-lg shadow-pink-accent/10" 
-                  : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20"
+                  : (activeProduct?.isSoldOut || (activeProduct?.stock || 0) <= 0)
+                    ? "bg-foreground/5 text-foreground/20 border border-foreground/10"
+                    : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20"
                 }`}
               >
                 {isAdded ? (
                   <>
                     <ShoppingCart size={18} />
                     Added!
+                  </>
+                ) : (activeProduct?.isSoldOut || (activeProduct?.stock || 0) <= 0) ? (
+                  <>
+                    <X size={18} />
+                    Sold Out
                   </>
                 ) : (
                   <>

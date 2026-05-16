@@ -64,6 +64,10 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
   
   const finalTotal = Math.max(0, subtotal - discount);
 
+  const hasSoldOutItems = cartItems.some(item => 
+    item.product.isSoldOut || (item.product.stock || 0) <= 0
+  );
+
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
@@ -244,9 +248,17 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
             </section>
 
             <div className="pt-8">
+              {hasSoldOutItems && (
+                <div className="mb-6 p-4 bg-red-50 border border-red-100 rounded-xl flex items-center gap-3">
+                  <div className="w-1.5 h-1.5 rounded-full bg-red-400 shrink-0"></div>
+                  <p className="text-[10px] uppercase tracking-widest font-bold text-red-500">
+                    Some items in your cart are sold out. Please remove them to continue.
+                  </p>
+                </div>
+              )}
               <button 
                 type="submit"
-                disabled={isSubmitting}
+                disabled={isSubmitting || hasSoldOutItems}
                 className="w-full bg-foreground text-background py-6 uppercase tracking-[0.3em] text-sm hover:bg-pink-accent transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group"
               >
                 {isSubmitting ? (
@@ -294,15 +306,27 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
                     fill 
                     className="object-contain p-2"
                   />
-                  <span className="absolute -top-2 -right-2 w-6 h-6 bg-foreground text-background text-[10px] flex items-center justify-center rounded-full border-2 border-white-calm">
+                  {(item.product.isSoldOut || (item.product.stock || 0) <= 0) && (
+                    <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center">
+                      <span className="text-[8px] font-black uppercase tracking-tighter text-red-500">Sold Out</span>
+                    </div>
+                  )}
+                  <span className={`absolute -top-2 -right-2 w-6 h-6 ${item.product.isSoldOut || (item.product.stock || 0) <= 0 ? 'bg-red-400' : 'bg-foreground'} text-background text-[10px] flex items-center justify-center rounded-full border-2 border-white-calm`}>
                     {item.quantity}
                   </span>
                 </div>
                 <div className="flex-1">
-                  <h3 className="text-xs uppercase tracking-widest font-medium mb-1">{item.product.name}</h3>
-                  <p className="text-[10px] text-foreground/40 uppercase tracking-widest">{item.product.category}</p>
+                  <h3 className="text-xs uppercase tracking-widest font-medium mb-1 truncate pr-2">{item.product.name}</h3>
+                  <div className="flex items-center gap-2">
+                    <p className="text-[10px] text-foreground/40 uppercase tracking-widest">{item.product.category}</p>
+                    {(item.product.isSoldOut || (item.product.stock || 0) <= 0) && (
+                      <span className="text-[8px] font-bold text-red-500 uppercase tracking-widest">Out of Stock</span>
+                    )}
+                  </div>
                 </div>
-                <p className="text-sm font-medium">₱{Number(item.product.price) * item.quantity}</p>
+                <p className={`text-sm font-medium ${(item.product.isSoldOut || (item.product.stock || 0) <= 0) ? 'text-foreground/20 line-through' : 'text-foreground'}`}>
+                  ₱{Number(item.product.price) * item.quantity}
+                </p>
               </div>
             ))}
           </div>
