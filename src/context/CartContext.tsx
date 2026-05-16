@@ -10,6 +10,7 @@ interface CartContextType {
   removeFromCart: (index: number) => void;
   updateQuantity: (index: number, delta: number) => void;
   toggleCart: (open?: boolean) => void;
+  clearCart: () => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -36,18 +37,25 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
   const lastActionTime = React.useRef(0);
 
-  const addToCart = (product: Product) => {
+  const addToCart = React.useCallback((product: Product) => {
     const now = Date.now();
-    if (now - lastActionTime.current < 100) return; // Prevent double/triple fires
+    if (now - lastActionTime.current < 100) return;
     lastActionTime.current = now;
 
     setCartItems((prev) => {
-      // Find an existing row for this product that isn't full (less than 10)
       const existingItemIndex = prev.findIndex(
-        (item) => item.product.id === product.id && item.quantity < 10
+        (item) => item.product.id === product.id
       );
 
       if (existingItemIndex > -1) {
+        const existingItem = prev[existingItemIndex];
+        const stockLimit = product.stock || 0;
+        
+        // Don't exceed stock or the hard limit of 10
+        if (existingItem.quantity >= Math.min(stockLimit, 10)) {
+          return prev;
+        }
+
         const newItems = [...prev];
         newItems[existingItemIndex] = {
           ...newItems[existingItemIndex],
@@ -56,25 +64,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         return newItems;
       }
 
-      // If no room in existing rows (or no row exists), create a new one
+      // If no row exists, create a new one (if stock > 0)
+      if ((product.stock || 0) <= 0) return prev;
+
       return [...prev, { 
         rowId: `${product.id}-${Date.now()}-${Math.random().toString(36).substr(2, 4)}`, 
         product, 
         quantity: 1 
       }];
     });
-  };
+  }, []);
 
-  const removeFromCart = (index: number) => {
+  const removeFromCart = React.useCallback((index: number) => {
     setCartItems((prev) => prev.filter((_, i) => i !== index));
-  };
+  }, []);
 
-  const updateQuantity = (index: number, delta: number) => {
+  const updateQuantity = React.useCallback((index: number, delta: number) => {
     setCartItems((prev) => {
       if (!prev[index]) return prev;
+      const product = prev[index].product;
       const newQuantity = prev[index].quantity + delta;
+      const stockLimit = product.stock || 0;
+
       if (newQuantity <= 0) return prev.filter((_, i) => i !== index);
-      if (newQuantity > 10) return prev;
+      if (newQuantity > Math.min(stockLimit, 10)) return prev;
       
       const newItems = [...prev];
       newItems[index] = {
@@ -83,11 +96,16 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       };
       return newItems;
     });
-  };
+  }, []);
 
-  const toggleCart = (open?: boolean) => {
+  const toggleCart = React.useCallback((open?: boolean) => {
     setIsCartOpen((prev) => (open !== undefined ? open : !prev));
-  };
+  }, []);
+
+  const clearCart = React.useCallback(() => {
+    setCartItems([]);
+    localStorage.removeItem('cart');
+  }, []);
 
   return (
     <CartContext.Provider value={{ 
@@ -96,7 +114,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       addToCart, 
       removeFromCart, 
       updateQuantity, 
-      toggleCart 
+      toggleCart,
+      clearCart
     }}>
       {children}
     </CartContext.Provider>

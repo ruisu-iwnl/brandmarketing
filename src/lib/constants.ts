@@ -2,7 +2,7 @@ export const SITE_CONFIG = {
   name: process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY',
   title: process.env.NEXT_PUBLIC_SITE_TITLE || 'JOULERY | Creative Handcrafted Items',
   description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Exclusive collection of handwoven necklaces and bracelets meticulously handcrafted for a timeless, editorial look.',
-  url: process.env.NEXT_PUBLIC_SITE_URL || 'https://joulery.com',
+  url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/images/aquamarine.png',
   links: {
     facebook: process.env.NEXT_PUBLIC_FACEBOOK_LINK || '#',

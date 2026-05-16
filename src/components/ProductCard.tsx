@@ -13,7 +13,7 @@ interface ProductCardProps {
 }
 
 export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart }: ProductCardProps) {
-
+  const isSoldOut = product.isSoldOut || (product.stock || 0) <= 0;
 
   return (
     <div className="relative group">
@@ -26,7 +26,7 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
           >
             {/* Badges */}
             <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
-              {product.isSoldOut ? (
+              {isSoldOut ? (
                 <span className="bg-foreground text-white text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shadow-lg">
                   Sold Out
                 </span>
@@ -84,7 +84,7 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
               <div className="shrink-0">
                 <AddToCartButton 
                   onClick={() => onAddToCart?.(product)} 
-                  disabled={product.isSoldOut} 
+                  disabled={isSoldOut} 
                 />
               </div>
             </div>

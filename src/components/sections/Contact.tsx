@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Mail } from "lucide-react";
+import Link from "next/link";
 import FadeIn from "@/components/FadeIn";
 import { SITE_CONFIG } from "@/lib/constants";
 
@@ -189,14 +190,12 @@ export default function Contact() {
             <p className="text-sm text-foreground/60 font-light leading-relaxed mb-6">
               If you like my art and want to help, please send a small gift. Your help keeps me going.
             </p>
-            <a
-              href={process.env.NEXT_PUBLIC_PAYMONGO_SUPPORT_LINK || "#"}
-              target="_blank"
-              rel="noopener noreferrer"
+            <Link
+              href="/support"
               className="inline-block bg-pink-accent text-foreground px-8 py-3 uppercase tracking-widest text-[10px] hover:shadow-lg hover:shadow-pink-accent/20 transition-all shadow-sm cursor-pointer"
             >
               Support via PayMongo
-            </a>
+            </Link>
           </div>
         </FadeIn>
       </div>

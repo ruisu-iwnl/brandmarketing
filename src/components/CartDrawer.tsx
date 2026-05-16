@@ -3,6 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { CartItem } from "@/types/product";
 
 import { useCart } from "@/context/CartContext";
@@ -140,9 +141,13 @@ export default function CartDrawer() {
                   <span className="text-sm uppercase tracking-widest text-foreground/60">Subtotal</span>
                   <span className="text-xl font-medium text-foreground">₱{subtotal}</span>
                 </div>
-                 <button className="w-full bg-pink-accent text-foreground py-5 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold">
+                 <Link 
+                   href="/checkout" 
+                   onClick={onClose}
+                   className="w-full bg-pink-accent text-foreground py-5 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold flex items-center justify-center"
+                 >
                   Checkout
-                </button>
+                </Link>
                 <p className="text-[10px] text-center text-foreground/40 mt-4 uppercase tracking-[0.2em]">
                   Free shipping on all orders
                 </p>
