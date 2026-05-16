@@ -112,7 +112,6 @@ export async function POST(req: Request) {
             billing: {
               name: customerDetails.name,
               email: customerDetails.email,
-              phone: customerDetails.phone,
               address: {
                 line1: customerDetails.address,
                 city: customerDetails.city,
