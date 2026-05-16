@@ -150,6 +150,7 @@ export const Products: CollectionConfig = {
                 isArchived: false,
                 viewsCount: 0,
                 ordersCount: 0,
+                stock: 10,
               }
             });
             results.push(`Updated ${p.name}`);
