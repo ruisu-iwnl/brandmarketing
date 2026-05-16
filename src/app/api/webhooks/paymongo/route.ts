@@ -33,7 +33,9 @@ export async function POST(req: Request) {
       .digest('hex');
 
     if (signatureV1 !== expectedSignature) {
-      console.error('Invalid PayMongo Signature');
+      console.error('[PAYMONGO-WEBHOOK] Signature Mismatch!');
+      console.error('[PAYMONGO-WEBHOOK] Received:', signatureV1);
+      console.error('[PAYMONGO-WEBHOOK] Expected:', expectedSignature);
       return NextResponse.json({ error: 'Invalid Signature' }, { status: 401 });
     }
 
@@ -41,6 +43,7 @@ export async function POST(req: Request) {
     const event = JSON.parse(payload);
     const eventType = event.data.attributes.type;
 
+    console.log('[PAYMONGO-WEBHOOK] Full Event Object:', JSON.stringify(event, null, 2));
     console.log('[PAYMONGO-WEBHOOK] Event Type:', eventType);
 
     if (eventType === 'checkout_session.payment.paid') {
