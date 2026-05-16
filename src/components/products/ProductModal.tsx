@@ -373,7 +373,7 @@ export default function ProductModal({ isOpen, onClose, product, settings }: Pro
                       name: 'Facebook', 
                       icon: <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>, 
                       color: '#1877F2', 
-                      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent((process.env.NEXT_PUBLIC_SITE_URL || window.location.origin) + '?product=' + activeProduct.slug)}` 
+                      url: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent((process.env.NEXT_PUBLIC_SITE_URL || window.location.origin) + '?product=' + activeProduct.slug)}&quote=${encodeURIComponent(`Check out this beautiful ${activeProduct.name} at ${process.env.NEXT_PUBLIC_SITE_NAME || 'Li\'L Caca'}!`)}` 
                     },
                     { 
                       name: 'Pinterest', 
@@ -394,12 +394,20 @@ export default function ProductModal({ isOpen, onClose, product, settings }: Pro
                       url: `https://www.reddit.com/submit?url=${encodeURIComponent((process.env.NEXT_PUBLIC_SITE_URL || window.location.origin) + '?product=' + activeProduct.slug)}&title=${encodeURIComponent(`Found this amazing ${activeProduct.name} at ${process.env.NEXT_PUBLIC_SITE_NAME || 'Li\'L Caca'}!`)}` 
                     }
                   ].map((platform) => (
-                    <a
+                    <button
                       key={platform.name}
-                      href={platform.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-10 h-10 rounded-full border border-pink-calm flex items-center justify-center text-foreground/40 hover:text-white hover:border-transparent transition-all duration-300 group overflow-hidden relative"
+                      onClick={() => {
+                        const width = 600;
+                        const height = 450;
+                        const left = (window.innerWidth - width) / 2;
+                        const top = (window.innerHeight - height) / 2;
+                        window.open(
+                          platform.url,
+                          `share-${platform.name}`,
+                          `width=${width},height=${height},left=${left},top=${top},location=no,toolbar=no,menubar=no,status=no`
+                        );
+                      }}
+                      className="w-10 h-10 rounded-full border border-pink-calm flex items-center justify-center text-foreground/40 hover:text-white hover:border-transparent transition-all duration-300 group overflow-hidden relative cursor-pointer"
                       title={`Share on ${platform.name}`}
                     >
                       <div 
@@ -409,7 +417,7 @@ export default function ProductModal({ isOpen, onClose, product, settings }: Pro
                       <span className="relative z-10 transition-transform duration-300 group-hover:scale-110">
                         {platform.icon}
                       </span>
-                    </a>
+                    </button>
                   ))}
                 </div>
               </div>

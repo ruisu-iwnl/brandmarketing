@@ -38,7 +38,7 @@ export default function HomeContent({ products, slides, settings }: HomeContentP
     setDirection(1);
     setCurrentHero((prev) => (prev + 1) % slides.length);
   };
-  
+
   const prevHero = () => {
     if (slides.length === 0) return;
     setDirection(-1);
@@ -56,11 +56,23 @@ export default function HomeContent({ products, slides, settings }: HomeContentP
     }
   }, []);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const productSlug = params.get("product");
+
+    if (productSlug && products.length > 0) {
+      const product = products.find(p => p.slug === productSlug);
+      if (product) {
+        setSelectedProduct(product);
+      }
+    }
+  }, [products]);
+
   return (
     <div className="min-h-screen flex flex-col selection:bg-pink-accent selection:text-foreground">
       <Navbar />
 
-      <Hero 
+      <Hero
         products={products}
         slides={slides}
         currentHero={currentHero}
@@ -70,7 +82,7 @@ export default function HomeContent({ products, slides, settings }: HomeContentP
         onSetHero={setCurrentHero}
       />
 
-      <Shop 
+      <Shop
         products={products}
         onSelectProduct={setSelectedProduct}
       />
