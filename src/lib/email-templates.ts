@@ -219,6 +219,7 @@ export const getOrderDeliveredEmail = (order: any) => {
 };
 
 export const getInquiryMerchantEmail = (data: { name: string, email: string, message: string }) => {
+  const formattedMessage = data.message.replace(/\n/g, '<br />');
   const content = `
     <h1 style="font-size: 24px; color: ${TEXT_DARK}; margin: 0 0 32px 0; font-weight: 600; letter-spacing: -0.01em;">
       New Message Received
@@ -233,7 +234,7 @@ export const getInquiryMerchantEmail = (data: { name: string, email: string, mes
     <div>
       <h2 style="font-size: 11px; font-weight: 700; color: ${PINK_ACCENT}; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 16px 0;">Message</h2>
       <p style="font-size: 15px; color: ${TEXT_DARK}; line-height: 1.8; margin: 0; opacity: 0.9; font-style: italic; background: ${PINK_BG}; padding: 24px; border-radius: 4px;">
-        "${data.message}"
+        "${formattedMessage}"
       </p>
     </div>
   `;
