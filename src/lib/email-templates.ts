@@ -217,3 +217,50 @@ export const getOrderDeliveredEmail = (order: any) => {
 
   return EmailLayout(content, { showLogo: true, centered: true, orderId: order.id });
 };
+
+export const getInquiryMerchantEmail = (data: { name: string, email: string, message: string }) => {
+  const content = `
+    <h1 style="font-size: 24px; color: ${TEXT_DARK}; margin: 0 0 32px 0; font-weight: 600; letter-spacing: -0.01em;">
+      New Message Received
+    </h1>
+    
+    <div style="margin-bottom: 32px; border-bottom: 1px solid ${PINK_BG}; padding-bottom: 24px;">
+      <h2 style="font-size: 11px; font-weight: 700; color: ${PINK_ACCENT}; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 16px 0;">From</h2>
+      <p style="font-size: 15px; color: ${TEXT_DARK}; margin: 0 0 4px 0; font-weight: 600;">${data.name}</p>
+      <p style="font-size: 14px; color: ${TEXT_DARK}; margin: 0; opacity: 0.8;">${data.email}</p>
+    </div>
+
+    <div>
+      <h2 style="font-size: 11px; font-weight: 700; color: ${PINK_ACCENT}; text-transform: uppercase; letter-spacing: 0.15em; margin: 0 0 16px 0;">Message</h2>
+      <p style="font-size: 15px; color: ${TEXT_DARK}; line-height: 1.8; margin: 0; opacity: 0.9; font-style: italic; background: ${PINK_BG}; padding: 24px; border-radius: 4px;">
+        "${data.message}"
+      </p>
+    </div>
+  `;
+
+  return EmailLayout(content, { preheader: 'Customer Inquiry' });
+};
+
+export const getInquiryCustomerEmail = (data: { name: string }) => {
+  const firstName = data.name.split(' ')[0];
+  const content = `
+    <h1 style="font-size: 32px; color: ${TEXT_DARK}; margin: 0 0 24px 0; font-weight: 400; letter-spacing: -0.03em;">
+      Message Received
+    </h1>
+    
+    <p style="font-size: 16px; color: ${TEXT_DARK}; line-height: 1.8; margin: 0 0 40px 0; opacity: 0.8; font-weight: 300;">
+      Hi ${firstName}! Thank you for reaching out to me. I've received your message and will get back to you as soon as I can.
+    </p>
+
+    <div style="background: ${PINK_BG}; padding: 32px; border-radius: 4px; text-align: center; margin-bottom: 40px;">
+      <p style="font-size: 11px; color: ${TEXT_DARK}; text-transform: uppercase; letter-spacing: 0.15em; margin: 0; opacity: 0.7;">Status</p>
+      <p style="font-size: 18px; color: ${TEXT_DARK}; margin: 8px 0 0 0; font-weight: 600;">Inquiry Logged</p>
+    </div>
+
+    <p style="font-size: 14px; color: ${TEXT_DARK}; opacity: 0.6; line-height: 1.6;">
+      In the meantime, feel free to explore more of my handcrafted collection.
+    </p>
+  `;
+
+  return EmailLayout(content, { showLogo: true, centered: true });
+};
