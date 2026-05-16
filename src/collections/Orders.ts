@@ -131,6 +131,15 @@ export const Orders: CollectionConfig = {
         readOnly: true,
       },
     },
+    {
+      name: 'processedByWebhook',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
   ],
 };
 

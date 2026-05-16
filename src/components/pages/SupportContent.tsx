@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ArrowRight, CreditCard, ShieldCheck } from "lucide-react";
-import FadeIn from "./FadeIn";
+import FadeIn from "../ui/FadeIn";
 
 const SUPPORT_TIERS = [
   {

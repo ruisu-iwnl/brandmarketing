@@ -78,6 +78,21 @@ export async function POST(req: Request) {
       });
 
       if (appliedVoucher && appliedVoucher.active) {
+        // A. Check Expiration
+        if (appliedVoucher.expirationDate) {
+          const now = new Date();
+          const exp = new Date(appliedVoucher.expirationDate);
+          if (now > exp) {
+            return NextResponse.json({ error: 'This voucher has expired.' }, { status: 400 });
+          }
+        }
+
+        // B. Check Usage Limit
+        if (appliedVoucher.usageLimit && (appliedVoucher.usageCount || 0) >= appliedVoucher.usageLimit) {
+          return NextResponse.json({ error: 'This voucher has reached its usage limit.' }, { status: 400 });
+        }
+
+        // C. Calculate Discount
         if (appliedVoucher.type === 'percentage') {
           discountCentavos = Math.round(totalAmountCentavos * (appliedVoucher.value / 100));
         } else {
@@ -86,7 +101,7 @@ export async function POST(req: Request) {
       }
     }
 
-    const finalTotalCentavos = Math.max(0, totalAmountCentavos - discountCentavos);
+    const finalTotalCentavos = Math.max(2000, totalAmountCentavos - discountCentavos); // Enforce ₱20 minimum for PayMongo
 
     // 2. Create Order in Payload (Status: Pending)
     const order = await payload.create({

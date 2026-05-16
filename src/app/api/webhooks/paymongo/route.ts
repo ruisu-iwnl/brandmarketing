@@ -64,6 +64,7 @@ export async function POST(req: Request) {
           order = await payloadCms.findByID({
             collection: 'orders',
             id: orderId,
+            depth: 0,
             overrideAccess: true,
           });
         } catch (e) {
@@ -79,6 +80,7 @@ export async function POST(req: Request) {
               equals: checkoutSessionId,
             },
           },
+          depth: 0,
           overrideAccess: true,
         });
         if (orders.docs.length > 0) order = orders.docs[0];
@@ -87,13 +89,11 @@ export async function POST(req: Request) {
       if (order) {
         // Prevent duplicate processing
         if (order.status === 'paid') {
-          console.log('[PAYMONGO-WEBHOOK] Order already marked as PAID, skipping.');
-          return NextResponse.json({ success: true });
+          console.log('[PAYMONGO-WEBHOOK] Order already marked as PAID, but checking for other updates...');
         }
 
+        // 3. Update Order Status
         console.log('[PAYMONGO-WEBHOOK] Updating Order:', order.id, 'to PAID');
-        
-        // 2. Update Order Status
         await payloadCms.update({
           collection: 'orders',
           id: order.id,
@@ -103,155 +103,117 @@ export async function POST(req: Request) {
           overrideAccess: true,
         });
 
-        // 2.5 Increment Voucher Usage
-        if (order.voucher) {
-          const voucherId = typeof order.voucher === 'object' ? order.voucher.id : order.voucher;
-          const voucher = await payloadCms.findByID({
-            collection: 'vouchers',
-            id: voucherId,
-            overrideAccess: true,
-          });
+        // 4. Side Effects (Vouchers, Inventory, Emails)
+        if (!order.processedByWebhook) {
+          console.log('[PAYMONGO-WEBHOOK] Processing side effects for order:', order.id);
 
-          if (voucher) {
-            await payloadCms.update({
-              collection: 'vouchers',
-              id: voucherId,
-              data: {
-                usageCount: (voucher.usageCount || 0) + 1,
-              },
-              overrideAccess: true,
-            });
-            console.log(`[PAYMONGO-WEBHOOK] Voucher usage incremented: ${voucherId}`);
-          }
-        }
-
-        // 3. Update Product Inventory & Order Counts
-        if (order.items && Array.isArray(order.items)) {
-          for (const item of order.items) {
-            const productId = typeof item.product === 'object' ? item.product.id : item.product;
-            
-            const product = await payloadCms.findByID({
-              collection: 'products',
-              id: productId,
-              overrideAccess: true,
-            });
-
-            if (product) {
-              await payloadCms.update({
-                collection: 'products',
-                id: productId,
-                data: {
-                  stock: Math.max(0, (product.stock || 0) - item.quantity),
-                  ordersCount: (product.ordersCount || 0) + item.quantity,
-                },
+          // 4.1 Increment Voucher Usage
+          if (order.voucher) {
+            const voucherId = typeof order.voucher === 'object' ? order.voucher.id : order.voucher;
+            try {
+              const voucher = await payloadCms.findByID({
+                collection: 'vouchers',
+                id: voucherId,
                 overrideAccess: true,
               });
-              console.log(`[PAYMONGO-WEBHOOK] Inventory synced for: ${productId}`);
+
+              if (voucher) {
+                await payloadCms.update({
+                  collection: 'vouchers',
+                  id: voucherId,
+                  data: {
+                    usageCount: (voucher.usageCount || 0) + 1,
+                  },
+                  overrideAccess: true,
+                });
+                console.log(`[PAYMONGO-WEBHOOK] Voucher usage incremented: ${voucherId}`);
+              }
+            } catch (vError) {
+              console.error(`[PAYMONGO-WEBHOOK] Failed to update voucher: ${voucherId}`, vError);
             }
           }
-        }
 
-        // 4. Notify Merchant & Customer / Patron
-        if (SMTP_USER && SMTP_PASS) {
-          try {
-            const transporter = nodemailer.createTransport({
-              host: 'smtp.gmail.com',
-              port: 465,
-              secure: true,
-              auth: { user: SMTP_USER, pass: SMTP_PASS },
-            });
+          // 4.2 Update Product Inventory
+          if (order.items && Array.isArray(order.items)) {
+            for (const item of order.items) {
+              const productId = typeof item.product === 'object' ? item.product.id : item.product;
+              try {
+                const product = await payloadCms.findByID({
+                  collection: 'products',
+                  id: productId,
+                  overrideAccess: true,
+                });
 
-            const isDonation = order.type === 'donation';
-            
-            // A. Send Merchant Notification
-            const merchantSubject = isDonation ? `New Support Gift: PHP ${order.totalAmount}` : `New Order Paid: #${order.id}`;
-            const merchantTitle = isDonation ? 'Support Gift!' : 'New Sale!';
-            const merchantMessage = isDonation 
-              ? 'A patron has just sent a gift to support your craft.' 
-              : 'A new order has been paid and is ready for packing.';
+                if (product) {
+                  await payloadCms.update({
+                    collection: 'products',
+                    id: productId,
+                    data: {
+                      stock: Math.max(0, (product.stock || 0) - item.quantity),
+                      ordersCount: (product.ordersCount || 0) + item.quantity,
+                    },
+                    overrideAccess: true,
+                  });
+                  console.log(`[PAYMONGO-WEBHOOK] Inventory synced for: ${productId}`);
+                }
+              } catch (pError) {
+                console.error(`[PAYMONGO-WEBHOOK] Failed to update inventory for: ${productId}`, pError);
+              }
+            }
+          }
 
-            await transporter.sendMail({
-              from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
-              to: CONTACT_RECEIVER_EMAIL,
-              subject: merchantSubject,
-              html: `
-                <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #FDF2F8; border-radius: 24px;">
-                  <h1 style="color: #111; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px;">${merchantTitle}</h1>
-                  <p style="color: #555; line-height: 1.6;">${merchantMessage}</p>
-                  <div style="background: white; padding: 24px; border-radius: 16px; margin: 24px 0;">
-                    <p style="margin: 0; font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.1em;">${isDonation ? 'Gift Amount' : 'Order ID'}</p>
-                    <p style="margin: 4px 0 16px 0; font-family: monospace; color: #EC4899;">${isDonation ? `PHP ${order.totalAmount}` : order.id}</p>
-                    
-                    <p style="margin: 0; font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 0.1em;">Patron / Customer</p>
-                    <p style="margin: 4px 0 0 0; color: #111;">${order.customerName}</p>
-                  </div>
-                  <a href="${process.env.NEXT_PUBLIC_SITE_URL}/admin/collections/orders/${order.id}" 
-                     style="display: inline-block; background: #111; color: white; padding: 16px 32px; border-radius: 99px; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.1em;">
-                    View in Admin
-                  </a>
-                </div>
-              `,
-            });
-            console.log('[PAYMONGO-WEBHOOK] Merchant notified');
+          // 4.3 Notify Merchant & Customer
+          if (SMTP_USER && SMTP_PASS) {
+            try {
+              const transporter = nodemailer.createTransport({
+                host: 'smtp.gmail.com',
+                port: 465,
+                secure: true,
+                auth: { user: SMTP_USER, pass: SMTP_PASS },
+              });
 
-            // B. Send Customer / Patron Thank You
-            if (order.email) {
-              const customerSubject = isDonation ? `Thank you for your support, ${order.customerName}` : `Your ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} treasures are confirmed! (#${order.id})`;
-              const customerTitle = isDonation ? 'A Heartfelt Thank You' : 'Order Confirmed';
-              const customerMessage = isDonation 
-                ? `Hi ${order.customerName}! Thank you so much for your gift. It really helps me keep making art.` 
-                : `Hi ${order.customerName}! Thanks for your order. I am so happy you like my work. I will pack it for you now!`;
-
+              const isDonation = order.type === 'donation';
+              
+              // A. Send Merchant Notification
+              const merchantSubject = isDonation ? `New Support Gift: PHP ${order.totalAmount}` : `New Order Paid: #${order.id}`;
               await transporter.sendMail({
                 from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
-                to: order.email,
-                subject: customerSubject,
-                html: `
-                  <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #FDF2F8; border-radius: 24px;">
-                    <div style="text-align: center; margin-bottom: 32px;">
-                      <span style="font-size: 10px; text-transform: uppercase; tracking: 0.2em; color: #EC4899;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</span>
-                    </div>
-                    <h1 style="color: #111; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; text-align: center;">${customerTitle}</h1>
-                    <p style="color: #555; line-height: 1.8; text-align: center; font-size: 16px;">${customerMessage}</p>
-                    
-                    <div style="background: white; padding: 32px; border-radius: 24px; margin: 32px 0; border: 1px solid #FBCFE8;">
-                      <h2 style="font-size: 10px; uppercase; tracking: 0.2em; color: #999; margin-bottom: 16px; text-align: center;">${isDonation ? 'Gift Summary' : 'Order Summary'}</h2>
-                      <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;">
-                        <span style="color: #666;">Identifier</span>
-                        <span style="font-family: monospace; color: #EC4899;">#${order.id}</span>
-                      </div>
-                      <div style="display: flex; justify-content: space-between; margin-bottom: 12px; font-size: 14px;">
-                        <span style="color: #666;">Amount</span>
-                        <span style="color: #111; font-weight: bold;">PHP ${order.totalAmount}</span>
-                      </div>
-                      <div style="display: flex; justify-content: space-between; font-size: 14px;">
-                        <span style="color: #666;">Status</span>
-                        <span style="color: #059669; font-weight: bold; text-transform: uppercase; font-size: 10px; tracking: 0.1em;">Paid & Confirmed</span>
-                      </div>
-                    </div>
-
-                    <p style="color: #999; font-size: 12px; text-align: center; line-height: 1.6; font-style: italic;">
-                      "Every item is special. Thank you for being part of the story."
-                    </p>
-                    
-                    <div style="text-align: center; margin-top: 40px;">
-                      <a href="${process.env.NEXT_PUBLIC_SITE_URL}" style="color: #EC4899; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: bold;">Visit ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</a>
-                    </div>
-                  </div>
-                `,
+                to: CONTACT_RECEIVER_EMAIL,
+                subject: merchantSubject,
+                html: `<h1>New ${isDonation ? 'Support Gift' : 'Sale'}!</h1><p>Amount: PHP ${order.totalAmount}</p>`,
               });
-              console.log('[PAYMONGO-WEBHOOK] Customer/Patron thanked');
-            }
-          } catch (emailError) {
-            console.error('[PAYMONGO-WEBHOOK] Email failed:', emailError);
-          }
-        }
 
-        // 5. Force Refresh Storefront (Clear Cache)
-        revalidatePath('/', 'layout');
-        console.log('[PAYMONGO-WEBHOOK] Storefront cache revalidated');
-      } else {
-        console.error('[PAYMONGO-WEBHOOK] Order not found for session:', checkoutSessionId);
+              // B. Send Customer Thank You
+              if (order.email) {
+                const customerSubject = isDonation ? `Thank you for your support!` : `Your order is confirmed! (#${order.id})`;
+                await transporter.sendMail({
+                  from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
+                  to: order.email,
+                  subject: customerSubject,
+                  html: `<h1>Thank You!</h1><p>We've received your ${isDonation ? 'gift' : 'order'}.</p>`,
+                });
+              }
+              console.log('[PAYMONGO-WEBHOOK] Emails sent');
+            } catch (eError) {
+              console.error('[PAYMONGO-WEBHOOK] Email failed:', eError);
+            }
+          }
+
+          // 4.4 Mark as PROCESSED
+          await payloadCms.update({
+            collection: 'orders',
+            id: order.id,
+            data: {
+              processedByWebhook: true,
+            },
+            overrideAccess: true,
+          });
+          console.log('[PAYMONGO-WEBHOOK] Side effects completed for order:', order.id);
+
+          // 5. Force Refresh Storefront
+          revalidatePath('/', 'layout');
+          console.log('[PAYMONGO-WEBHOOK] Storefront cache revalidated');
+        }
       }
     } 
     else if (eventType === 'checkout_session.expired' || eventType === 'payment.failed') {
@@ -307,3 +269,4 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }
+// End of Webhook
