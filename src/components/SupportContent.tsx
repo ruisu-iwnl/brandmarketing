@@ -88,7 +88,7 @@ export function SupportContent({ settings }: { settings: any }) {
                 Gift the <span className="italic font-serif">Artisan</span>
               </h1>
               <p className="text-foreground/60 text-lg font-light leading-relaxed mb-12 max-w-lg">
-                Li'L Caca is more than a boutique—it is a dedication to the slow, handcrafted tradition. Your support helps us source ethical materials and maintain the artistry behind every piece.
+                Li'L Caca is more than a home—it is about making things by hand. Your help lets me buy good materials and keep making art.
               </p>
 
               <div className="space-y-6">

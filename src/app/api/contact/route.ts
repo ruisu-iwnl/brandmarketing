@@ -26,7 +26,7 @@ export async function POST(req: Request) {
     const htmlContent = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #fcfcfc; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
         <div style="background-color: #ffeff3; padding: 32px; text-align: center;">
-          <h1 style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.2em; color: #1a1a1a;">${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}</h1>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.2em; color: #1a1a1a;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</h1>
           <p style="margin: 8px 0 0; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: #888;">New Message</p>
         </div>
         <div style="padding: 40px; color: #333;">
@@ -43,7 +43,7 @@ export async function POST(req: Request) {
           </div>
 
           <div style="border-top: 1px solid #eee; pt-24px; padding-top: 24px;">
-            <p style="font-size: 12px; color: #999; margin: 0;">This inquiry was sent from the official ${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'} storefront contact form.</p>
+            <p style="font-size: 12px; color: #999; margin: 0;">This inquiry was sent from the official ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} storefront contact form.</p>
           </div>
         </div>
       </div>
@@ -54,7 +54,7 @@ export async function POST(req: Request) {
       from: `"${name}" <${process.env.SMTP_USER}>`,
       to: process.env.CONTACT_RECEIVER_EMAIL,
       replyTo: email,
-      subject: `New Inquiry from ${name} | ${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}`,
+      subject: `New Inquiry from ${name} | ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}`,
       html: htmlContent,
       text: `Name: ${name}\nEmail: ${email}\n\nMessage: ${message}`,
     });
@@ -63,7 +63,7 @@ export async function POST(req: Request) {
     const thankYouHtml = `
       <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; background-color: #fcfcfc; border: 1px solid #eee; border-radius: 12px; overflow: hidden;">
         <div style="background-color: #ffeff3; padding: 32px; text-align: center;">
-          <h1 style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.2em; color: #1a1a1a;">${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}</h1>
+          <h1 style="margin: 0; font-size: 24px; font-weight: 300; letter-spacing: 0.2em; color: #1a1a1a;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</h1>
           <p style="margin: 8px 0 0; font-size: 10px; text-transform: uppercase; letter-spacing: 0.3em; color: #888;">Message Received</p>
         </div>
         <div style="padding: 40px; color: #333; text-align: center;">
@@ -73,16 +73,16 @@ export async function POST(req: Request) {
             In the meantime, feel free to explore our latest handcrafted pieces.
           </p>
           <div style="border-top: 1px solid #eee; padding-top: 24px;">
-            <p style="font-size: 12px; color: #999; margin: 0;">&copy; 2026 ${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}</p>
+            <p style="font-size: 12px; color: #999; margin: 0;">&copy; 2026 ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</p>
           </div>
         </div>
       </div>
     `;
 
     await transporter.sendMail({
-      from: `"${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}" <${process.env.SMTP_USER}>`,
+      from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${process.env.SMTP_USER}>`,
       to: email,
-      subject: `Thank you for contacting ${process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY'}`,
+      subject: `Thank you for contacting ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}`,
       html: thankYouHtml,
       text: `Hello ${name}, thank you for reaching out! We have received your message and will get back to you shortly.`,
     });

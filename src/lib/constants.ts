@@ -24,7 +24,7 @@ export const SITE_CONFIG = {
     'commissioned jewelry', 'artisan made', 'locally made',
     'weaving tradition', 'handweaving', 'textile jewelry', 'cord necklace', 'macrame jewelry', 'knotted jewelry',
     'contemporary jewelry', 'avant garde jewelry', 'editorial jewelry', 'runway accessories', 'jewelry design',
-    'independent designer', 'boutique jewelry', 'online jewelry store', 'shop jewelry', 'buy jewelry online', 'jewelry collection',
+    'independent designer', 'home jewelry', 'online jewelry store', 'shop jewelry', 'buy jewelry online', 'jewelry collection',
     'limited edition jewelry', 'one of a kind jewelry', 'exclusive jewelry', 'premium jewelry', 'high end jewelry', 'affordable luxury',
     'jewelry branding', 'jewelry marketing', 'jewelry photography', 'jewelry style', 'how to style jewelry', 'jewelry trends 2026',
     "li'l caca collection", "li'l caca shop", "li'l caca accessories", "li'l caca brand", "li'l caca international",

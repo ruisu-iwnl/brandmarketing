@@ -82,7 +82,7 @@ export function CancelContent({ orderId, isDonation, settings }: CancelContentPr
           href="/" 
           className="flex-1 border border-pink-calm/50 py-5 uppercase tracking-[0.2em] text-xs hover:bg-pink-calm/20 transition-all flex items-center justify-center gap-3"
         >
-          Return to Boutique
+          Return to Home
         </Link>
       </motion.div>
     </div>

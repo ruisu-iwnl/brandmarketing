@@ -149,7 +149,7 @@ export async function POST(req: Request) {
               : 'A new order has been paid and is ready for packing.';
 
             await transporter.sendMail({
-              from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique" <${SMTP_USER}>`,
+              from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
               to: CONTACT_RECEIVER_EMAIL,
               subject: merchantSubject,
               html: `
@@ -181,13 +181,13 @@ export async function POST(req: Request) {
                 : `Hi ${order.customerName}! Thanks for your order. I am so happy you like my work. I will pack it for you now!`;
 
               await transporter.sendMail({
-                from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique" <${SMTP_USER}>`,
+                from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
                 to: order.email,
                 subject: customerSubject,
                 html: `
                   <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #FDF2F8; border-radius: 24px;">
                     <div style="text-align: center; margin-bottom: 32px;">
-                      <span style="font-size: 10px; text-transform: uppercase; tracking: 0.2em; color: #EC4899;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique</span>
+                      <span style="font-size: 10px; text-transform: uppercase; tracking: 0.2em; color: #EC4899;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</span>
                     </div>
                     <h1 style="color: #111; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; text-align: center;">${customerTitle}</h1>
                     <p style="color: #555; line-height: 1.8; text-align: center; font-size: 16px;">${customerMessage}</p>
@@ -213,7 +213,7 @@ export async function POST(req: Request) {
                     </p>
                     
                     <div style="text-align: center; margin-top: 40px;">
-                      <a href="${process.env.NEXT_PUBLIC_SITE_URL}" style="color: #EC4899; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: bold;">Visit the Boutique</a>
+                      <a href="${process.env.NEXT_PUBLIC_SITE_URL}" style="color: #EC4899; text-decoration: none; font-size: 12px; text-transform: uppercase; letter-spacing: 0.2em; font-weight: bold;">Visit ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}</a>
                     </div>
                   </div>
                 `,

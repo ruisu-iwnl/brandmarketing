@@ -99,7 +99,7 @@ export function SuccessContent({ orderId, settings, isDonation = false }: Succes
           href="/" 
           className="flex-1 bg-foreground text-background py-5 uppercase tracking-[0.2em] text-xs hover:bg-pink-accent transition-all flex items-center justify-center gap-3 group"
         >
-          Return to Boutique
+          Return to Home
           <ArrowRight size={14} className="group-hover:translate-x-1 transition-transform" />
         </Link>
         <button 
