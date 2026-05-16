@@ -113,9 +113,14 @@ export default function Navbar() {
                         >
                           <div className="relative w-12 h-12 bg-pink-calm/20 rounded overflow-hidden shrink-0">
                             <Image src={item.product.imageStill} alt={item.product.name} fill className="object-contain p-1" />
+                            {(item.product.isSoldOut || (item.product.stock || 0) <= 0) && (
+                              <div className="absolute inset-0 bg-white/60 backdrop-blur-[1px] flex items-center justify-center">
+                                <span className="text-[6px] font-black uppercase text-red-500">Sold</span>
+                              </div>
+                            )}
                           </div>
                           <div className="flex-1 min-w-0">
-                            <p className="text-xs font-medium text-foreground uppercase tracking-wider truncate">{item.product.name}</p>
+                            <p className={`text-xs font-medium uppercase tracking-wider truncate ${item.product.isSoldOut || (item.product.stock || 0) <= 0 ? 'text-foreground/20' : 'text-foreground'}`}>{item.product.name}</p>
                             <div className="flex items-center gap-3 mt-1">
                               <div className="flex items-center border border-pink-calm rounded-md overflow-hidden bg-white-calm">
                                 <button 
@@ -127,13 +132,13 @@ export default function Navbar() {
                                 <span className="w-6 text-center text-[10px] font-medium text-foreground">{item.quantity}</span>
                                 <button 
                                   onClick={(e) => { e.stopPropagation(); updateQuantity(index, 1); }}
-                                  disabled={item.quantity >= 10}
+                                  disabled={item.quantity >= 10 || item.product.isSoldOut || (item.product.stock || 0) <= 0}
                                   className="p-1 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
                                 >
                                   <Plus size={10} />
                                 </button>
                               </div>
-                              <p className="text-[10px] text-foreground/50">₱{Number(item.product.price) * item.quantity}</p>
+                              <p className={`text-[10px] ${item.product.isSoldOut || (item.product.stock || 0) <= 0 ? 'text-foreground/10 line-through' : 'text-foreground/50'}`}>₱{Number(item.product.price) * item.quantity}</p>
                             </div>
                           </div>
                           <button 
@@ -151,9 +156,18 @@ export default function Navbar() {
                       <span>Total</span>
                       <span>₱{cartItems.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0)}</span>
                     </div>
+                    {cartItems.some(item => item.product.isSoldOut || (item.product.stock || 0) <= 0) && (
+                      <p className="text-[8px] text-red-500 font-bold uppercase tracking-widest text-center">
+                        Sold out items in cart
+                      </p>
+                    )}
                     <button 
                       onClick={() => toggleCart(true)}
-                      className="w-full bg-pink-accent text-foreground py-3 text-[10px] uppercase tracking-widest hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold"
+                      className={`w-full py-3 text-[10px] uppercase tracking-widest transition-all font-bold ${
+                        cartItems.some(item => item.product.isSoldOut || (item.product.stock || 0) <= 0)
+                        ? "bg-foreground/5 text-foreground/20 cursor-default border border-foreground/10"
+                        : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20 cursor-pointer"
+                      }`}
                     >
                       View Cart
                     </button>

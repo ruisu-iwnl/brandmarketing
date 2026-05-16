@@ -13,6 +13,7 @@ export default function CartDrawer() {
   const onClose = () => toggleCart(false);
   const subtotal = items.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0);
   const totalCount = items.reduce((acc, item) => acc + item.quantity, 0);
+  const hasSoldOutItems = items.some(item => item.product.isSoldOut || (item.product.stock || 0) <= 0);
 
   return (
     <AnimatePresence>
@@ -73,10 +74,15 @@ export default function CartDrawer() {
                               fill
                               className="object-contain p-2 group-hover:scale-110 transition-transform duration-500"
                             />
+                            {(item.product.isSoldOut || (item.product.stock || 0) <= 0) && (
+                              <div className="absolute inset-0 bg-white/80 backdrop-blur-[2px] flex items-center justify-center">
+                                <span className="text-[10px] font-black uppercase tracking-tighter text-red-500">Sold Out</span>
+                              </div>
+                            )}
                           </div>
                           <div className="flex-1 flex flex-col justify-center">
                             <div className="flex justify-between items-start mb-1">
-                              <h3 className="text-sm font-medium text-foreground uppercase tracking-wider">{item.product.name}</h3>
+                              <h3 className={`text-sm font-medium uppercase tracking-wider ${item.product.isSoldOut || (item.product.stock || 0) <= 0 ? 'text-foreground/30' : 'text-foreground'}`}>{item.product.name}</h3>
                               <button 
                                 onClick={() => onRemove(index)}
                                 className="text-foreground/30 hover:text-red-400 transition-colors cursor-pointer"
@@ -84,7 +90,11 @@ export default function CartDrawer() {
                                 <Trash2 size={14} />
                               </button>
                             </div>
-                            <p className="text-xs text-foreground/50 mb-3 font-light line-clamp-1">{item.product.description}</p>
+                            {item.product.isSoldOut || (item.product.stock || 0) <= 0 ? (
+                               <p className="text-[10px] text-red-400 font-bold uppercase tracking-widest mb-3">Item No Longer Available</p>
+                            ) : (
+                               <p className="text-xs text-foreground/50 mb-3 font-light line-clamp-1">{item.product.description}</p>
+                            )}
                             
                             <div className="flex justify-between items-end">
                               <div className="flex items-center border border-pink-calm rounded-lg overflow-hidden">
@@ -97,13 +107,15 @@ export default function CartDrawer() {
                                 <span className="w-8 text-center text-xs font-medium text-foreground">{item.quantity}</span>
                                 <button 
                                   onClick={() => onUpdateQuantity(index, 1)}
-                                  disabled={item.quantity >= 10}
+                                  disabled={item.quantity >= 10 || item.product.isSoldOut || (item.product.stock || 0) <= 0}
                                   className="p-1.5 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
                                 >
                                   <Plus size={12} />
                                 </button>
                               </div>
-                              <p className="text-sm font-medium text-foreground/80">₱{Number(item.product.price) * item.quantity}</p>
+                              <p className={`text-sm font-medium ${item.product.isSoldOut || (item.product.stock || 0) <= 0 ? 'text-foreground/20 line-through' : 'text-foreground/80'}`}>
+                                ₱{Number(item.product.price) * item.quantity}
+                              </p>
                             </div>
                           </div>
                         </motion.div>
@@ -141,10 +153,25 @@ export default function CartDrawer() {
                   <span className="text-sm uppercase tracking-widest text-foreground/60">Subtotal</span>
                   <span className="text-xl font-medium text-foreground">₱{subtotal}</span>
                 </div>
+                {hasSoldOutItems && (
+                   <p className="text-[9px] text-red-500 font-bold uppercase tracking-widest mb-4 text-center bg-red-50 py-2 rounded-lg border border-red-100">
+                     Remove sold out items to checkout
+                   </p>
+                )}
                  <Link 
-                   href="/checkout" 
-                   onClick={onClose}
-                   className="w-full bg-pink-accent text-foreground py-5 uppercase tracking-widest text-sm hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold flex items-center justify-center"
+                   href={hasSoldOutItems ? "#" : "/checkout"} 
+                   onClick={(e) => {
+                     if (hasSoldOutItems) {
+                       e.preventDefault();
+                       return;
+                     }
+                     onClose();
+                   }}
+                   className={`w-full py-5 uppercase tracking-widest text-sm transition-all font-bold flex items-center justify-center ${
+                     hasSoldOutItems 
+                       ? "bg-foreground/5 text-foreground/20 cursor-not-allowed border border-foreground/10" 
+                       : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20 cursor-pointer"
+                   }`}
                  >
                   Checkout
                 </Link>
