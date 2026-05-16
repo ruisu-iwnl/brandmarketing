@@ -27,13 +27,17 @@ export default function GetToKnowUsTeaser() {
               </Link>
             </FadeIn>
           </div>
-          <div className="flex-1 relative aspect-square w-full max-w-[500px] rounded-3xl overflow-hidden shadow-2xl">
-            <Image 
-              src="/images/products/worn/aquamarine.png" 
-              alt="Artisan at work" 
-              fill 
-              className="object-cover"
-            />
+          <div className="flex-1 relative aspect-square w-full max-w-[500px]">
+            <FadeIn delay={0.2} direction="none" className="h-full">
+              <div className="h-full rounded-3xl overflow-hidden shadow-2xl relative">
+                <Image 
+                  src="/images/products/worn/aquamarine.png" 
+                  alt="Artisan at work" 
+                  fill 
+                  className="object-cover"
+                />
+              </div>
+            </FadeIn>
           </div>
         </div>
       </section>

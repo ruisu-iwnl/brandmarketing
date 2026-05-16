@@ -60,3 +60,40 @@ html {
   scrollbar-width: thin;
   scrollbar-color: var(--pink-accent) var(--pink-calm);
 }
+
+/* Premium Editorial Typography for Pages */
+.prose-pink h1, .prose-pink h2, .prose-pink h3 {
+  margin-top: 2.5em;
+  margin-bottom: 1em;
+  line-height: 1.2;
+}
+
+.prose-pink h2 { 
+  font-size: 1.875rem; 
+  color: #d4a7ae; /* Deepened pink for readability */
+  letter-spacing: -0.02em;
+}
+.prose-pink h3 { 
+  font-size: 1.5rem; 
+  color: #d4a7ae;
+}
+
+.prose-pink p {
+  margin-bottom: 1.5em;
+  font-size: 1rem;
+  line-height: 1.8;
+}
+
+.prose-pink ul, .prose-pink ol {
+  margin-bottom: 2em;
+  padding-left: 1.5em;
+}
+
+.prose-pink li {
+  margin-bottom: 0.5em;
+}
+
+.prose-pink strong {
+  color: var(--foreground);
+  font-weight: 600;
+}

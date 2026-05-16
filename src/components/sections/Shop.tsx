@@ -5,13 +5,15 @@ import { motion, AnimatePresence } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
 import ProductCard, { Product } from "@/components/ProductCard";
 
+import { useCart } from "@/context/CartContext";
+
 interface ShopProps {
   products: Product[];
   onSelectProduct: (product: Product) => void;
-  onAddToCart: (product: Product) => void;
 }
 
-export default function Shop({ products, onSelectProduct, onAddToCart }: ShopProps) {
+export default function Shop({ products, onSelectProduct }: ShopProps) {
+  const { addToCart } = useCart();
   const [activeCategory, setActiveCategory] = useState<'all' | 'necklace' | 'bracelet'>('all');
   const [sortBy, setBy] = useState<'best-selling' | 'price-low' | 'price-high'>('best-selling');
   const [isFilterOpen, setIsFilterOpen] = useState(false);
@@ -97,7 +99,7 @@ export default function Shop({ products, onSelectProduct, onAddToCart }: ShopPro
               product={product}
               delay={0.05 * (index + 1)}
               onClick={() => onSelectProduct(product)}
-              onAddToCart={onAddToCart}
+              onAddToCart={addToCart}
             />
           ))}
         </motion.div>

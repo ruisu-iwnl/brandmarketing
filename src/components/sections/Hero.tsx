@@ -1,9 +1,12 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
-import { ChevronLeft, ChevronRight, Star } from "lucide-react";
+import { ChevronLeft, ChevronRight, Star, ShoppingCart, Check } from "lucide-react";
 import { Product } from "@/components/ProductCard";
+import { useRef, useState } from "react";
+
+import { useCart } from "@/context/CartContext";
 
 interface HeroProps {
   products: Product[];
@@ -13,7 +16,6 @@ interface HeroProps {
   onNext: () => void;
   onPrev: () => void;
   onSetHero: (index: number) => void;
-  onAddToCart: (product: Product) => void;
 }
 
 export const heroProductsData = [
@@ -103,15 +105,62 @@ export const heroProductsData = [
   },
 ];
 
-export default function Hero({ products, slides, currentHero, direction, onNext, onPrev, onSetHero, onAddToCart }: HeroProps) {
+function HeroShard({ item, index, scrollYProgress, currentHero }: { item: any, index: number, scrollYProgress: any, currentHero: number }) {
+  const y = useTransform(scrollYProgress, [0, 1], [0, 150 * (index % 2 === 0 ? 1 : 1.5)]);
+
+  return (
+    <motion.div
+      key={`${currentHero}-${index}`}
+      initial={{ y: -300, opacity: 0, rotate: -45 }}
+      animate={{ y: 0, opacity: 1, rotate: 0 }}
+      exit={{ y: 600, opacity: 0, rotate: 45 }}
+      style={{
+        left: item.x,
+        top: item.y,
+        width: item.size,
+        height: item.size,
+        y
+      }}
+      transition={{
+        duration: 1.5,
+        delay: item.delay,
+        ease: [0.22, 1, 0.36, 1]
+      }}
+      className={`absolute will-change-transform ${item.hideOnMobile ? "hidden md:block" : "block"}`}
+    >
+      {item.type === "droplet" && (
+        <div className="w-full h-full rounded-full bg-white/40 md:bg-white/60 border border-white/40 shadow-lg" />
+      )}
+      {item.type === "shard" && (
+        <div className="w-full h-full rotate-45 bg-white/30 md:bg-white/50 border border-white/50 shadow-2xl" />
+      )}
+      {item.type === "fragment" && (
+        <div className="w-full h-full bg-black/40 md:bg-black/60 border border-white/20 shadow-xl" style={{ clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" }} />
+      )}
+      {item.type === "sparkle" && (
+        <div className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] flex items-center justify-center" style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }} />
+      )}
+    </motion.div>
+  );
+}
+
+export default function Hero({ products, slides, currentHero, direction, onNext, onPrev, onSetHero }: HeroProps) {
+  const { addToCart } = useCart();
+  const [isAdded, setIsAdded] = useState(false);
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end start"]
+  });
+
   if (!slides || slides.length === 0) return <section className="h-screen w-full bg-background" />;
-  
+
   const current = slides[currentHero];
 
   if (!current) return null;
 
   return (
-    <section className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-background">
+    <section ref={sectionRef} className="relative h-screen w-full overflow-hidden flex flex-col justify-center items-center bg-background">
       {/* Sliding Background Layer */}
       <AnimatePresence initial={true} custom={direction}>
         <motion.div
@@ -135,39 +184,15 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
         >
           {/* Falling Decorative Elements Layer */}
           <div className="absolute inset-0 z-5 pointer-events-none overflow-hidden hidden md:block">
-            <AnimatePresence>
+            <AnimatePresence mode="popLayout">
               {current.decor.map((item: any, idx: number) => (
-                <motion.div
+                <HeroShard
                   key={`${currentHero}-${idx}`}
-                  initial={{ y: -300, opacity: 0, rotate: -45 }}
-                  animate={{ y: 0, opacity: 1, rotate: 0 }}
-                  exit={{ y: 600, opacity: 0, rotate: 45 }}
-                  transition={{
-                    duration: 1.5,
-                    delay: item.delay,
-                    ease: [0.22, 1, 0.36, 1]
-                  }}
-                  className={`absolute will-change-transform ${item.hideOnMobile ? "hidden md:block" : "block"}`}
-                  style={{
-                    left: item.x,
-                    top: item.y,
-                    width: item.size,
-                    height: item.size
-                  }}
-                >
-                  {item.type === "droplet" && (
-                    <div className="w-full h-full rounded-full bg-white/40 md:bg-white/60 border border-white/40 shadow-lg" />
-                  )}
-                  {item.type === "shard" && (
-                    <div className="w-full h-full rotate-45 bg-white/30 md:bg-white/50 border border-white/50 shadow-2xl" />
-                  )}
-                  {item.type === "fragment" && (
-                    <div className="w-full h-full bg-black/40 md:bg-black/60 border border-white/20 shadow-xl" style={{ clipPath: "polygon(50% 0%, 100% 38%, 82% 100%, 18% 100%, 0% 38%)" }} />
-                  )}
-                  {item.type === "sparkle" && (
-                    <div className="w-full h-full bg-white shadow-[0_0_15px_rgba(255,255,255,0.8)] flex items-center justify-center" style={{ clipPath: "polygon(50% 0%, 61% 35%, 98% 35%, 68% 57%, 79% 91%, 50% 70%, 21% 91%, 32% 57%, 2% 35%, 39% 35%)" }} />
-                  )}
-                </motion.div>
+                  item={item}
+                  index={idx}
+                  scrollYProgress={scrollYProgress}
+                  currentHero={currentHero}
+                />
               ))}
             </AnimatePresence>
           </div>
@@ -246,11 +271,11 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                 {current.averageRating > 0 ? (
                   <div className="flex gap-1">
                     {[...Array(5)].map((_, i) => (
-                      <Star 
-                        key={i} 
-                        size={14} 
-                        fill={i < current.averageRating ? "#FFD700" : "transparent"} 
-                        stroke={i < current.averageRating ? "#FFD700" : "rgba(255,255,255,0.2)"} 
+                      <Star
+                        key={i}
+                        size={14}
+                        fill={i < current.averageRating ? "#FFD700" : "transparent"}
+                        stroke={i < current.averageRating ? "#FFD700" : "rgba(255,255,255,0.2)"}
                       />
                     ))}
                   </div>
@@ -281,13 +306,47 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
 
                 <div className="flex items-center gap-6 pt-2">
                   <button
-                    onClick={() => {
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
                       const product = products.find(p => p.id === current.productId);
-                      if (product) onAddToCart(product);
+                      if (product) {
+                        addToCart(product);
+                        setIsAdded(true);
+                        setTimeout(() => setIsAdded(false), 2000);
+                      }
                     }}
-                    className="bg-white text-foreground px-8 py-4 rounded-full text-xs font-bold uppercase tracking-widest hover:scale-105 active:scale-95 transition-all shadow-xl cursor-pointer"
+                    disabled={isAdded}
+                    className={`min-w-[180px] h-14 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-xl cursor-pointer flex items-center justify-center gap-2 ${isAdded
+                        ? "bg-pink-accent text-foreground scale-105"
+                        : "bg-white text-foreground hover:scale-105 active:scale-95"
+                      }`}
                   >
-                    Add to Cart
+                    <AnimatePresence mode="wait">
+                      {isAdded ? (
+                        <motion.div
+                          key="added"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="flex items-center gap-2"
+                        >
+                          <Check size={18} />
+                          Added
+                        </motion.div>
+                      ) : (
+                        <motion.div
+                          key="add"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          className="flex items-center gap-2"
+                        >
+                          <ShoppingCart size={18} />
+                          Add to Cart
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </button>
                   <button
                     onClick={() => {

@@ -9,6 +9,7 @@ import { vercelBlobStorage } from '@payloadcms/storage-vercel-blob';
 import { Users } from "./collections/Users";
 import { Media } from "./collections/Media";
 import { Products } from "./collections/Products";
+import { Pages } from "./collections/Pages";
 
 import { Homepage } from "./globals/Homepage";
 
@@ -22,7 +23,7 @@ export default buildConfig({
       baseDir: path.resolve(dirname),
     },
   },
-  collections: [Users, Media, Products],
+  collections: [Users, Media, Products, Pages],
   globals: [Homepage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",

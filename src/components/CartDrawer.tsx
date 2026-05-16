@@ -5,15 +5,11 @@ import { X, ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
 import { CartItem } from "./ProductCard";
 
-interface CartDrawerProps {
-  isOpen: boolean;
-  onClose: () => void;
-  items: CartItem[];
-  onRemove: (index: number) => void;
-  onUpdateQuantity: (index: number, delta: number) => void;
-}
+import { useCart } from "@/context/CartContext";
 
-export default function CartDrawer({ isOpen, onClose, items, onRemove, onUpdateQuantity }: CartDrawerProps) {
+export default function CartDrawer() {
+  const { cartItems: items, isCartOpen: isOpen, toggleCart, removeFromCart: onRemove, updateQuantity: onUpdateQuantity } = useCart();
+  const onClose = () => toggleCart(false);
   const subtotal = items.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0);
   const totalCount = items.reduce((acc, item) => acc + item.quantity, 0);
 

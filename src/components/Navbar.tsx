@@ -9,14 +9,10 @@ import { Product, CartItem } from "./ProductCard";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/constants";
 
-interface NavbarProps {
-  cartItems?: CartItem[];
-  onOpenCart?: () => void;
-  onRemoveFromCart?: (index: number) => void;
-  onUpdateQuantity?: (index: number, delta: number) => void;
-}
+import { useCart } from "@/context/CartContext";
 
-export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, onUpdateQuantity }: NavbarProps) {
+export default function Navbar() {
+  const { cartItems, toggleCart, removeFromCart, updateQuantity } = useCart();
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [isCartHovered, setIsCartHovered] = useState(false);
@@ -74,7 +70,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
             onMouseLeave={() => setIsCartHovered(false)}
           >
             <button 
-              onClick={onOpenCart}
+              onClick={() => toggleCart(true)}
               className="relative text-foreground hover:text-pink-accent transition-colors p-2 cursor-pointer" 
               aria-label="Cart"
             >
@@ -123,14 +119,14 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
                             <div className="flex items-center gap-3 mt-1">
                               <div className="flex items-center border border-pink-calm rounded-md overflow-hidden bg-white-calm">
                                 <button 
-                                  onClick={(e) => { e.stopPropagation(); onUpdateQuantity?.(index, -1); }}
+                                  onClick={(e) => { e.stopPropagation(); updateQuantity(index, -1); }}
                                   className="p-1 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer"
                                 >
                                   <Minus size={10} />
                                 </button>
                                 <span className="w-6 text-center text-[10px] font-medium text-foreground">{item.quantity}</span>
                                 <button 
-                                  onClick={(e) => { e.stopPropagation(); onUpdateQuantity?.(index, 1); }}
+                                  onClick={(e) => { e.stopPropagation(); updateQuantity(index, 1); }}
                                   disabled={item.quantity >= 10}
                                   className="p-1 hover:bg-pink-calm transition-colors text-foreground/60 cursor-pointer disabled:opacity-20 disabled:cursor-not-allowed"
                                 >
@@ -141,7 +137,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
                             </div>
                           </div>
                           <button 
-                            onClick={() => onRemoveFromCart?.(index)}
+                            onClick={() => removeFromCart(index)}
                             className="opacity-0 group-hover:opacity-100 p-1 text-foreground/30 hover:text-red-400 transition-all cursor-pointer"
                           >
                             <Trash2 size={12} />
@@ -156,7 +152,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
                       <span>₱{cartItems.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0)}</span>
                     </div>
                     <button 
-                      onClick={onOpenCart}
+                      onClick={() => toggleCart(true)}
                       className="w-full bg-pink-accent text-foreground py-3 text-[10px] uppercase tracking-widest hover:shadow-lg hover:shadow-pink-accent/20 transition-all cursor-pointer font-bold"
                     >
                       View Cart

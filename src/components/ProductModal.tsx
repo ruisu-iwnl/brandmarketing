@@ -8,16 +8,18 @@ import { Product } from "./ProductCard";
 import ProductReview from "./ProductReview";
 import { trackEvent } from "@/lib/analytics";
 
+import { useCart } from "@/context/CartContext";
+
 interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: Product | null;
-  onAddToCart?: (product: Product) => void;
 }
 
 const REVIEWS_PER_PAGE = 3;
 
-export default function ProductModal({ isOpen, onClose, product, onAddToCart }: ProductModalProps) {
+export default function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
+  const { addToCart } = useCart();
   const [activeProduct, setActiveProduct] = useState<Product | null>(product);
   const [reviewPage, setReviewPage] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
@@ -53,8 +55,8 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
   }, [product]);
 
   const handleAddClick = () => {
-    if (activeProduct && onAddToCart) {
-      onAddToCart(activeProduct);
+    if (activeProduct) {
+      addToCart(activeProduct);
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
     }

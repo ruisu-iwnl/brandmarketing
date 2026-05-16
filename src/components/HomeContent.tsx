@@ -19,8 +19,6 @@ interface HomeContentProps {
 
 export default function HomeContent({ products, slides }: HomeContentProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
-  const [cartItems, setCartItems] = useState<CartItem[]>([]);
-  const [isCartOpen, setIsCartOpen] = useState(false);
   const [currentHero, setCurrentHero] = useState(0);
   const [direction, setDirection] = useState(0);
 
@@ -44,38 +42,6 @@ export default function HomeContent({ products, slides }: HomeContentProps) {
     setCurrentHero((prev) => (prev - 1 + slides.length) % slides.length);
   };
 
-  const handleAddToCart = (product: Product) => {
-    setCartItems((prev) => {
-      const existingItemIndex = prev.findIndex(
-        (item) => item.product.id === product.id && item.quantity < 10
-      );
-
-      if (existingItemIndex > -1) {
-        const newItems = [...prev];
-        newItems[existingItemIndex].quantity += 1;
-        return newItems;
-      }
-
-      return [...prev, { rowId: Math.random().toString(36).substr(2, 9), product, quantity: 1 }];
-    });
-  };
-
-  const handleUpdateQuantity = (index: number, delta: number) => {
-    setCartItems((prev) => {
-      if (!prev[index]) return prev;
-      const newQuantity = prev[index].quantity + delta;
-      if (newQuantity <= 0) return prev.filter((_, i) => i !== index);
-      if (newQuantity > 10) return prev;
-      const newItems = [...prev];
-      newItems[index].quantity = newQuantity;
-      return newItems;
-    });
-  };
-
-  const handleRemoveFromCart = (index: number) => {
-    setCartItems((prev) => prev.filter((_, i) => i !== index));
-  };
-
   useEffect(() => {
     const targetId = sessionStorage.getItem("scrollTarget");
     if (targetId) {
@@ -89,12 +55,7 @@ export default function HomeContent({ products, slides }: HomeContentProps) {
 
   return (
     <div className="min-h-screen flex flex-col selection:bg-pink-accent selection:text-foreground">
-      <Navbar
-        cartItems={cartItems}
-        onOpenCart={() => setIsCartOpen(true)}
-        onRemoveFromCart={handleRemoveFromCart}
-        onUpdateQuantity={handleUpdateQuantity}
-      />
+      <Navbar />
 
       <Hero 
         products={products}
@@ -104,13 +65,11 @@ export default function HomeContent({ products, slides }: HomeContentProps) {
         onNext={nextHero}
         onPrev={prevHero}
         onSetHero={setCurrentHero}
-        onAddToCart={handleAddToCart}
       />
 
       <Shop 
         products={products}
         onSelectProduct={setSelectedProduct}
-        onAddToCart={handleAddToCart}
       />
 
       <GetToKnowUsTeaser />
@@ -122,16 +81,9 @@ export default function HomeContent({ products, slides }: HomeContentProps) {
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         product={selectedProduct}
-        onAddToCart={handleAddToCart}
       />
 
-      <CartDrawer
-        isOpen={isCartOpen}
-        onClose={() => setIsCartOpen(false)}
-        items={cartItems}
-        onRemove={handleRemoveFromCart}
-        onUpdateQuantity={handleUpdateQuantity}
-      />
+      <CartDrawer />
     </div>
   );
 }

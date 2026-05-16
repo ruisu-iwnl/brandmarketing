@@ -49,6 +49,7 @@ export const metadata: Metadata = {
 
 import GoogleAnalytics from "@/components/GoogleAnalytics";
 import CookieConsent from "@/components/CookieConsent";
+import Providers from "@/components/Providers";
 
 export default function RootLayout({
   children,
@@ -62,7 +63,9 @@ export default function RootLayout({
     >
       <body className="min-h-full flex flex-col relative overflow-x-hidden">
         <GoogleAnalytics />
-        {children}
+        <Providers>
+          {children}
+        </Providers>
         <CookieConsent />
       </body>
     </html>

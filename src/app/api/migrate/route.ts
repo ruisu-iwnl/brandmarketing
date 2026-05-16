@@ -163,6 +163,83 @@ export async function GET() {
       });
       results.push(`Homepage Global Updated with ${heroSlides.length} slides.`);
     }
+
+    // 7. Create Legal Pages if they don't exist
+    const legalPages = [
+      {
+        title: 'Terms of Service',
+        slug: 'terms',
+        content: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'heading',
+                tag: 'h2',
+                children: [{ type: 'text', text: 'Handcrafted Quality' }]
+              },
+              {
+                type: 'paragraph',
+                children: [{ type: 'text', text: 'Each piece of jewelry from Li\'L Caca is handmade with care. Because of this, small differences between the photos and the piece you receive are a sign of its artisan nature.' }]
+              },
+              {
+                type: 'heading',
+                tag: 'h2',
+                children: [{ type: 'text', text: 'Ordering & Payment' }]
+              },
+              {
+                type: 'paragraph',
+                children: [{ type: 'text', text: 'Orders are processed upon receipt of payment. Prices are shown in Philippine Pesos (₱).' }]
+              }
+            ]
+          }
+        }
+      },
+      {
+        title: 'Privacy Policy',
+        slug: 'privacy',
+        content: {
+          root: {
+            type: 'root',
+            children: [
+              {
+                type: 'heading',
+                tag: 'h2',
+                children: [{ type: 'text', text: 'Your Information' }]
+              },
+              {
+                type: 'paragraph',
+                children: [{ type: 'text', text: 'We only use your name and contact details to process your orders and talk to you about your jewelry. We never share your data with anyone else.' }]
+              },
+              {
+                type: 'heading',
+                tag: 'h2',
+                children: [{ type: 'text', text: 'Cookies' }]
+              },
+              {
+                type: 'paragraph',
+                children: [{ type: 'text', text: 'Our site uses simple cookies to make your shopping experience better, like remembering what\'s in your cart.' }]
+              }
+            ]
+          }
+        }
+      }
+    ];
+
+    for (const pageData of legalPages) {
+      const existingPage = await (payload as any).find({
+        collection: 'pages',
+        where: { slug: { equals: pageData.slug } }
+      });
+
+      if (existingPage.docs.length === 0) {
+        await (payload as any).create({
+          collection: 'pages',
+          data: pageData
+        });
+        results.push(`Legal Page Created: ${pageData.title}`);
+      }
+    }
     
     return NextResponse.json({ 
       message: "Migration Complete", 
