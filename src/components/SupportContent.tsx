@@ -130,7 +130,7 @@ export function SupportContent({ settings }: { settings: any }) {
                       setSelectedAmount(null);
                     }}
                     placeholder="Enter Custom Amount (₱)"
-                    className="w-full bg-white border border-pink-calm/30 rounded-3xl px-8 py-6 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-white border border-pink-calm/30 rounded-3xl px-8 py-6 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                   <div className="absolute right-6 top-1/2 -translate-y-1/2 text-pink-accent/40 group-focus-within:text-pink-accent transition-colors text-[10px] uppercase tracking-widest font-bold">
                     Gift
@@ -143,7 +143,7 @@ export function SupportContent({ settings }: { settings: any }) {
           {/* Right: Form */}
           <FadeIn delay={0.3}>
             <div className="bg-white p-10 md:p-16 rounded-[2.5rem] shadow-[0_40px_100px_rgba(0,0,0,0.03)] border border-pink-calm/20">
-              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/40 mb-10 pb-6 border-b border-pink-calm/30 flex items-center justify-between">
+              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/60 mb-10 pb-6 border-b border-pink-calm/30 flex items-center justify-between">
                 Patron Details
                 {finalAmount > 0 && (
                   <span className="text-pink-accent animate-pulse">₱{finalAmount}</span>
@@ -158,24 +158,24 @@ export function SupportContent({ settings }: { settings: any }) {
 
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1 font-bold">Your Name</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Your Name</label>
                   <input
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Optional / Anonymous"
-                    className="w-full bg-pink-calm/10 border-none px-6 py-5 rounded-2xl text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/10 border-none px-6 py-5 rounded-2xl text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/40"
                   />
                 </div>
 
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1 font-bold">Email Address</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Email Address</label>
                   <input
                     required
                     type="email"
                     value={formData.email}
                     onChange={(e) => setFormData(prev => ({ ...prev, email: e.target.value }))}
                     placeholder="For your receipt"
-                    className="w-full bg-pink-calm/10 border-none px-6 py-5 rounded-2xl text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/10 border-none px-6 py-5 rounded-2xl text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/40"
                   />
                 </div>
 
@@ -191,14 +191,14 @@ export function SupportContent({ settings }: { settings: any }) {
                     </span>
                   ) : (
                     <>
-                      Gift with PayMongo
+                      Send Gift
                       <ArrowRight size={16} className="group-hover:translate-x-1 transition-transform" />
                     </>
                   )}
                 </button>
 
                 <div className="flex flex-col gap-4 pt-6 border-t border-pink-calm/30">
-                  <div className="flex items-center justify-center gap-6 text-[9px] uppercase tracking-widest text-foreground/30 font-medium">
+                  <div className="flex items-center justify-center gap-6 text-[9px] uppercase tracking-widest text-foreground/60 font-medium">
                     <div className="flex items-center gap-2">
                       <ShieldCheck size={12} className="text-pink-accent/50" />
                       Secure Gift

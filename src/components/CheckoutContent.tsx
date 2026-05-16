@@ -110,24 +110,24 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
 
           <form onSubmit={handleSubmit} className="space-y-8">
             <section>
-              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/30 mb-6 flex items-center gap-2">
+              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/50 mb-6 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-pink-accent"></span>
                 Contact Details
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Full Name</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Full Name</label>
                   <input 
                     required
                     name="name"
                     value={formData.name}
                     onChange={handleInputChange}
                     placeholder="Enter your name"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Email Address</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Email Address</label>
                   <input 
                     required
                     type="email"
@@ -135,11 +135,11 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
                     value={formData.email}
                     onChange={handleInputChange}
                     placeholder="email@example.com"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
                 <div className="md:col-span-2 space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Phone Number</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Phone Number</label>
                   <input 
                     required
                     name="phone"
@@ -149,53 +149,53 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+63 9xx xxx xxxx"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
               </div>
             </section>
 
             <section>
-              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/30 mb-6 flex items-center gap-2">
+              <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/50 mb-6 flex items-center gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-pink-accent"></span>
                 Shipping Address
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div className="md:col-span-2 space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Street Address</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Street Address</label>
                   <input 
                     required
                     name="address"
                     value={formData.address}
                     onChange={handleInputChange}
                     placeholder="House number, street, barangay"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">City</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">City</label>
                   <input 
                     required
                     name="city"
                     value={formData.city}
                     onChange={handleInputChange}
                     placeholder="Metro Manila"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Province / Region</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Province / Region</label>
                   <input 
                     required
                     name="province"
                     value={formData.province}
                     onChange={handleInputChange}
                     placeholder="NCR"
-                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
+                    className="w-full bg-pink-calm/20 border-none px-5 py-4 text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/50"
                   />
                 </div>
                 <div className="space-y-1.5">
-                  <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1">Postal Code</label>
+                  <label className="text-[10px] uppercase tracking-widest text-foreground/70 ml-1 font-bold">Postal Code</label>
                   <input 
                     required
                     name="zip"
@@ -226,7 +226,7 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
                   </>
                 )}
               </button>
-              <div className="mt-6 flex items-center justify-center gap-8 text-[10px] uppercase tracking-widest text-foreground/30">
+              <div className="mt-6 flex items-center justify-center gap-8 text-[10px] uppercase tracking-widest text-foreground/50 font-medium">
                 <div className="flex items-center gap-2">
                   <ShieldCheck size={14} className="text-pink-accent/50" />
                   Secure Payment
@@ -244,7 +244,7 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
       {/* Summary Section */}
       <div className="w-full md:w-[400px] lg:w-[500px] bg-pink-calm/10 p-8 md:p-16 lg:p-20 relative">
         <div className="sticky top-12">
-          <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/40 mb-10 pb-6 border-b border-pink-calm/30 flex items-center justify-between">
+          <h2 className="text-xs uppercase tracking-[0.3em] font-semibold text-foreground/60 mb-10 pb-6 border-b border-pink-calm/30 flex items-center justify-between">
             Your Selection
             <span className="text-[10px] font-normal text-foreground/30">({cartItems.length} items)</span>
           </h2>
@@ -273,11 +273,11 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
           </div>
 
           <div className="space-y-4 pt-10 border-t border-pink-calm/30">
-            <div className="flex justify-between items-center text-xs uppercase tracking-widest text-foreground/40">
+            <div className="flex justify-between items-center text-xs uppercase tracking-widest text-foreground/60">
               <span>Subtotal</span>
               <span>₱{subtotal}</span>
             </div>
-            <div className="flex justify-between items-center text-xs uppercase tracking-widest text-foreground/40">
+            <div className="flex justify-between items-center text-xs uppercase tracking-widest text-foreground/60">
               <span>Shipping</span>
               <span className="text-pink-accent font-medium">Complimentary</span>
             </div>
@@ -288,7 +288,7 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
           </div>
 
           <div className="mt-12 p-6 bg-white-calm/50 border border-pink-calm/30 rounded-xl">
-             <p className="text-[10px] uppercase tracking-widest text-foreground/40 leading-relaxed italic text-center">
+             <p className="text-[10px] uppercase tracking-widest text-foreground/60 leading-relaxed italic text-center">
                "Each piece is handcrafted specifically for you. Shipping within Metro Manila takes 2-3 business days."
              </p>
           </div>

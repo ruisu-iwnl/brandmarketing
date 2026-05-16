@@ -110,14 +110,14 @@ export default function Contact() {
                     name="name"
                     type="text"
                     placeholder="Your Name"
-                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
+                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground placeholder:text-foreground/50"
                     required
                   />
                   <input
                     name="email"
                     type="email"
                     placeholder="Email Address"
-                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground"
+                    className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground placeholder:text-foreground/50"
                     required
                   />
                 </div>
@@ -125,7 +125,7 @@ export default function Contact() {
                   name="message"
                   placeholder="How can we help you?"
                   rows={5}
-                  className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground resize-none"
+                  className="px-6 py-4 bg-pink-calm/30 border-none outline-none focus:ring-1 focus:ring-pink-accent w-full font-light text-foreground resize-none placeholder:text-foreground/50"
                   required
                 />
                 {/* Honeypot field for spam protection - invisible to users */}
@@ -194,7 +194,7 @@ export default function Contact() {
               href="/support"
               className="inline-block bg-pink-accent text-foreground px-8 py-3 uppercase tracking-widest text-[10px] hover:shadow-lg hover:shadow-pink-accent/20 transition-all shadow-sm cursor-pointer"
             >
-              Support via PayMongo
+              Support Me
             </Link>
           </div>
         </FadeIn>
