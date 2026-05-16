@@ -9,20 +9,20 @@ const SUPPORT_TIERS = [
   {
     id: "coffee",
     amount: 100,
-    label: "Artisan Coffee",
-    description: "Fuel a session of intricate weaving and design.",
+    label: "Coffee",
+    description: "Buy me a coffee to keep me going.",
   },
   {
     id: "materials",
     amount: 500,
-    label: "Material Gift",
-    description: "Help source the finest crystals and silk cords.",
+    label: "Materials",
+    description: "Help me buy new crystals and beads.",
   },
   {
     id: "studio",
     amount: 1000,
-    label: "Studio Support",
-    description: "Sustain the handcrafted tradition and studio space.",
+    label: "Studio",
+    description: "Support my craft. hehe",
   },
 ];
 
@@ -31,7 +31,7 @@ export function SupportContent({ settings }: { settings: any }) {
   const [customAmount, setCustomAmount] = useState<string>("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -45,7 +45,7 @@ export function SupportContent({ settings }: { settings: any }) {
       setError("Minimum support amount is ₱100");
       return;
     }
-    
+
     setIsSubmitting(true);
     setError(null);
 
@@ -74,10 +74,10 @@ export function SupportContent({ settings }: { settings: any }) {
     <div className="pt-40 pb-24 px-8 relative overflow-hidden">
       {/* Background Aesthetics */}
       <div className="absolute top-0 right-0 w-[60vw] h-[60vw] bg-pink-accent/5 blur-[120px] rounded-full -translate-y-1/2 translate-x-1/2" />
-      
+
       <div className="max-w-6xl mx-auto relative z-10">
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-20 items-start">
-          
+
           {/* Left: Content */}
           <div>
             <FadeIn>
@@ -90,13 +90,13 @@ export function SupportContent({ settings }: { settings: any }) {
               <p className="text-foreground/60 text-lg font-light leading-relaxed mb-12 max-w-lg">
                 Li'L Caca is more than a boutique—it is a dedication to the slow, handcrafted tradition. Your support helps us source ethical materials and maintain the artistry behind every piece.
               </p>
-              
+
               <div className="space-y-6">
                 <div className="flex items-center gap-4 text-xs uppercase tracking-widest text-foreground/40 font-medium">
                   <span className="w-12 h-px bg-pink-accent/30" />
                   Select your Gift Tier
                 </div>
-                
+
                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                   {SUPPORT_TIERS.map((tier) => (
                     <button
@@ -105,11 +105,10 @@ export function SupportContent({ settings }: { settings: any }) {
                         setSelectedAmount(tier.amount);
                         setCustomAmount("");
                       }}
-                      className={`group p-6 text-left rounded-3xl transition-all duration-500 border ${
-                        selectedAmount === tier.amount && !customAmount
-                          ? "bg-foreground text-background border-foreground shadow-xl shadow-foreground/10"
-                          : "bg-white border-pink-calm/30 text-foreground hover:border-pink-accent/50"
-                      }`}
+                      className={`group p-6 text-left rounded-3xl transition-all duration-500 border ${selectedAmount === tier.amount && !customAmount
+                        ? "bg-foreground text-background border-foreground shadow-xl shadow-foreground/10"
+                        : "bg-white border-pink-calm/30 text-foreground hover:border-pink-accent/50"
+                        }`}
                     >
                       <div className={`mb-4 transition-colors ${selectedAmount === tier.amount && !customAmount ? "text-pink-accent" : "text-pink-accent/40"}`}>
                         {/* Tier identifier */}
@@ -121,9 +120,9 @@ export function SupportContent({ settings }: { settings: any }) {
                     </button>
                   ))}
                 </div>
-                
+
                 <div className="relative mt-8 group">
-                  <input 
+                  <input
                     type="number"
                     value={customAmount}
                     onChange={(e) => {
@@ -160,17 +159,17 @@ export function SupportContent({ settings }: { settings: any }) {
               <form onSubmit={handleSubmit} className="space-y-8">
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1 font-bold">Your Name</label>
-                  <input 
+                  <input
                     value={formData.name}
                     onChange={(e) => setFormData(prev => ({ ...prev, name: e.target.value }))}
                     placeholder="Optional / Anonymous"
                     className="w-full bg-pink-calm/10 border-none px-6 py-5 rounded-2xl text-sm focus:ring-1 focus:ring-pink-accent/30 outline-none transition-all placeholder:text-foreground/20"
                   />
                 </div>
-                
+
                 <div className="space-y-1.5">
                   <label className="text-[10px] uppercase tracking-widest text-foreground/40 ml-1 font-bold">Email Address</label>
-                  <input 
+                  <input
                     required
                     type="email"
                     value={formData.email}
@@ -180,7 +179,7 @@ export function SupportContent({ settings }: { settings: any }) {
                   />
                 </div>
 
-                <button 
+                <button
                   type="submit"
                   disabled={isSubmitting || finalAmount < 100}
                   className="w-full bg-foreground text-background py-6 rounded-2xl uppercase tracking-[0.3em] text-xs hover:bg-pink-accent transition-all flex items-center justify-center gap-3 disabled:opacity-50 disabled:cursor-not-allowed group shadow-xl shadow-foreground/10"
