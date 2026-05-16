@@ -35,6 +35,35 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     localStorage.setItem('cart', JSON.stringify(cartItems));
   }, [cartItems]);
 
+  // Synchronize cart with latest stock from server when drawer opens
+  useEffect(() => {
+    if (isCartOpen && cartItems.length > 0) {
+      const syncCart = async () => {
+        try {
+          // Fetch latest product data for all items currently in cart
+          const ids = cartItems.map(item => item.product.id).join(',');
+          const res = await fetch(`/api/products?where[id][in]=${ids}&limit=100`);
+          const data = await res.json();
+          
+          if (data && data.docs) {
+            setCartItems(prev => prev.map(item => {
+              const latestProduct = data.docs.find((p: any) => p.id === item.product.id);
+              if (latestProduct) {
+                // Update the product info while preserving quantity and rowId
+                return { ...item, product: latestProduct };
+              }
+              return item;
+            }));
+          }
+        } catch (error) {
+          console.error("Cart Sync Error:", error);
+        }
+      };
+      
+      syncCart();
+    }
+  }, [isCartOpen]); // Only trigger when opening/closing
+
   const lastActionTime = React.useRef(0);
 
   const addToCart = React.useCallback((product: Product) => {
