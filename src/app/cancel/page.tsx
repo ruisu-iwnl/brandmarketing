@@ -3,13 +3,13 @@ import { CancelContent } from "../../components/CancelContent";
 
 export const dynamic = 'force-dynamic';
 
-export default async function CancelPage({ searchParams }: { searchParams: Promise<{ orderId?: string }> }) {
-  const { orderId } = await searchParams;
+export default async function CancelPage({ searchParams }: { searchParams: Promise<{ orderId?: string, isDonation?: string }> }) {
+  const { orderId, isDonation } = await searchParams;
   const settings = await getStoreSettings();
   
   return (
     <main className="min-h-screen bg-white-calm">
-      <CancelContent orderId={orderId} settings={settings} />
+      <CancelContent orderId={orderId} isDonation={isDonation === 'true'} settings={settings} />
     </main>
   );
 }

@@ -59,7 +59,7 @@ export async function POST(req: Request) {
             ],
             payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
             success_url: `${baseUrl}/success?orderId=${donation.id}&isDonation=true`,
-            cancel_url: `${baseUrl}/cancel?orderId=${donation.id}`,
+            cancel_url: `${baseUrl}/cancel?orderId=${donation.id}&isDonation=true`,
             customer_email: email,
             description: `Support Gift from ${customerName || 'Anonymous'}`,
             reference_number: donation.id.toString(),

@@ -8,10 +8,11 @@ import { SITE_CONFIG } from "@/lib/constants";
 
 interface CancelContentProps {
   orderId?: string;
+  isDonation?: boolean;
   settings: any;
 }
 
-export function CancelContent({ orderId, settings }: CancelContentProps) {
+export function CancelContent({ orderId, isDonation, settings }: CancelContentProps) {
   useEffect(() => {
     if (orderId) {
       fetch(`/api/orders/${orderId}/cancel`, { method: 'POST' })
@@ -71,10 +72,10 @@ export function CancelContent({ orderId, settings }: CancelContentProps) {
         className="flex flex-col sm:flex-row gap-4 w-full"
       >
         <Link 
-          href="/checkout" 
+          href={isDonation ? "/support" : "/checkout"} 
           className="flex-1 bg-foreground text-background py-5 uppercase tracking-[0.2em] text-xs hover:bg-pink-accent transition-all flex items-center justify-center gap-3 group"
         >
-          Try Again
+          {isDonation ? "Return to Support" : "Try Again"}
           <ArrowLeft size={14} className="group-reverse-hover:-translate-x-1 transition-transform" />
         </Link>
         <Link 
