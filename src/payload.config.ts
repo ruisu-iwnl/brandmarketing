@@ -22,6 +22,9 @@ export default buildConfig({
     importMap: {
       baseDir: path.resolve(dirname),
     },
+    components: {
+      afterDashboard: ['@/components/admin/BrandIntelligenceToolbox'],
+    },
   },
   collections: [Users, Media, Products, Pages],
   globals: [Homepage],

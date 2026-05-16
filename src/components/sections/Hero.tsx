@@ -316,11 +316,14 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                         setTimeout(() => setIsAdded(false), 2000);
                       }
                     }}
-                    disabled={isAdded}
-                    className={`min-w-[180px] h-14 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-xl cursor-pointer flex items-center justify-center gap-2 ${isAdded
-                        ? "bg-pink-accent text-foreground scale-105"
+                    disabled={isAdded || products.find(p => p.id === current.productId)?.isSoldOut}
+                    className={`min-w-[180px] h-14 rounded-full text-xs font-bold uppercase tracking-widest transition-all shadow-xl cursor-pointer flex items-center justify-center gap-2 ${
+                      isAdded 
+                      ? "bg-pink-accent text-foreground scale-105" 
+                      : (products.find(p => p.id === current.productId)?.isSoldOut)
+                        ? "bg-foreground/20 text-foreground/40 cursor-not-allowed shadow-none"
                         : "bg-white text-foreground hover:scale-105 active:scale-95"
-                      }`}
+                    }`}
                   >
                     <AnimatePresence mode="wait">
                       {isAdded ? (
@@ -333,6 +336,15 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                         >
                           <Check size={18} />
                           Added
+                        </motion.div>
+                      ) : products.find(p => p.id === current.productId)?.isSoldOut ? (
+                        <motion.div
+                          key="soldout"
+                          initial={{ opacity: 0, y: 10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                        >
+                          Sold Out
                         </motion.div>
                       ) : (
                         <motion.div

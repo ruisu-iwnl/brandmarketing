@@ -1,29 +1,6 @@
 import Image from "next/image";
 import FadeIn from "@/components/FadeIn";
-
-export interface Review {
-  id: string;
-  author: string;
-  rating: number;
-  date: string;
-  content: string;
-}
-
-export interface Product {
-  id: string;
-  name: string;
-  slug: string;
-  price: number | string;
-  description: string;
-  category: 'necklace' | 'bracelet';
-  ordersCount: number;
-  imageStill: string;
-  imageWorn: string;
-  gallery?: string[];
-  video?: string;
-  stock: number;
-  reviews?: Review[];
-}
+import { Review, Product } from "@/types/product";
 
 export interface CartItem {
   rowId: string;
@@ -52,6 +29,19 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
             onClick={onClick} 
             className="aspect-[4/5] mb-6 overflow-hidden relative cursor-pointer rounded-xl bg-pink-calm/10 group-hover:bg-pink-calm/20 transition-colors duration-500"
           >
+            {/* Badges */}
+            <div className="absolute top-4 left-4 z-20 flex flex-col gap-2">
+              {product.isSoldOut ? (
+                <span className="bg-foreground text-white text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shadow-lg">
+                  Sold Out
+                </span>
+              ) : product.newArrival && (
+                <span className="bg-pink-accent text-foreground text-[9px] font-bold uppercase tracking-[0.2em] px-3 py-1.5 rounded-full shadow-lg">
+                  New Collection
+                </span>
+              )}
+            </div>
+
             {/* Worn Image (Hover) */}
             <div className="absolute inset-0 opacity-0 group-hover/card:opacity-100 transition-opacity duration-700">
               <Image
@@ -95,7 +85,10 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
               </span>
               
               <div className="shrink-0">
-                <AddToCartButton onClick={() => onAddToCart?.(product)} />
+                <AddToCartButton 
+                  onClick={() => onAddToCart?.(product)} 
+                  disabled={product.isSoldOut} 
+                />
               </div>
             </div>
           </div>

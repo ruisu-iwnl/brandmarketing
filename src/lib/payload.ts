@@ -8,6 +8,11 @@ export async function getProducts() {
       collection: 'products',
       limit: 100,
       depth: 2,
+      where: {
+        isArchived: {
+          not_equals: true,
+        },
+      },
     });
     
     return data.docs.map((doc: any) => ({
@@ -19,6 +24,8 @@ export async function getProducts() {
       category: doc.category,
       ordersCount: doc.ordersCount || 0,
       stock: doc.stock || 0,
+      newArrival: doc.newArrival && (new Date().getTime() - new Date(doc.createdAt).getTime() < 14 * 24 * 60 * 60 * 1000),
+      isSoldOut: doc.isSoldOut,
       imageStill: doc.imageStill?.url || '/images/hero2.png',
       imageWorn: doc.imageWorn?.url || '/images/hero2.png',
       gallery: (doc.gallery || []).map((g: any) => g.image?.url).filter(Boolean),
@@ -39,7 +46,12 @@ export async function getHeroSlides() {
       depth: 2,
     });
     
-    const slides = (data as any).heroSlides || [];
+    const allSlides = (data as any).heroSlides || [];
+    
+    // Filter out slides where the product is archived or missing
+    const activeSlides = allSlides.filter((slide: any) => 
+      slide.product && slide.product.isArchived !== true
+    );
     
     const defaultDecor = [
       { x: "15%", y: "20%", size: 40, delay: 0.1 },
@@ -52,7 +64,7 @@ export async function getHeroSlides() {
       { x: "90%", y: "60%", size: 40, delay: 0.8 },
     ];
 
-    return slides.map((slide: any) => {
+    return activeSlides.map((slide: any) => {
       const reviews = slide.product?.reviews || [];
       const averageRating = reviews.length > 0 
         ? Math.round(reviews.reduce((acc: number, r: any) => acc + r.rating, 0) / reviews.length) 

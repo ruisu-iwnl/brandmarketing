@@ -1,4 +1,7 @@
 import { CollectionConfig } from 'payload';
+import path from 'path';
+import fs from 'fs';
+import { productsData } from '@/data/products';
 
 export const Products: CollectionConfig = {
   slug: 'products',
@@ -13,8 +16,19 @@ export const Products: CollectionConfig = {
     beforeChange: [
       async ({ data, req, originalDoc }) => {
         const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Joulery';
-        
         if (!data.meta) data.meta = {};
+        
+        // 0. Auto-generate Slug from Name if missing
+        if (data.name && !data.slug) {
+          data.slug = data.name
+            .toLowerCase()
+            .replace(/[^a-z0-9]+/g, '-')
+            .replace(/(^-|-$)+/g, '');
+        }
+
+        // 0.5 Auto-calculate Sold Out status
+        const currentStock = data.stock ?? originalDoc?.stock ?? 0;
+        data.isSoldOut = currentStock <= 0;
 
         if (data.name && !data.meta.title) {
           data.meta.title = `${data.name} | ${siteName}`;
@@ -29,20 +43,21 @@ export const Products: CollectionConfig = {
         }
 
         // 1. Calculate Revenue & Inventory Value
-        const price = data.price || 0;
-        const orders = data.ordersCount || 0;
-        const stock = data.stock || 0;
-        const views = data.viewsCount || 0;
+        const price = data.price ?? originalDoc?.price ?? 0;
+        const orders = data.ordersCount ?? originalDoc?.ordersCount ?? 0;
+        const stock = data.stock ?? originalDoc?.stock ?? 0;
+        const views = data.viewsCount ?? originalDoc?.viewsCount ?? 0;
 
         data.totalRevenue = price * orders;
         data.inventoryValue = price * stock;
 
-        // 2. Calculate Conversion Rate (capped at 100%)
+        // 2. Calculate Conversion Rate (capped at 100%, 2 decimal places)
         if (views > 0) {
-          const rate = Math.min(100, Math.round((orders / views) * 100));
+          const rawRate = (orders / views) * 100;
+          const rate = Math.min(100, rawRate).toFixed(2);
           (data as any).conversionRate = `${rate}%`;
         } else {
-          (data as any).conversionRate = "0%";
+          (data as any).conversionRate = "0.00%";
         }
 
         // 3. Calculate Average Rating from embedded reviews array
@@ -58,6 +73,111 @@ export const Products: CollectionConfig = {
       },
     ],
   },
+  endpoints: [
+    {
+      path: '/reset-analytics',
+      method: 'post',
+      handler: async (req) => {
+        if (!req.user) return new Response('Unauthorized', { status: 401 });
+        
+        const payload = req.payload as any;
+        const products = await payload.find({
+          collection: 'products',
+          limit: 100,
+        });
+
+        for (const doc of products.docs) {
+          await payload.update({
+            collection: 'products',
+            id: doc.id,
+            data: {
+              viewsCount: 0,
+              ordersCount: 0,
+              reviews: [],
+              averageRating: 0,
+              newArrival: true,
+              isArchived: false,
+            },
+          });
+        }
+
+        return new Response(JSON.stringify({ message: 'Analytics Reset Successful' }), { status: 200 });
+      },
+    },
+    {
+      path: '/migrate',
+      method: 'post',
+      handler: async (req) => {
+        if (!req.user) return new Response('Unauthorized', { status: 401 });
+        
+        const payload = req.payload as any;
+        const results = [];
+        const realProducts = productsData.filter(p => p.imageStill && !p.imageStill.includes('placeholder.png'));
+
+        for (const p of realProducts) {
+          const existing = await payload.find({
+            collection: 'products',
+            where: { name: { equals: p.name } }
+          });
+
+          if (existing.docs.length === 0) {
+            // Logic for uploading media would go here, 
+            // but for simplicity in this endpoint, we'll assume media exists 
+            // or just create the product record if it's new.
+            // Actually, we'll just log that it needs full migration if media missing.
+            results.push(`Skipped ${p.name}: Use full /api/migrate for media uploads.`);
+          } else {
+            await payload.update({
+              collection: 'products',
+              id: existing.docs[0].id,
+              data: {
+                newArrival: true,
+                isArchived: false,
+                viewsCount: 0,
+                ordersCount: 0,
+              }
+            });
+            results.push(`Updated ${p.name}`);
+          }
+        }
+
+        return new Response(JSON.stringify({ message: 'Migration/Sync Complete', details: results }), { status: 200 });
+      },
+    },
+    {
+      path: '/cleanup',
+      method: 'post',
+      handler: async (req) => {
+        if (!req.user) return new Response('Unauthorized', { status: 401 });
+        
+        const payload = req.payload as any;
+        const allMedia = await payload.find({ collection: 'media', limit: 1000 });
+        const allProducts = await payload.find({ collection: 'products', limit: 1000 });
+        
+        const usedMediaIds = new Set();
+        allProducts.docs.forEach((p: any) => {
+          if (p.imageStill?.id) usedMediaIds.add(p.imageStill.id);
+          if (p.imageWorn?.id) usedMediaIds.add(p.imageWorn.id);
+          (p.gallery || []).forEach((g: any) => {
+            if (g.image?.id) usedMediaIds.add(g.image.id);
+          });
+        });
+
+        let deletedCount = 0;
+        for (const media of allMedia.docs) {
+          if (!usedMediaIds.has(media.id)) {
+            await payload.delete({
+              collection: 'media',
+              id: media.id,
+            });
+            deletedCount++;
+          }
+        }
+
+        return new Response(JSON.stringify({ message: `Cleanup Complete. Removed ${deletedCount} unused media files.` }), { status: 200 });
+      },
+    },
+  ],
   fields: [
     {
       name: 'name',
@@ -67,17 +187,50 @@ export const Products: CollectionConfig = {
     {
       name: 'slug',
       type: 'text',
-      required: true,
+      required: false,
       unique: true,
       index: true,
       admin: {
-        description: 'Used for SEO-friendly URLs (e.g., aquamarine-silk-necklace)',
+        description: 'Auto-generated from name if left blank. Used for SEO-friendly URLs.',
+        position: 'sidebar',
+      },
+    },
+    {
+      name: 'newArrival',
+      type: 'checkbox',
+      label: 'New Arrival',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Shows a "New Collection" badge on the storefront.',
+      },
+    },
+    {
+      name: 'isSoldOut',
+      type: 'checkbox',
+      label: 'Sold Out',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Automatically set when stock reaches 0.',
+      },
+    },
+    {
+      name: 'isArchived',
+      type: 'checkbox',
+      label: 'Archive Product',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Archived products are hidden from the store but kept for analytics.',
       },
     },
     {
       name: 'price',
       type: 'number',
       required: true,
+      min: 0,
     },
     {
       name: 'description',
@@ -98,6 +251,7 @@ export const Products: CollectionConfig = {
       type: 'number',
       required: true,
       defaultValue: 10,
+      min: 0,
     },
     {
       name: 'ordersCount',
@@ -106,6 +260,7 @@ export const Products: CollectionConfig = {
       defaultValue: 0,
       admin: {
         description: 'Used for sorting by "Best Selling"',
+        readOnly: true,
       },
     },
     {

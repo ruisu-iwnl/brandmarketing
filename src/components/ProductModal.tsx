@@ -48,9 +48,17 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
       setIsAdded(false);
       trackEvent("view_item", "engagement", product.name);
 
-      // Increment view count in Payload
-      fetch(`/api/products/${product.id}/view`, { method: 'POST' })
-        .catch(err => console.error('Failed to increment view count:', err));
+      // Increment view count in Payload (with Local Storage deduplication)
+      const viewKey = `viewed_v1_${product.id}`;
+      const alreadyViewed = localStorage.getItem(viewKey);
+
+      if (!alreadyViewed) {
+        fetch(`/api/products/${product.id}/view`, { method: 'POST' })
+          .then(() => {
+            localStorage.setItem(viewKey, Date.now().toString());
+          })
+          .catch(err => console.error('Failed to increment view count:', err));
+      }
     }
   }, [product]);
 

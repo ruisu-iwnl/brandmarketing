@@ -8,9 +8,10 @@ import { trackEvent } from "@/lib/analytics";
 interface AddToCartButtonProps {
   onClick: (e: React.MouseEvent) => void;
   className?: string;
+  disabled?: boolean;
 }
 
-export default function AddToCartButton({ onClick, className = "" }: AddToCartButtonProps) {
+export default function AddToCartButton({ onClick, className = "", disabled = false }: AddToCartButtonProps) {
   const [isAdded, setIsAdded] = useState(false);
 
   const handleClick = (e: React.MouseEvent) => {
@@ -26,11 +27,13 @@ export default function AddToCartButton({ onClick, className = "" }: AddToCartBu
     ? "bg-white border border-pink-accent text-pink-accent w-28" 
     : "bg-pink-accent text-foreground hover:shadow-lg hover:shadow-pink-accent/20 w-10 md:w-auto";
 
+  const disabledStyles = (disabled && !isAdded) ? "opacity-30 cursor-not-allowed grayscale" : "";
+
   return (
     <button
       onClick={handleClick}
-      disabled={isAdded}
-      className={`${baseStyles} ${stateStyles} ${className}`.trim()}
+      disabled={isAdded || disabled}
+      className={`${baseStyles} ${stateStyles} ${disabledStyles} ${className}`.trim()}
     >
       <AnimatePresence mode="wait">
         {isAdded ? (
