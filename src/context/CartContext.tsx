@@ -49,8 +49,22 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
             setCartItems(prev => prev.map(item => {
               const latestProduct = data.docs.find((p: any) => p.id === item.product.id);
               if (latestProduct) {
-                // Update the product info while preserving quantity and rowId
-                return { ...item, product: latestProduct };
+                // IMPORTANT: Extract URL from media objects if they are populated,
+                // otherwise keep existing URLs to avoid breaking the UI.
+                return { 
+                  ...item, 
+                  product: {
+                    ...item.product,
+                    stock: latestProduct.stock,
+                    isSoldOut: latestProduct.isSoldOut,
+                    // Preserve or update URLs correctly
+                    imageStill: latestProduct.imageStill?.url || item.product.imageStill,
+                    imageWorn: latestProduct.imageWorn?.url || item.product.imageWorn,
+                    gallery: Array.isArray(latestProduct.gallery) 
+                      ? latestProduct.gallery.map((g: any) => g.image?.url || g.url).filter(Boolean)
+                      : item.product.gallery
+                  }
+                };
               }
               return item;
             }));
