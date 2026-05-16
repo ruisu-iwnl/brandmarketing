@@ -88,7 +88,7 @@ export function SupportContent({ settings }: { settings: any }) {
                 Gift the <span className="italic font-serif">Artisan</span>
               </h1>
               <p className="text-foreground/60 text-lg font-light leading-relaxed mb-12 max-w-lg">
-                Joulery is more than a boutique—it is a dedication to the slow, handcrafted tradition. Your support helps us source ethical materials and maintain the artistry behind every piece.
+                Li'L Caca is more than a boutique—it is a dedication to the slow, handcrafted tradition. Your support helps us source ethical materials and maintain the artistry behind every piece.
               </p>
               
               <div className="space-y-6">

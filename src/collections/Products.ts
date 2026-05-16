@@ -15,7 +15,7 @@ export const Products: CollectionConfig = {
   hooks: {
     beforeChange: [
       async ({ data, req, originalDoc }) => {
-        const siteName = process.env.NEXT_PUBLIC_SITE_NAME || 'Joulery';
+        const siteName = process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca";
         if (!data.meta) data.meta = {};
         
         // 0. Auto-generate Slug from Name if missing

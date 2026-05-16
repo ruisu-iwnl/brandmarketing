@@ -26,7 +26,7 @@ export async function POST(req: Request) {
       data: {
         type: 'donation',
         customerName: customerName || 'Anonymous',
-        email: email || 'anonymous@joulery.com',
+        email: email || "anonymous@lilcaca.com",
         totalAmount: amount,
         status: 'pending',
         items: [], // Donations have no product items
@@ -53,7 +53,7 @@ export async function POST(req: Request) {
                 currency: 'PHP',
                 amount: Math.round(amount * 100),
                 description: 'Artisan Support Gift',
-                name: 'Support Joulery',
+                name: "Support Li'L Caca",
                 quantity: 1,
               },
             ],

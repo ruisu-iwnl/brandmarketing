@@ -1,6 +1,6 @@
 export const SITE_CONFIG = {
-  name: process.env.NEXT_PUBLIC_SITE_NAME || 'JOULERY',
-  title: process.env.NEXT_PUBLIC_SITE_TITLE || 'JOULERY | Creative Handcrafted Items',
+  name: process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca",
+  title: process.env.NEXT_PUBLIC_SITE_TITLE || "Li'L Caca | Creative Handcrafted Items",
   description: process.env.NEXT_PUBLIC_SITE_DESCRIPTION || 'Exclusive collection of handwoven necklaces and bracelets meticulously handcrafted for a timeless, editorial look.',
   url: process.env.NEXT_PUBLIC_SITE_URL || 'http://localhost:3000',
   ogImage: process.env.NEXT_PUBLIC_SITE_OG_IMAGE || '/images/aquamarine.png',
@@ -27,7 +27,7 @@ export const SITE_CONFIG = {
     'independent designer', 'boutique jewelry', 'online jewelry store', 'shop jewelry', 'buy jewelry online', 'jewelry collection',
     'limited edition jewelry', 'one of a kind jewelry', 'exclusive jewelry', 'premium jewelry', 'high end jewelry', 'affordable luxury',
     'jewelry branding', 'jewelry marketing', 'jewelry photography', 'jewelry style', 'how to style jewelry', 'jewelry trends 2026',
-    'joulery collection', 'joulery shop', 'joulery accessories', 'joulery brand', 'joulery international',
+    "li'l caca collection", "li'l caca shop", "li'l caca accessories", "li'l caca brand", "li'l caca international",
 
     // --- Aesthetic & Style ---
     'alahas', 'kwintas', 'pulseras', 'hikaw', 'singsing', 'ginto', 'pilak', 'perlas', 'hiyas', 'mutya', 'yaman',
@@ -36,16 +36,16 @@ export const SITE_CONFIG = {
     'magandang alahas', 'regalo para sa kanya', 
     'damit at alahas', 'suot na sining', 'makulay na hinabi', 'matibay na kwintas',
     'pulseras na gawa sa kamay', 'regalo sa kaarawan', 'regalo sa anibersaryo', 'pangkasal na alahas', 'abay na alahas',
-    'natatanging disenyo', 'sariling disenyo', 'likhang joulery', 'tatak joulery', 
+    'natatanging disenyo', 'sariling disenyo', "likhang li'l caca", "tatak li'l caca", 
     'alahas ng dagat', 'alahas ng bundok', 'katutubong sining', 'habing kamay',
     'sinulid at hiyas', 'kristal na puti', 'kristal na lila', 'kristal na asul', 'alahas na pambabae',
     'alahas na panlalaki', 'regalo para sa nanay', 'regalo para sa asawa', 'regalo para sa kasintahan', 'murang alahas',
     'mamahaling alahas', 'eleganteng alahas', 'simpleng alahas', 'modernong alahas', 'tradisyonal na disenyo',
-    'likha ng kamay', 'sining ng paghabi', 'paghabi ng pangarap', 'joulery accessories',
+    'likha ng kamay', 'sining ng paghabi', 'paghabi ng pangarap', "li'l caca accessories",
     'alahas na may kahulugan', 'alahas na may kwento', 'kwento ng artisan', 'suportahan ang lokal', 'bili ng lokal',
     'online shop', 'tindahan ng alahas', 'tindahan ng kwintas', 'tindahan ng pulseras', 'mura at magandang alahas',
     'de-kalidad na alahas', 'totoong ginto', 'totoong pilak', 'totoong perlas', 'alahas na matibay', 'palamuti sa katawan',
-    'sining na naisusuot', 'hiyas ng katimugan', 'hiyas ng hilaga', 'hiyas ng gitna', 'perlas ng joulery',
+    'sining na naisusuot', 'hiyas ng katimugan', 'hiyas ng hilaga', 'hiyas ng gitna', "perlas ng li'l caca",
 
     // --- English Set 2 (100+) ---
     'luxury lifestyle', 'editorial fashion', 'vogue jewelry', 'harpers bazaar jewelry', 'jewelry addict', 'jewelry lover',

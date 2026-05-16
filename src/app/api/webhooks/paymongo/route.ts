@@ -149,7 +149,7 @@ export async function POST(req: Request) {
               : 'A new order has been paid and is ready for packing.';
 
             await transporter.sendMail({
-              from: `"JOULERY Boutique" <${SMTP_USER}>`,
+              from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique" <${SMTP_USER}>`,
               to: CONTACT_RECEIVER_EMAIL,
               subject: merchantSubject,
               html: `
@@ -174,20 +174,20 @@ export async function POST(req: Request) {
 
             // B. Send Customer / Patron Thank You
             if (order.email) {
-              const customerSubject = isDonation ? `Thank you for your support, ${order.customerName}` : `Your Joulery treasures are confirmed! (#${order.id})`;
+              const customerSubject = isDonation ? `Thank you for your support, ${order.customerName}` : `Your ${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} treasures are confirmed! (#${order.id})`;
               const customerTitle = isDonation ? 'A Heartfelt Thank You' : 'Order Confirmed';
               const customerMessage = isDonation 
                 ? `Hi ${order.customerName}! Thank you so much for your gift. It really helps me keep making art.` 
                 : `Hi ${order.customerName}! Thanks for your order. I am so happy you like my work. I will pack it for you now!`;
 
               await transporter.sendMail({
-                from: `"JOULERY Boutique" <${SMTP_USER}>`,
+                from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique" <${SMTP_USER}>`,
                 to: order.email,
                 subject: customerSubject,
                 html: `
                   <div style="font-family: sans-serif; max-width: 600px; margin: 0 auto; padding: 40px; background-color: #FDF2F8; border-radius: 24px;">
                     <div style="text-align: center; margin-bottom: 32px;">
-                      <span style="font-size: 10px; text-transform: uppercase; tracking: 0.2em; color: #EC4899;">Joulery Boutique</span>
+                      <span style="font-size: 10px; text-transform: uppercase; tracking: 0.2em; color: #EC4899;">${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"} Boutique</span>
                     </div>
                     <h1 style="color: #111; font-weight: 300; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 24px; text-align: center;">${customerTitle}</h1>
                     <p style="color: #555; line-height: 1.8; text-align: center; font-size: 16px;">${customerMessage}</p>
