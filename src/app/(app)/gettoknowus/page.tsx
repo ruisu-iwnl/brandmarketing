@@ -1,14 +1,14 @@
 "use client";
 
 import { motion } from "framer-motion";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import FadeIn from "@/components/FadeIn";
-import ScrollToTop from "@/components/ScrollToTop";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import FadeIn from "@/components/ui/FadeIn";
+import ScrollToTop from "@/components/layout/ScrollToTop";
 import { ChevronLeft, Sparkles, Heart, Box, MapPin } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import ProvenanceMap from "@/components/ProvenanceMap";
+import ProvenanceMap from "@/components/products/ProvenanceMap";
 import { SITE_CONFIG } from "@/lib/constants";
 
 export default function GetToKnowUs() {

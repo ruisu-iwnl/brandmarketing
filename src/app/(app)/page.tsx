@@ -1,4 +1,4 @@
-import HomeContent from "@/components/HomeContent";
+import HomeContent from "@/components/pages/HomeContent";
 import { getProducts, getHeroSlides, getStoreSettings } from "@/lib/payload";
 import { heroProductsData } from "@/components/sections/Hero";
 

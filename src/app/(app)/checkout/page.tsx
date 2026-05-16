@@ -1,5 +1,5 @@
 import { getStoreSettings } from "@/lib/payload";
-import { CheckoutContent } from "../../components/CheckoutContent";
+import { CheckoutContent } from "@/components/pages/CheckoutContent";
 
 export const dynamic = 'force-dynamic';
 

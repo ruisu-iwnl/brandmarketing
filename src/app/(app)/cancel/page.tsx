@@ -1,5 +1,5 @@
 import { getStoreSettings } from "@/lib/payload";
-import { CancelContent } from "../../components/CancelContent";
+import { CancelContent } from "@/components/pages/CancelContent";
 
 export const dynamic = 'force-dynamic';
 

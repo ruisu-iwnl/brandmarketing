@@ -18,6 +18,11 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  const [voucherCode, setVoucherCode] = useState("");
+  const [appliedVoucher, setAppliedVoucher] = useState<any>(null);
+  const [isValidatingVoucher, setIsValidatingVoucher] = useState(false);
+  const [voucherError, setVoucherError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState({
     name: "",
     email: "",
@@ -29,6 +34,35 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
   });
 
   const subtotal = cartItems.reduce((acc, item) => acc + (Number(item.product.price) * item.quantity), 0);
+
+  const handleApplyVoucher = async () => {
+    if (!voucherCode) return;
+    setIsValidatingVoucher(true);
+    setVoucherError(null);
+    try {
+      const res = await fetch('/api/vouchers/validate', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ code: voucherCode }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || 'Invalid voucher');
+      setAppliedVoucher(data.voucher);
+      setVoucherCode("");
+    } catch (err: any) {
+      setVoucherError(err.message);
+    } finally {
+      setIsValidatingVoucher(false);
+    }
+  };
+
+  const discount = appliedVoucher 
+    ? (appliedVoucher.type === 'percentage' 
+        ? (subtotal * (appliedVoucher.value / 100)) 
+        : appliedVoucher.value)
+    : 0;
+  
+  const finalTotal = Math.max(0, subtotal - discount);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -47,6 +81,7 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
         body: JSON.stringify({
           items: cartItems,
           customerDetails: formData,
+          voucherId: appliedVoucher?.id,
         }),
       });
 
@@ -272,6 +307,41 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
             ))}
           </div>
 
+          {/* Voucher Section */}
+          <div className="mb-10 pt-8 border-t border-pink-calm/30">
+            <div className="flex gap-2">
+              <input 
+                type="text"
+                value={voucherCode}
+                onChange={(e) => setVoucherCode(e.target.value.toUpperCase())}
+                placeholder="PROMO CODE"
+                className="flex-1 bg-white border border-pink-calm/30 px-4 py-3 text-[10px] uppercase tracking-widest outline-none focus:ring-1 focus:ring-pink-accent/30 transition-all placeholder:text-foreground/20"
+              />
+              <button 
+                type="button"
+                onClick={handleApplyVoucher}
+                disabled={isValidatingVoucher || !voucherCode}
+                className="bg-foreground text-background px-6 py-3 text-[10px] uppercase tracking-widest hover:bg-pink-accent transition-colors disabled:opacity-50"
+              >
+                {isValidatingVoucher ? "..." : "Apply"}
+              </button>
+            </div>
+            {voucherError && (
+              <p className="text-[9px] text-red-400 mt-2 uppercase tracking-widest font-medium">{voucherError}</p>
+            )}
+            {appliedVoucher && (
+              <div className="mt-3 flex items-center justify-between bg-pink-accent/10 border border-pink-accent/20 px-4 py-2 rounded-lg">
+                <span className="text-[10px] uppercase tracking-widest font-bold text-pink-accent">{appliedVoucher.code} APPLIED</span>
+                <button 
+                  onClick={() => setAppliedVoucher(null)}
+                  className="text-[10px] text-foreground/40 hover:text-foreground"
+                >
+                  Remove
+                </button>
+              </div>
+            )}
+          </div>
+
           <div className="space-y-4 pt-10 border-t border-pink-calm/30">
             <div className="flex justify-between items-center text-xs uppercase tracking-widest text-foreground/60">
               <span>Subtotal</span>
@@ -281,9 +351,15 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
               <span>Shipping</span>
               <span className="text-pink-accent font-medium">Complimentary</span>
             </div>
+            {appliedVoucher && (
+              <div className="flex justify-between items-center text-xs uppercase tracking-widest text-pink-accent font-bold">
+                <span>Discount</span>
+                <span>-₱{discount}</span>
+              </div>
+            )}
             <div className="flex justify-between items-center pt-6 text-foreground">
               <span className="text-sm uppercase tracking-[0.3em] font-bold">Total</span>
-              <span className="text-2xl font-light">₱{subtotal}</span>
+              <span className="text-2xl font-light">₱{finalTotal}</span>
             </div>
           </div>
 

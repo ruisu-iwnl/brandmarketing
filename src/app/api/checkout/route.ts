@@ -7,7 +7,7 @@ const PAYMONGO_SECRET_KEY = process.env.PAYMONGO_SECRET_KEY;
 
 export async function POST(req: Request) {
   try {
-    const { items, customerDetails } = await req.json();
+    const { items, customerDetails, voucherId } = await req.json();
 
     if (!items || items.length === 0) {
       return NextResponse.json({ error: 'Cart is empty' }, { status: 400 });
@@ -67,6 +67,27 @@ export async function POST(req: Request) {
       totalAmountCentavos += amountCentavos * item.quantity;
     }
 
+    // 1.5 Handle Voucher
+    let discountCentavos = 0;
+    let appliedVoucher = null;
+
+    if (voucherId) {
+      appliedVoucher = await payload.findByID({
+        collection: 'vouchers',
+        id: voucherId,
+      });
+
+      if (appliedVoucher && appliedVoucher.active) {
+        if (appliedVoucher.type === 'percentage') {
+          discountCentavos = Math.round(totalAmountCentavos * (appliedVoucher.value / 100));
+        } else {
+          discountCentavos = appliedVoucher.value * 100;
+        }
+      }
+    }
+
+    const finalTotalCentavos = Math.max(0, totalAmountCentavos - discountCentavos);
+
     // 2. Create Order in Payload (Status: Pending)
     const order = await payload.create({
       collection: 'orders',
@@ -81,8 +102,9 @@ export async function POST(req: Request) {
           zip: customerDetails.zip,
         },
         items: orderItems,
-        totalAmount: totalAmountCentavos / 100,
+        totalAmount: finalTotalCentavos / 100,
         status: 'pending',
+        voucher: appliedVoucher?.id,
       },
     });
 
@@ -103,11 +125,21 @@ export async function POST(req: Request) {
             send_email_receipt: true,
             show_description: true,
             show_line_items: true,
-            line_items: lineItems,
+            line_items: discountCentavos > 0 
+              ? [
+                  {
+                    currency: 'PHP',
+                    amount: finalTotalCentavos,
+                    description: `Total Order Amount (Discount of ₱${discountCentavos/100} applied)`,
+                    name: 'Total Order Payment',
+                    quantity: 1,
+                  }
+                ] 
+              : lineItems,
             payment_method_types: ['card', 'gcash', 'paymaya', 'grab_pay'],
             success_url: `${baseUrl}/success?orderId=${order.id}`,
             cancel_url: `${baseUrl}/cancel?orderId=${order.id}`,
-            description: `Order #${order.id} for ${customerDetails.name}`,
+            description: `Order #${order.id} | ${customerDetails.name}`,
             reference_number: order.id.toString(),
             billing: {
               name: customerDetails.name,

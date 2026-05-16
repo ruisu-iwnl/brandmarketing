@@ -1,7 +1,7 @@
 import { getStoreSettings } from "@/lib/payload";
-import { SupportContent } from "../../components/SupportContent";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
+import { SupportContent } from "@/components/pages/SupportContent";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
 
 export const dynamic = 'force-dynamic';
 

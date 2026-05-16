@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { MessageCircle, Mail } from "lucide-react";
 import Link from "next/link";
-import FadeIn from "@/components/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
 import { SITE_CONFIG } from "@/lib/constants";
 
 const FacebookIcon = ({ size = 22, strokeWidth = 1.5 }: { size?: number; strokeWidth?: number }) => (

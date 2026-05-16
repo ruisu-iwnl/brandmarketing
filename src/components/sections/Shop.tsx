@@ -2,9 +2,9 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import FadeIn from "@/components/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
 import { Product } from "@/types/product";
-import ProductCard from "@/components/ProductCard";
+import ProductCard from "@/components/products/ProductCard";
 
 import { useCart } from "@/context/CartContext";
 

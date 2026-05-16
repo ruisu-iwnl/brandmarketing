@@ -122,6 +122,15 @@ export const Orders: CollectionConfig = {
         readOnly: true,
       },
     },
+    {
+      name: 'voucher',
+      type: 'relationship',
+      relationTo: 'vouchers' as any,
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+      },
+    },
   ],
 };
 

@@ -11,6 +11,7 @@ import { Media } from "./collections/Media";
 import { Products } from "./collections/Products";
 import { Orders } from "./collections/Orders";
 import { Pages } from "./collections/Pages";
+import Vouchers from "./collections/Vouchers";
 
 import { Homepage } from "./globals/Homepage";
 
@@ -27,7 +28,7 @@ export default buildConfig({
       afterDashboard: ['@/components/admin/BrandIntelligenceToolbox'],
     },
   },
-  collections: [Users, Media, Products, Pages, Orders],
+  collections: [Users, Media, Products, Pages, Orders, Vouchers],
   globals: [Homepage],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || "",

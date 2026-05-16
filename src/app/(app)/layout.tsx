@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
+import "../globals.css";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,9 +47,9 @@ export const metadata: Metadata = {
   },
 };
 
-import GoogleAnalytics from "@/components/GoogleAnalytics";
-import CookieConsent from "@/components/CookieConsent";
-import Providers from "@/components/Providers";
+import GoogleAnalytics from "@/components/layout/GoogleAnalytics";
+import CookieConsent from "@/components/layout/CookieConsent";
+import Providers from "@/components/layout/Providers";
 
 export default function RootLayout({
   children,

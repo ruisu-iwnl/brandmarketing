@@ -1,5 +1,5 @@
 import Image from "next/image";
-import FadeIn from "@/components/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
 import { Review, Product, CartItem } from "@/types/product";
 
 

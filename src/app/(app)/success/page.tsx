@@ -1,5 +1,5 @@
 import { getStoreSettings } from "@/lib/payload";
-import { SuccessContent } from "../../components/SuccessContent";
+import { SuccessContent } from "@/components/pages/SuccessContent";
 
 export const dynamic = 'force-dynamic';
 

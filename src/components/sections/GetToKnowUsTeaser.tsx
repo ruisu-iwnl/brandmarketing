@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import FadeIn from "@/components/FadeIn";
+import FadeIn from "@/components/ui/FadeIn";
 
 export default function GetToKnowUsTeaser() {
   return (

@@ -1,11 +1,11 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import Navbar from "@/components/Navbar";
-import Footer from "@/components/Footer";
-import ScrollToTop from "@/components/ScrollToTop";
-import ProductModal from "@/components/ProductModal";
-import CartDrawer from "@/components/CartDrawer";
+import Navbar from "@/components/layout/Navbar";
+import Footer from "@/components/layout/Footer";
+import ScrollToTop from "@/components/layout/ScrollToTop";
+import ProductModal from "@/components/products/ProductModal";
+import CartDrawer from "@/components/cart/CartDrawer";
 import Hero from "@/components/sections/Hero";
 import Shop from "@/components/sections/Shop";
 import GetToKnowUsTeaser from "@/components/sections/GetToKnowUsTeaser";

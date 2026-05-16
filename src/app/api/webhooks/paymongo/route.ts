@@ -103,6 +103,28 @@ export async function POST(req: Request) {
           overrideAccess: true,
         });
 
+        // 2.5 Increment Voucher Usage
+        if (order.voucher) {
+          const voucherId = typeof order.voucher === 'object' ? order.voucher.id : order.voucher;
+          const voucher = await payloadCms.findByID({
+            collection: 'vouchers',
+            id: voucherId,
+            overrideAccess: true,
+          });
+
+          if (voucher) {
+            await payloadCms.update({
+              collection: 'vouchers',
+              id: voucherId,
+              data: {
+                usageCount: (voucher.usageCount || 0) + 1,
+              },
+              overrideAccess: true,
+            });
+            console.log(`[PAYMONGO-WEBHOOK] Voucher usage incremented: ${voucherId}`);
+          }
+        }
+
         // 3. Update Product Inventory & Order Counts
         if (order.items && Array.isArray(order.items)) {
           for (const item of order.items) {

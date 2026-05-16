@@ -1,10 +1,10 @@
 import { getPayload } from 'payload';
 import configPromise from '@/payload.config';
 import { notFound } from 'next/navigation';
-import Navbar from '@/components/Navbar';
-import Footer from '@/components/Footer';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 import { RichText } from '@payloadcms/richtext-lexical/react';
-import FadeIn from '@/components/FadeIn';
+import FadeIn from '@/components/ui/FadeIn';
 
 export const dynamic = 'force-dynamic';
 
