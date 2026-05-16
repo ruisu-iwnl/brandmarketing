@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, useScroll, useTransform } from "framer-motion";
 import Image from "next/image";
 import { ChevronLeft, ChevronRight, Star, ShoppingCart, Check } from "lucide-react";
-import { Product } from "@/components/ProductCard";
+import { Product } from "@/types/product";
 import { useRef, useState } from "react";
 
 import { useCart } from "@/context/CartContext";

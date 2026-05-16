@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import FadeIn from "@/components/FadeIn";
-import ProductCard, { Product } from "@/components/ProductCard";
+import { Product } from "@/types/product";
+import ProductCard from "@/components/ProductCard";
 
 import { useCart } from "@/context/CartContext";
 
