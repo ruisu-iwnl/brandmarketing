@@ -101,6 +101,14 @@ export const Products: CollectionConfig = {
           });
         }
 
+        // Also delete all actual order records
+        await payload.delete({
+          collection: 'orders',
+          where: {
+            id: { exists: true }
+          }
+        });
+
         await payload.updateGlobal({
           slug: 'homepage',
           data: {

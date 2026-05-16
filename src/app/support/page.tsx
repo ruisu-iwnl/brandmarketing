@@ -1,5 +1,5 @@
 import { getStoreSettings } from "@/lib/payload";
-import { SupportContent } from "../../../components/SupportContent";
+import { SupportContent } from "../../components/SupportContent";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 

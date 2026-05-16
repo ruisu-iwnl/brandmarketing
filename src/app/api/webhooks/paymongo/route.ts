@@ -61,6 +61,7 @@ export async function POST(req: Request) {
           order = await payloadCms.findByID({
             collection: 'orders',
             id: orderId,
+            overrideAccess: true,
           });
         } catch (e) {
           console.warn('[PAYMONGO-WEBHOOK] Order ID in metadata not found, falling back to paymentId search');
@@ -75,6 +76,7 @@ export async function POST(req: Request) {
               equals: checkoutSessionId,
             },
           },
+          overrideAccess: true,
         });
         if (orders.docs.length > 0) order = orders.docs[0];
       }
@@ -106,6 +108,7 @@ export async function POST(req: Request) {
             const product = await payloadCms.findByID({
               collection: 'products',
               id: productId,
+              overrideAccess: true,
             });
 
             if (product) {
