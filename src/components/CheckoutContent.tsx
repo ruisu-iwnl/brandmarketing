@@ -143,6 +143,9 @@ export function CheckoutContent({ settings }: CheckoutContentProps) {
                   <input 
                     required
                     name="phone"
+                    type="tel"
+                    autoComplete="off"
+                    inputMode="tel"
                     value={formData.phone}
                     onChange={handleInputChange}
                     placeholder="+63 9xx xxx xxxx"
