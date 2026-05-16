@@ -231,6 +231,52 @@ export async function POST(req: Request) {
       } else {
         console.error('[PAYMONGO-WEBHOOK] Order not found for session:', checkoutSessionId);
       }
+    } 
+    else if (eventType === 'checkout_session.expired' || eventType === 'payment.failed') {
+      const dataObject = event.data.attributes.data;
+      const checkoutSessionId = dataObject.id;
+      // For payment.failed, the orderId might be in different places, 
+      // but PayMongo usually maps metadata from checkout session to payment
+      const orderId = dataObject.attributes?.metadata?.orderId;
+      
+      const payloadCms = await getPayload({ config }) as any;
+      console.log(`[PAYMONGO-WEBHOOK] Session ${eventType}:`, checkoutSessionId);
+
+      // Find the order
+      let order = null;
+      if (orderId) {
+        try {
+          order = await payloadCms.findByID({
+            collection: 'orders',
+            id: orderId,
+            overrideAccess: true,
+          });
+        } catch (e) {}
+      }
+
+      if (!order) {
+        const orders = await payloadCms.find({
+          collection: 'orders',
+          where: {
+            or: [
+              { paymentId: { equals: checkoutSessionId } },
+              { 'metadata.orderId': { equals: orderId } } // Fallback check
+            ]
+          },
+          overrideAccess: true,
+        });
+        if (orders.docs.length > 0) order = orders.docs[0];
+      }
+
+      if (order && order.status === 'pending') {
+        await payloadCms.update({
+          collection: 'orders',
+          id: order.id,
+          data: { status: 'cancelled' },
+          overrideAccess: true,
+        });
+        console.log(`[PAYMONGO-WEBHOOK] Order marked as CANCELLED due to ${eventType}`);
+      }
     }
 
     return NextResponse.json({ success: true });

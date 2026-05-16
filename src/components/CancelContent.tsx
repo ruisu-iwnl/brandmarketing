@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { motion } from "framer-motion";
 import { AlertCircle, ArrowLeft, MessageCircle, HelpCircle } from "lucide-react";
 import Link from "next/link";
@@ -11,6 +12,13 @@ interface CancelContentProps {
 }
 
 export function CancelContent({ orderId, settings }: CancelContentProps) {
+  useEffect(() => {
+    if (orderId) {
+      fetch(`/api/orders/${orderId}/cancel`, { method: 'POST' })
+        .catch(err => console.error('Failed to mark order as cancelled:', err));
+    }
+  }, [orderId]);
+
   return (
     <div className="min-h-[80vh] flex flex-col items-center justify-center p-8 text-center max-w-2xl mx-auto">
       <motion.div

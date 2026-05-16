@@ -189,7 +189,23 @@ export const Products: CollectionConfig = {
           }
         }
 
-        return new Response(JSON.stringify({ message: `Cleanup Complete. Removed ${deletedCount} unused media files.` }), { status: 200 });
+        // 2. Delete Stale Pending Orders (Older than 24 hours)
+        const twentyFourHoursAgo = new Date();
+        twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24);
+
+        const staleOrders = await payload.delete({
+          collection: 'orders',
+          where: {
+            and: [
+              { status: { equals: 'pending' } },
+              { createdAt: { less_than: twentyFourHoursAgo.toISOString() } }
+            ]
+          }
+        });
+
+        return new Response(JSON.stringify({ 
+          message: `Cleanup Complete. Removed ${deletedCount} unused media files and cleaned up stale pending orders.` 
+        }), { status: 200 });
       },
     },
   ],
