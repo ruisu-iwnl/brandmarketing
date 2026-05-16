@@ -251,14 +251,20 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
 
       {/* Product Info Overlay */}
       <div className="absolute inset-0 z-50 pointer-events-none overflow-hidden">
-        <AnimatePresence initial={false} custom={direction}>
+        <AnimatePresence initial={true} custom={direction}>
           <motion.div
             key={currentHero}
             custom={direction}
             variants={{
-              enter: (dir: number) => ({ x: dir > 0 ? "100%" : "-100%", opacity: 0 }),
+              enter: (dir: number) => ({ 
+                x: dir === 0 ? 0 : (dir > 0 ? "100%" : "-100%"), 
+                opacity: 0 
+              }),
               center: { x: 0, opacity: 1 },
-              exit: (dir: number) => ({ x: dir > 0 ? "-100%" : "100%", opacity: 0 })
+              exit: (dir: number) => ({ 
+                x: dir > 0 ? "-100%" : "100%", 
+                opacity: 0 
+              })
             }}
             initial="enter"
             animate="center"
@@ -284,7 +290,7 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                     New Piece
                   </div>
                 )}
-
+ 
                 <div className="flex flex-col gap-2">
                   <motion.h2
                     initial={{ opacity: 0 }}
@@ -292,7 +298,7 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                     transition={{ delay: 0.3 }}
                     className="text-4xl md:text-5xl font-black text-white leading-tight tracking-tighter uppercase drop-shadow-md"
                   >
-                    {current.fullName}
+                    {current.fullName || "Featured Piece"}
                   </motion.h2>
                   <motion.p
                     initial={{ opacity: 0 }}
@@ -300,7 +306,7 @@ export default function Hero({ products, slides, currentHero, direction, onNext,
                     transition={{ delay: 0.4 }}
                     className="text-white/80 text-sm md:text-base font-medium max-w-sm leading-relaxed drop-shadow-sm"
                   >
-                    {current.description}
+                    {current.description || "Handcrafted artisan jewelry made with passion and precision."}
                   </motion.p>
                 </div>
 
