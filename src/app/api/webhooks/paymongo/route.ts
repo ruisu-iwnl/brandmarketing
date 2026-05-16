@@ -165,6 +165,14 @@ export async function POST(req: Request) {
           // 4.3 Notify Merchant & Customer
           if (SMTP_USER && SMTP_PASS) {
             try {
+              // Fetch full order with items populated for the email
+              const fullOrder = await payloadCms.findByID({
+                collection: 'orders',
+                id: order.id,
+                depth: 2, // Get product details
+                overrideAccess: true,
+              });
+
               const transporter = nodemailer.createTransport({
                 host: 'smtp.gmail.com',
                 port: 465,
@@ -172,28 +180,34 @@ export async function POST(req: Request) {
                 auth: { user: SMTP_USER, pass: SMTP_PASS },
               });
 
-              const isDonation = order.type === 'donation';
+              const { getMerchantEmail, getCustomerEmail } = await import('@/lib/email-templates');
               
               // A. Send Merchant Notification
-              const merchantSubject = isDonation ? `New Support Gift: PHP ${order.totalAmount}` : `New Order Paid: #${order.id}`;
+              const merchantSubject = fullOrder.type === 'donation' 
+                ? `New Support Gift: PHP ${fullOrder.totalAmount}` 
+                : `New Order Paid: #${fullOrder.id}`;
+                
               await transporter.sendMail({
                 from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
                 to: CONTACT_RECEIVER_EMAIL,
                 subject: merchantSubject,
-                html: `<h1>New ${isDonation ? 'Support Gift' : 'Sale'}!</h1><p>Amount: PHP ${order.totalAmount}</p>`,
+                html: getMerchantEmail(fullOrder),
               });
 
               // B. Send Customer Thank You
-              if (order.email) {
-                const customerSubject = isDonation ? `Thank you for your support!` : `Your order is confirmed! (#${order.id})`;
+              if (fullOrder.email) {
+                const customerSubject = fullOrder.type === 'donation' 
+                  ? `Thank you for your support!` 
+                  : `Your order is confirmed! (#${fullOrder.id})`;
+                  
                 await transporter.sendMail({
                   from: `"${process.env.NEXT_PUBLIC_SITE_NAME || "Li'L Caca"}" <${SMTP_USER}>`,
-                  to: order.email,
+                  to: fullOrder.email,
                   subject: customerSubject,
-                  html: `<h1>Thank You!</h1><p>We've received your ${isDonation ? 'gift' : 'order'}.</p>`,
+                  html: getCustomerEmail(fullOrder),
                 });
               }
-              console.log('[PAYMONGO-WEBHOOK] Emails sent');
+              console.log('[PAYMONGO-WEBHOOK] Premium emails sent');
             } catch (eError) {
               console.error('[PAYMONGO-WEBHOOK] Email failed:', eError);
             }
