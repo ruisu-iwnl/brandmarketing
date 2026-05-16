@@ -26,3 +26,8 @@ export interface Product {
   averageRating?: number;
   reviews?: Review[];
 }
+export interface CartItem {
+  rowId: string;
+  product: Product;
+  quantity: number;
+}

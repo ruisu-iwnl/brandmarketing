@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Menu, X, ShoppingCart, Trash2, Plus, Minus } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Product, CartItem } from "./ProductCard";
+import { Product, CartItem } from "@/types/product";
 import Image from "next/image";
 import { SITE_CONFIG } from "@/lib/constants";
 

@@ -3,7 +3,7 @@
 import { motion, AnimatePresence } from "framer-motion";
 import { X, ShoppingBag, Trash2, Plus, Minus } from "lucide-react";
 import Image from "next/image";
-import { CartItem } from "./ProductCard";
+import { CartItem } from "@/types/product";
 
 import { useCart } from "@/context/CartContext";
 

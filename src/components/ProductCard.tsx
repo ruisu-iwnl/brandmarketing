@@ -1,12 +1,7 @@
 import Image from "next/image";
 import FadeIn from "@/components/FadeIn";
-import { Review, Product } from "@/types/product";
+import { Review, Product, CartItem } from "@/types/product";
 
-export interface CartItem {
-  rowId: string;
-  product: Product;
-  quantity: number;
-}
 
 import AddToCartButton from "./AddToCartButton";
 
