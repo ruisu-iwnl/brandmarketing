@@ -89,3 +89,19 @@ export async function getHeroSlides() {
     return [];
   }
 }
+export async function getStoreSettings() {
+  try {
+    const payload = await getPayload({ config: configPromise });
+    const data = await (payload as any).findGlobal({
+      slug: 'homepage',
+      depth: 0,
+    });
+    
+    return {
+      analyticsResetAt: (data as any).analyticsResetAt || null,
+    };
+  } catch (error) {
+    console.error('Payload Store Settings Error:', error);
+    return { analyticsResetAt: null };
+  }
+}

@@ -49,6 +49,7 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
                 alt={`${product.name} Worn`}
                 fill
                 className="object-cover scale-105 group-hover/card:scale-100 transition-transform duration-1000"
+                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               />
             </div>
 
@@ -60,6 +61,7 @@ export default function ProductCard({ product, delay = 0.1, onClick, onAddToCart
                   alt={`${product.name} Still`}
                   fill
                   className="object-contain drop-shadow-2xl scale-90 group-hover/card:scale-110 transition-transform duration-1000"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 />
               </div>
             </div>

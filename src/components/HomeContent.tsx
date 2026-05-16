@@ -10,14 +10,17 @@ import Hero from "@/components/sections/Hero";
 import Shop from "@/components/sections/Shop";
 import GetToKnowUsTeaser from "@/components/sections/GetToKnowUsTeaser";
 import Contact from "@/components/sections/Contact";
-import { Product, CartItem } from "@/components/ProductCard";
+import { Product } from "@/types/product";
 
 interface HomeContentProps {
   products: Product[];
   slides: any[];
+  settings: {
+    analyticsResetAt: string | null;
+  };
 }
 
-export default function HomeContent({ products, slides }: HomeContentProps) {
+export default function HomeContent({ products, slides, settings }: HomeContentProps) {
   const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
   const [currentHero, setCurrentHero] = useState(0);
   const [direction, setDirection] = useState(0);
@@ -81,6 +84,7 @@ export default function HomeContent({ products, slides }: HomeContentProps) {
         isOpen={!!selectedProduct}
         onClose={() => setSelectedProduct(null)}
         product={selectedProduct}
+        settings={settings}
       />
 
       <CartDrawer />

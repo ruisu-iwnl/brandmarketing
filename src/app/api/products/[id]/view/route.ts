@@ -9,42 +9,41 @@ export async function POST(
   const { id } = await params;
   
   try {
-    const payload = await getPayload({ config });
+    const payload = await getPayload({ config }) as any;
     
-    // Try finding by ID first (including drafts)
+    // 1. Find product
     let product;
     try {
-      product = await (payload as any).findByID({
-        collection: 'products',
-        id,
-        overrideAccess: true,
-        draft: true,
-      });
+      product = await payload.findByID({ collection: 'products', id });
     } catch (e) {
-      // Fallback to slug search
-      const search = await (payload as any).find({
+      const search = await payload.find({
         collection: 'products',
         where: { slug: { equals: id } },
-        overrideAccess: true,
-        draft: true,
         limit: 1,
       });
-      if (search.docs.length > 0) product = search.docs[0];
+      product = search.docs[0];
     }
 
-    if (!product) return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+    if (!product) {
+      return NextResponse.json({ error: 'Not Found' }, { status: 404 });
+    }
 
-    const currentViews = typeof product.viewsCount === 'number' ? product.viewsCount : 0;
+    const nextViews = (Number(product.viewsCount) || 0) + 1;
 
-    await (payload as any).update({
-      collection: 'products',
-      id: product.id,
-      data: { viewsCount: currentViews + 1 },
-      overrideAccess: true,
-    });
+    // 2. Perform Update
+    try {
+      await payload.update({
+        collection: 'products',
+        id: product.id,
+        data: { viewsCount: nextViews },
+        overrideAccess: true,
+      });
+    } catch (updateErr: any) {
+      throw updateErr;
+    }
 
-    return NextResponse.json({ success: true });
+    return NextResponse.json({ success: true, newCount: nextViews });
   } catch (error: any) {
-    return NextResponse.json({ error: 'Internal Server Error' }, { status: 500 });
+    return NextResponse.json({ error: error.message }, { status: 500 });
   }
 }

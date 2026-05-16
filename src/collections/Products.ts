@@ -101,6 +101,13 @@ export const Products: CollectionConfig = {
           });
         }
 
+        await payload.updateGlobal({
+          slug: 'homepage',
+          data: {
+            analyticsResetAt: new Date().toISOString(),
+          },
+        });
+
         return new Response(JSON.stringify({ message: 'Analytics Reset Successful' }), { status: 200 });
       },
     },

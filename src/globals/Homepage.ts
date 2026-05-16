@@ -72,5 +72,14 @@ export const Homepage: GlobalConfig = {
         },
       ],
     },
+    {
+      name: 'analyticsResetAt',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        readOnly: true,
+        description: 'Last time the analytics were fully reset for a Grand Opening.',
+      },
+    },
   ],
 };

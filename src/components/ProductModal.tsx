@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X, Star, ShoppingCart, ChevronLeft, ChevronRight, MessageCircle, Link2 } from "lucide-react";
 import Image from "next/image";
-import { Product } from "./ProductCard";
+import { Product, Review } from "@/types/product";
 import ProductReview from "./ProductReview";
 import { trackEvent } from "@/lib/analytics";
 
@@ -14,11 +14,14 @@ interface ProductModalProps {
   isOpen: boolean;
   onClose: () => void;
   product: Product | null;
+  settings?: {
+    analyticsResetAt: string | null;
+  };
 }
 
 const REVIEWS_PER_PAGE = 3;
 
-export default function ProductModal({ isOpen, onClose, product }: ProductModalProps) {
+export default function ProductModal({ isOpen, onClose, product, settings }: ProductModalProps) {
   const { addToCart } = useCart();
   const [activeProduct, setActiveProduct] = useState<Product | null>(product);
   const [reviewPage, setReviewPage] = useState(0);
@@ -40,27 +43,46 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
     };
   }, [isOpen]);
 
+  // Sync active product state when product prop changes
   useEffect(() => {
     if (product) {
       setActiveProduct(product);
       setReviewPage(0);
       setCurrentImageIndex(0);
       setIsAdded(false);
+    }
+  }, [product]);
+
+  // Handle view tracking with Grand Opening Reset Awareness
+  useEffect(() => {
+    if (product) {
       trackEvent("view_item", "engagement", product.name);
 
-      // Increment view count in Payload (with Local Storage deduplication)
-      const viewKey = `viewed_v1_${product.id}`;
+      const viewKey = `viewed_${product.id}`;
       const alreadyViewed = localStorage.getItem(viewKey);
+      const resetAt = settings?.analyticsResetAt;
+      
+      let shouldCountView = !alreadyViewed;
+      
+      if (alreadyViewed && resetAt) {
+        const lastViewedTime = parseInt(alreadyViewed);
+        const resetTime = new Date(resetAt).getTime();
+        if (resetTime > lastViewedTime) {
+          shouldCountView = true;
+        }
+      }
 
-      if (!alreadyViewed) {
+      if (shouldCountView) {
         fetch(`/api/products/${product.id}/view`, { method: 'POST' })
-          .then(() => {
-            localStorage.setItem(viewKey, Date.now().toString());
+          .then(async (res) => {
+            if (res.ok) {
+              localStorage.setItem(viewKey, Date.now().toString());
+            }
           })
           .catch(err => console.error('Failed to increment view count:', err));
       }
     }
-  }, [product]);
+  }, [product?.id, settings?.analyticsResetAt]);
 
   const handleAddClick = () => {
     if (activeProduct) {
@@ -83,7 +105,7 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
 
   const reviews = activeProduct?.reviews ?? [];
   const averageRating = reviews.length > 0 
-    ? Math.round(reviews.reduce((acc, r) => acc + r.rating, 0) / reviews.length) 
+    ? Math.round(reviews.reduce((acc: number, r: Review) => acc + r.rating, 0) / reviews.length) 
     : 0;
 
   const totalPages = Math.ceil(reviews.length / REVIEWS_PER_PAGE);
@@ -149,7 +171,7 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
                       setCurrentImageIndex((prev) => (prev === mediaItems.length - 1 ? 0 : prev + 1));
                     }
                   }}
-                  className="w-full h-full cursor-grab active:cursor-grabbing touch-none"
+                  className="relative w-full h-full cursor-grab active:cursor-grabbing touch-none"
                 >
                   {mediaItems[currentImageIndex]?.type === 'video' ? (
                     <video 
@@ -244,6 +266,7 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
                         alt={activeProduct.name}
                         fill
                         className={mediaItems[currentImageIndex]?.url === activeProduct.imageStill ? "object-contain p-16" : "object-cover"}
+                        sizes="(max-width: 768px) 100vw, 50vw"
                         draggable={false}
                       />
                     )}
@@ -404,7 +427,7 @@ export default function ProductModal({ isOpen, onClose, product }: ProductModalP
                         transition={{ duration: 0.2 }}
                         className="space-y-5"
                       >
-                        {visibleReviews.map((review) => (
+                        {visibleReviews.map((review: Review) => (
                           <ProductReview key={review.id} review={review} />
                         ))}
                       </motion.div>
