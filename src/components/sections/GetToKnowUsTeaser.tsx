@@ -28,10 +28,11 @@ export default function GetToKnowUsTeaser() {
             </FadeIn>
           </div>
           <div className="flex-1 relative aspect-square w-full max-w-[500px] rounded-3xl overflow-hidden shadow-2xl">
-            <Image 
-              src="/images/products/worn/aquamarine.png" 
-              alt="Artisan at work" 
-              fill 
+            <Image
+              src="/images/products/worn/aquamarine.webp"
+              alt="Artisan at work"
+              fill
+              sizes="(max-width: 768px) 100vw, 500px"
               className="object-cover"
             />
           </div>

@@ -127,6 +127,8 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
                     src={productImages[currentImageIndex]}
                     alt={activeProduct.name}
                     fill
+                    priority
+                    sizes="55vw"
                     className={currentImageIndex === 1 ? "object-contain p-20" : "object-cover"}
                     draggable={false}
                   />
@@ -190,6 +192,8 @@ export default function ProductModal({ isOpen, onClose, product, onAddToCart }: 
                       src={productImages[currentImageIndex]}
                       alt={activeProduct.name}
                       fill
+                      priority
+                      sizes="100vw"
                       className={currentImageIndex === 1 ? "object-contain p-16" : "object-cover"}
                       draggable={false}
                     />

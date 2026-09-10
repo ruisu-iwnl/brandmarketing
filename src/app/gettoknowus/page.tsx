@@ -84,10 +84,11 @@ export default function GetToKnowUs() {
                 <FadeIn delay={0.4}>
                   <div className="relative w-full aspect-square md:w-[400px] md:h-[400px] rounded-[32px] overflow-hidden shadow-2xl shadow-pink-accent/10 group">
                     <div className="absolute inset-0 bg-pink-accent/5 z-0" />
-                    <Image 
-                      src="/images/products/worn/amethyst.png"
+                    <Image
+                      src="/images/products/worn/amethyst.webp"
                       alt="Handcrafted jewelry detail"
                       fill
+                      sizes="(max-width: 768px) 100vw, 400px"
                       className="object-cover transition-transform duration-700 group-hover:scale-110"
                     />
                     <div className="absolute inset-0 border border-white/20 z-10 rounded-[32px]" />

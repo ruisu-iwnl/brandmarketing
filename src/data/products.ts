@@ -8,8 +8,8 @@ export const productsData: Product[] = [
     description: "Handwoven Blue stones.",
     category: "bracelet",
     ordersCount: 120,
-    imageStill: "/images/products/stills/aquamarine-nobg.png",
-    imageWorn: "/images/products/worn/aquamarine.png",
+    imageStill: "/images/products/stills/aquamarine-nobg.webp",
+    imageWorn: "/images/products/worn/aquamarine.webp",
     stock: 8,
     reviews: Array.from({ length: 50 }).map((_, i) => ({
       id: `r-aqua-${i}`,
@@ -32,8 +32,8 @@ export const productsData: Product[] = [
     description: "Natural black glass.",
     category: "bracelet",
     ordersCount: 85,
-    imageStill: "/images/products/stills/obsidian.png",
-    imageWorn: "/images/products/worn/obsidian.png",
+    imageStill: "/images/products/stills/obsidian.webp",
+    imageWorn: "/images/products/worn/obsidian.webp",
     stock: 5,
     reviews: [
       { id: "r3", author: "Elena R.", rating: 4, date: "3 days ago", content: "Beautiful weight and finish. A true statement piece." }
@@ -46,8 +46,8 @@ export const productsData: Product[] = [
     description: "Pure clear crystal.",
     category: "bracelet",
     ordersCount: 210,
-    imageStill: "/images/products/stills/crystalwhite.png",
-    imageWorn: "/images/products/worn/crystalwhite.png",
+    imageStill: "/images/products/stills/crystalwhite.webp",
+    imageWorn: "/images/products/worn/crystalwhite.webp",
     stock: 12,
     reviews: [
       { id: "r4", author: "Isabella G.", rating: 5, date: "5 days ago", content: "Pure elegance. Goes with everything." }
@@ -60,8 +60,8 @@ export const productsData: Product[] = [
     description: "Handwoven Royal Purple Amethyst",
     category: "bracelet",
     ordersCount: 45,
-    imageStill: "/images/products/stills/amethyst.png",
-    imageWorn: "/images/products/worn/amethyst.png",
+    imageStill: "/images/products/stills/amethyst.webp",
+    imageWorn: "/images/products/worn/amethyst.webp",
     stock: 3,
     reviews: [
       { id: "r5", author: "Clara S.", rating: 5, date: "1 day ago", content: "The purple is so deep and royal. Love it!" }

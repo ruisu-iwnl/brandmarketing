@@ -116,7 +116,7 @@ export default function Navbar({ cartItems = [], onOpenCart, onRemoveFromCart, o
                           className="flex gap-4 items-center group"
                         >
                           <div className="relative w-12 h-12 bg-pink-calm/20 rounded overflow-hidden shrink-0">
-                            <Image src={item.product.imageStill} alt={item.product.name} fill className="object-contain p-1" />
+                            <Image src={item.product.imageStill} alt={item.product.name} fill sizes="48px" className="object-contain p-1" />
                           </div>
                           <div className="flex-1 min-w-0">
                             <p className="text-xs font-medium text-foreground uppercase tracking-wider truncate">{item.product.name}</p>

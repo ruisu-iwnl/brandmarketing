@@ -74,6 +74,7 @@ export default function CartDrawer({ isOpen, onClose, items, onRemove, onUpdateQ
                               src={item.product.imageStill}
                               alt={item.product.name}
                               fill
+                              sizes="96px"
                               className="object-contain p-2 group-hover:scale-110 transition-transform duration-500"
                             />
                           </div>

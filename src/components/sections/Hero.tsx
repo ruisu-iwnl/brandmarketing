@@ -21,7 +21,7 @@ export const heroProductsData = [
     productId: "aquamarine-silk",
     name: "Aquamarine",
     fullName: "Aquamarine Silk",
-    image: "/images/hero3.png",
+    image: "/images/hero3.webp",
     color: "#a5d8d9",
     description: "Handmade blue stones.",
     scale: 0.5,
@@ -42,7 +42,7 @@ export const heroProductsData = [
     productId: "amethyst-aura",
     name: "Amethyst",
     fullName: "Amethyst Aura",
-    image: "/images/ame.png",
+    image: "/images/ame.webp",
     color: "#c4b5fd",
     description: "Deep purple stones.",
     scale: 0.5,
@@ -63,7 +63,7 @@ export const heroProductsData = [
     productId: "obsidian-heart",
     name: "Obsidian",
     fullName: "Obsidian Heart",
-    image: "/images/hero2.png",
+    image: "/images/hero2.webp",
     color: "#94a3b8",
     description: "Natural black glass.",
     scale: 0.5,
@@ -84,7 +84,7 @@ export const heroProductsData = [
     productId: "crystal-white",
     name: "Crystal",
     fullName: "Crystal White",
-    image: "/images/hero4.png",
+    image: "/images/hero4.webp",
     color: "#cbd5e1",
     description: "Pure clear crystal.",
     scale: 0.5,
@@ -211,12 +211,31 @@ export default function Hero({ products, currentHero, direction, onNext, onPrev,
                 alt={current.name}
                 fill
                 priority
+                sizes="(max-width: 768px) 90vw, 70vw"
                 className="object-contain object-center"
                 style={{ transform: "translateZ(0)" }}
               />
             </div>
           </motion.div>
         </AnimatePresence>
+      </div>
+
+      {/* Preload every other slide at the exact same size/sizes so switching is instant and never re-fetches */}
+      <div aria-hidden className="absolute inset-0 opacity-0 pointer-events-none -z-10">
+        {heroProductsData.map((slide, idx) => (
+          idx !== currentHero && (
+            <div key={slide.id} className="absolute w-[90vw] h-[50vh] md:w-[70vw] md:h-[70vh] max-w-[1000px] max-h-[700px] top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">
+              <Image
+                src={slide.image}
+                alt=""
+                fill
+                priority
+                sizes="(max-width: 768px) 90vw, 70vw"
+                className="object-contain object-center"
+              />
+            </div>
+          )
+        ))}
       </div>
 
       {/* Product Info Overlay */}
